@@ -1,0 +1,36 @@
+{% extends 'admin/adbase.html'%} {% load static %} {% block content %}
+<!-- CSS -->
+<link rel="stylesheet" href="libs/datatable/datatables.min.css" type="text/css">
+
+<!-- Javascript -->
+<script src="libs/datatable/datatables.min.js"></script>
+
+<table id="datatable-example" class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Position</th>
+            <th>Office</th>
+            <th>Age</th>
+            <th>Start date</th>
+            <th>Salary</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Tiger Nixon</td>
+            <td>System Architect</td>
+            <td>Edinburgh</td>
+            <td>61</td>
+            <td>2011/04/25</td>
+            <td>$320,800</td>
+        </tr>
+        ...
+    </tbody>
+</table>
+
+<script>
+    $('#datatable-example').DataTable({
+        responsive: true
+    });
+</script>

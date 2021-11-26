@@ -1,0 +1,109 @@
+{% extends 'base.html'%} {% load static %} {% block content %}
+
+<main class="main">
+    <nav aria-label="breadcrumb" class="breadcrumb-nav border-0 mb-0">
+        <div class="container">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                <li class="breadcrumb-item"><a href="#">Pages</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Login</li>
+            </ol>
+        </div>
+        <!-- End .container -->
+    </nav>
+    <!-- End .breadcrumb-nav -->
+
+    <div class="login-page bg-image pt-8 pb-8 pt-md-12 pb-md-12 pt-lg-17 pb-lg-17" style="background-image: url('assets/images/backgrounds/login-bg.jpg')">
+        <div class="container">
+            <div class="form-box">
+                <div class="form-tab">
+                    <ul class="nav nav-pills nav-fill" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="signin-tab-2" data-toggle="tab" href="#signin-2" role="tab" aria-controls="signin-2" aria-selected="false">Sign In</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="signin-2" role="tabpanel" aria-labelledby="signin-tab-2">
+                            <form action="" method="post">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <label for="singin-email-2">Enter OTP*</label>
+                                    <input type="number" maxlength="6" class="form-control" id="singin-email-2" name="otpval" required>
+                                </div>
+                                <h6 class="p-3 text-center">Resend OTP in <span class="js-timeout">2:00</span>.</h6>
+                                <div class="form-footer justify-content-center">
+                                    <button type="submit" class="btn btn-outline-primary-2">
+										<span>Login</span>
+										<i class="icon-long-arrow-right"></i>
+									</button>
+                                    <button type="button" id="js-resetTimer" class="btn btn-outline-primary " disabled>
+										<span>Resend OTP</span>
+										<i class="icon-refresh"></i>
+									</button>
+                                    <!-- End .custom-checkbox -->
+
+
+                                </div>
+
+                                <!-- End .form-footer -->
+                            </form>
+                        </div>
+                        <!-- .End .tab-pane -->
+
+
+                    </div>
+                    <!-- .End .tab-pane -->
+                </div>
+                <!-- End .tab-content -->
+            </div>
+            <!-- End .form-tab -->
+        </div>
+        <!-- End .form-box -->
+    </div>
+    <!-- End .container -->
+    </div>
+    <!-- End .login-page section-bg -->
+</main>
+<!-- End .main -->
+<script>
+    $(document).ready(function() {
+        $('.js-timeout').text("2:00");
+        countdown();
+    });
+    $('#js-resetTimer').click(function() {
+        $('.js-timeout').text("2:00");
+        clearInterval(interval);
+    });
+    var interval;
+
+    function countdown() {
+        clearInterval(interval);
+        interval = setInterval(function() {
+            var timer = $('.js-timeout').html();
+            timer = timer.split(':');
+            var minutes = timer[0];
+            var seconds = timer[1];
+            seconds -= 1;
+            if (minutes < 0) return;
+            else if (seconds < 0 && minutes != 0) {
+                minutes -= 1;
+                seconds = 59;
+            } else if (seconds < 10 && length.seconds != 2) seconds = '0' + seconds;
+
+            $('.js-timeout').html(minutes + ':' + seconds);
+
+            if (minutes == 0 && seconds == 0) clearInterval(interval);
+        }, 1000);
+    }
+</script>
+
+<!-- Plugins JS File -->
+<script src="{% static 'js/jquery.min.js' %} "></script>
+<script src="{% static 'js/bootstrap.bundle.min.js' %} "></script>
+<script src="{% static 'js/jquery.hoverIntent.min.js' %} "></script>
+<script src="{% static 'js/jquery.waypoints.min.js' %} "></script>
+<script src="{% static 'js/superfish.min.js' %} "></script>
+<script src="{% static 'js/owl.carousel.min.js' %} "></script>
+<!-- Main JS File -->
+<script src="{% static 'js/main.js' %} "></script>
+{% endblock %}

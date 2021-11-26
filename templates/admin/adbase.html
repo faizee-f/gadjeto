@@ -1,0 +1,248 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title> Gadgeto.in </title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="{% static 'vendor/assets/images/favicon.png' %}" />
+
+    <!-- Google fonts -->
+    <link rel="preconnect" href="{% static 'vendor/../fonts.gstatic.com/index.html' %}">
+    <link href="{% static 'vendor/../fonts.googleapis.com/css26710.css?family=Poppins:wght@300;400;500;600&amp;display=swap' %}" rel="stylesheet">
+
+    <!-- Bootstrap icons -->
+    <link rel="stylesheet" href="{% static 'vendor/dist/icons/bootstrap-icons-1.4.0/bootstrap-icons.min.css' %}" type="text/css">
+    <!-- Bootstrap Docs -->
+    <link rel="stylesheet" href="{% static 'vendor/dist/css/bootstrap-docs.css' %}" type="text/css">
+
+    <!-- Slick -->
+    <link rel="stylesheet" href="{% static 'vendor/libs/slick/slick.css' %}" type="text/css">
+
+    <!-- Main style file -->
+    <link rel="stylesheet" href="{% static 'vendor/dist/css/app.min.css' %}" type="text/css">
+
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+</head>
+
+<body>
+    <!-- {% if messages %} {% for message in messages %}
+    <script>
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        })
+
+        Toast.fire({
+            icon: 'success',
+            title: 'Signed in successfully'
+        })
+    </script>
+    {% endfor %} {% endif %} -->
+    <!-- preloader -->
+    <div class="preloader">
+        <img src="{% static 'vendor/assets/images/logo.svg" alt="logo">
+        <div class="preloader-icon"></div>
+    </div>
+    <!-- ./ preloader -->
+
+    <!-- menu -->
+    <div class="menu">
+        <div class="menu-header">
+            <a href="index.html" class="menu-header-logo">
+                <img src="{% static 'vendor/assets/images/logo.svg" alt="logo">
+            </a>
+            <a href="index.html" class="btn btn-sm menu-close-btn">
+                <i class="bi bi-x"></i>
+            </a>
+        </div>
+        <div class="menu-body">
+
+            <ul>
+                <li class="menu-divider"></li>
+                <li>
+                    <a class="active" href="{% url 'admin_dashboard' %}">
+                        <span class="nav-link-icon">
+                        <i class="bi bi-bar-chart"></i>
+                    </span>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <span class="nav-link-icon">
+                        <i class="bi bi-receipt"></i>
+                    </span>
+                        <span>Categories</span>
+                    </a>
+                    <ul>
+                        <li>
+                            <a href="{% url 'category_list' %}">Manage Categories</a>
+                        </li>
+                        <li>
+                            <a href="">Manage Varient-categories</a>
+                        </li>
+                         <li>
+                            <a href="">Manage Varients</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">
+                        <span class="nav-link-icon">
+                        <i class="bi bi-truck"></i>
+                    </span>
+                        <span>Vendors</span>
+                    </a>
+                    <ul>
+                        <li>
+                            <a href="{% url 'vendor_approval' %}">Approve Vendors
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">Manage Vendors
+                            View</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">
+                        <span class="nav-link-icon">
+                        <i class="bi bi-receipt"></i>
+                    </span>
+                        <span>Users</span>
+                    </a>
+                    <ul>
+                        <li>
+                            <a href="{% url 'customers' %}">Manage Customers</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">
+                        <span class="nav-link-icon">
+                        <i class="bi bi-receipt"></i>
+                    </span>
+                        <span>Report</span>
+                    </a>
+                    <ul>
+                        <li>
+                            <a href="#">Sales Report</a>
+                        </li>
+                        <li>
+                            <a href="#">Customer Report</a>
+                        </li>
+                        <li>
+                            <a href="#">Vendor Report</a>
+                        </li>
+                    </ul>
+                </li>
+
+
+            </ul>
+        </div>
+    </div>
+    <!-- ./  menu -->
+
+    <!-- layout-wrapper -->
+    <div class="layout-wrapper">
+        <!-- header -->
+        <div class="header">
+            <div class="menu-toggle-btn">
+                <!-- Menu close button for mobile devices -->
+                <a href="#">
+                    <i class="bi bi-list"></i>
+                </a>
+            </div>
+            <!-- Logo -->
+            <a href="index.html" class="logo">
+                <img width="100" src="{% static 'vendor/assets/images/logo.svg" alt="logo">
+            </a>
+            <!-- ./ Logo -->
+            <div class="page-title">Dashboard</div>
+
+            <div class="header-bar ms-auto">
+                <ul class="navbar-nav justify-content-end">
+                    <div class="dropdown">
+                        <a href="#" class="d-flex align-items-center justify-content-between" data-bs-toggle="dropdown">
+                            <div class="p-3 my-3">
+                                <div class="fw-bold">{{user.firstname}} {{user.last_name}}</div>
+                                <small class="text-muted">Super Admin</small>
+                            </div>
+                            <div class="avatar me-3">
+                                <img src="{% static 'vendor/assets/images/user/man_avatar3.jpg' %}" class="rounded-circle" alt="image">
+                            </div>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end">
+                            <a href="#" class="dropdown-item d-flex align-items-center">
+                                <i class="bi bi-person dropdown-item-icon"></i> Profile
+                            </a>
+                            <a href="{% url 'admin_signout' %}" class="dropdown-item d-flex align-items-center text-danger">
+                                <i class="bi bi-box-arrow-right dropdown-item-icon"></i> Logout
+                            </a>
+                        </div>
+                    </div>
+                </ul>
+            </div>
+            <!-- Header mobile buttons -->
+            <div class="header-mobile-buttons">
+                <a href="#" class="actions-btn">
+                    <i class="bi bi-three-dots"></i>
+                </a>
+            </div>
+            <!-- ./ Header mobile buttons -->
+
+
+        </div>
+        <div class="content">
+
+            {% block content %} {% endblock %}
+
+
+        </div>
+
+    </div>
+    <!-- ./ layout-wrapper -->
+
+    <!-- Bundle scripts -->
+    <script src="{% static 'vendor/libs/bundle.js' %}"></script>
+
+    <!-- Apex chart -->
+    <script src="{% static 'vendor/libs/charts/apex/apexcharts.min.js' %}"></script>
+
+    <!-- Slick -->
+    <script src="{% static 'vendor/libs/slick/slick.min.js' %}"></script>
+
+    <!-- Examples -->
+    <script src="{% static 'vendor/dist/js/examples/dashboard.js' %}"></script>
+
+    <!-- Main Javascript file -->
+    <script src="{% static 'vendor/dist/js/app.min.js' %}"></script>
+
+    <script type="text/javascript" charset="utf8" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.0/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('table.datatable').DataTable();
+        });
+    </script>
+
+</body>
+
+</html>

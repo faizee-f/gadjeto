@@ -1,0 +1,85 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<!-- Gadgeto.in/index-3.html  22 Nov 2019 09:55:42 GMT -->
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>Gadgeto.in - Bootstrap eCommerce Template</title>
+    <meta name="keywords" content="HTML5 Template" />
+    <meta name="description" content="Gadgeto.in - Bootstrap eCommerce Template" />
+    <meta name="author" content="p-themes" />
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/icons/apple-touch-icon.png' %}" />
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/icons/favicon-32x32.png' %}" />
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/icons/favicon-16x16.png' %}" />
+    <link rel="manifest" href="{% static 'images/icons/site.html' %}" />
+    <link rel="mask-icon" href="{% static 'images/icons/safari-pinned-tab.svg' %}" color="#666666" />
+    <link rel="shortcut icon" href="{% static 'images/icons/favicon.ico' %}>
+    <meta name=" apple-mobile-web-app-title " content="Gadgeto.in " />
+    <meta name="application-name " content="Gadgeto.in " />
+    <meta name="msapplication-TileColor " content="#cc9966 " />
+    <meta
+      name="msapplication-config "
+      content="images/icons/browserconfig.xml "
+    />
+    <meta name="theme-color " content="#ffffff " />
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11 "></script>
+
+    <link
+      rel="stylesheet "
+      href="{% static 'vendor/line-awesome/line-awesome/line-awesome/css/line-awesome.min.css' %} "
+    />
+    <!-- Plugins CSS File -->
+    <link rel="stylesheet " href="{% static 'css/bootstrap.min.css' %} " />
+    <link
+      rel="stylesheet "
+      href="{% static 'css/plugins/owl-carousel/owl.carousel.css' %} "
+    />
+    <link
+      rel="stylesheet "
+      href="{% static 'css/plugins/magnific-popup/magnific-popup.css' %} "
+    />
+    <link
+      rel="stylesheet "
+      href="{% static 'css/plugins/jquery.countdown.css' %} "
+    />
+    <!-- Main CSS File -->
+    <link rel="stylesheet " href="{% static 'css/style.css' %} " />
+    <link rel="stylesheet " href="{% static 'css/skins/skin-demo-3.css' %} " />
+    <link rel="stylesheet " href="{% static 'css/demos/demo-3.css' %} " />
+  </head>
+
+  <body>
+    <div class="container-fluid p-5 m-5 ">
+      <div
+        class=" content align-items-center content d-flex justify-content-center text-center flex-column "
+      >
+        <div class="row mb-5 ">
+          
+            <figure style="width: 100%;height: auto; ">
+              <img
+                class=" "
+                src="https://media2.giphy.com/media/ftqLysT45BJMagKFuk/giphy.gif "
+                alt="image "
+              />
+            </figure>
+          
+        </div>
+        <div class="display-6 ">Access Denied</div>
+        <p class="text-muted my-4 ">
+          You have been denied access to this page. Please check your
+          permissions.
+        </p>
+        <a href=" {% url 'home' %} ">
+          <button class="btn btn-primary " onclick=" ">Gadgeto.in</button>
+        </a>
+       
+      </div>
+      
+    </div>
+  </body>
+</html>

@@ -1,0 +1,124 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<!-- Mirrored from vetra.laborasyon.com/demos/default/register.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 04 Nov 2021 12:38:23 GMT -->
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Register </title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="{% static 'vendor/assets/images/favicon.png' %}" />
+
+    <!-- Themify icons -->
+    <link rel="stylesheet" href="{% static 'vendor/dist/icons/themify-icons/themify-icons.css' %}" type="text/css">
+
+    <!-- Main style file -->
+    <link rel="stylesheet" href="{% static 'vendor/dist/css/app.min.css' %}" type="text/css">
+
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body class="auth">
+
+    <!-- begin::preloader-->
+    <div class="preloader">
+        <div class="preloader-icon"></div>
+    </div>
+    <!-- end::preloader -->
+
+
+    <div class="form-wrapper">
+        <div class="container">
+            <div class="card">
+                <div class="row g-0">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-md-10 offset-md-1">
+                                <div class="ltf-block-logo d-block d-lg-none text-center text-lg-start">
+                                    <img width="120" src="{% static 'vendor/assets/images/logo.svg' %}" alt="logo">
+                                </div>
+                                <div class="my-5 text-center text-lg-start">
+                                    <h1 class="display-8">Create a Vendor Account</h1>
+                                    <p class="text-muted">You can create a vendor account now</p>
+                                </div>
+                                <form action="{% url 'vendor_signup' %}" class="mb-5" method="post">
+                                    {% csrf_token %}
+                                    <div class="mb-3">
+                                    <label for="register-nname-2">Name*</label>
+                                        {{form.first_name}}
+                                    </div>
+                                    <div class="mb-3">
+                                    <label for="register-nname-2">Email *</label>
+                                        {{form.email}}
+                                    </div>
+                                    <div class="mb-3">
+                                    <label for="register-nname-2">Mobile *</label>
+                                        {{form.mobile}}
+                                    </div>
+                                    <div class="mb-3">
+                                    <label for="register-nname-2">Password</label>
+                                        {{form.password}}
+                                    </div>
+                                    <div class="mb-3">
+                                    <label for="register-nname-2">ConfirmPassword *</label>
+                                        {{form.confirm_password}}
+                                    </div>
+                                    <div class="text-center text-lg-start">
+                                        <input type="submit" value="Register" class="btn btn-primary">
+                                    </div>
+                                    {% if messages %}
+                                    <ul class="messages">
+                                        {% for message in messages %}
+                                        <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                    {% endif %} {{ form.email.errors }} {{ form.non_field_errors }}
+                                </form>
+
+                                <p class="text-center d-block d-lg-none mt-5 mt-lg-0">
+                                    Don't have an account? <a href="{% url 'vendor_signin'%}">Sign In</a>.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col d-none d-lg-flex border-start align-items-center justify-content-between flex-column text-center">
+                        <div class="logo">
+                            <img width="120" src="{% static 'vendor/assets/images/logo.svg" alt="logo">
+                        </div>
+                        <div>
+                            <h3 class="fw-bold">Welcome to Gedgeto.in!</h3>
+                            <p class="lead my-5">Do you already have an account?</p>
+                            <a href="{% url 'vendor_signin'%}" class="btn btn-primary">Sign In</a>
+                        </div>
+                        <ul class="list-inline">
+                            <li class="list-inline-item">
+                                <a href="#">Privacy Policy</a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a href="#">Terms & Conditions</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Bundle scripts -->
+    <script src="{% static 'vendor/libs/bundle.js' %}"></script>
+
+    <!-- Main Javascript file -->
+    <script src="{% static 'vendor/dist/js/app.min.js' %}"></script>
+</body>
+
+<!-- Mirrored from vetra.laborasyon.com/demos/default/register.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 04 Nov 2021 12:38:23 GMT -->
+
+</html>

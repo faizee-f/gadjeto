@@ -1,0 +1,280 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title> Gadgeto.in </title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="{% static 'vendor/assets/images/favicon.png' %}" />
+
+    <!-- Google fonts -->
+    <link rel="preconnect" href="{% static 'vendor/../fonts.gstatic.com/index.html' %}">
+    <link href="{% static 'vendor/../fonts.googleapis.com/css26710.css?family=Poppins:wght@300;400;500;600&amp;display=swap' %}" rel="stylesheet">
+
+    <!-- Bootstrap icons -->
+    <link rel="stylesheet" href="{% static 'vendor/dist/icons/bootstrap-icons-1.4.0/bootstrap-icons.min.css' %}" type="text/css">
+    <!-- Bootstrap Docs -->
+    <link rel="stylesheet" href="{% static 'vendor/dist/css/bootstrap-docs.css' %}" type="text/css">
+
+    <!-- Slick -->
+    <link rel="stylesheet" href="{% static 'vendor/libs/slick/slick.css' %}" type="text/css">
+
+    <!-- Main style file -->
+    <link rel="stylesheet" href="{% static 'vendor/dist/css/app.min.css' %}" type="text/css">
+
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body>
+
+{% if messages %}
+{% for message in messages %}
+<script>
+    Swal.fire({
+        position: 'middle',
+        icon: '{{message.tags}}',
+        title: '{{message}}',
+        showConfirmButton: false,
+        timer: 2000
+    })
+</script>
+{% endfor %}
+{% endif %}
+    <!-- preloader -->
+    <div class="preloader">
+        <img src="{% static 'vendor/assets/images/logo.svg" alt="logo">
+        <div class="preloader-icon"></div>
+    </div>
+    <!-- ./ preloader -->
+
+    <!-- menu -->
+    <div class="menu">
+        <div class="menu-header">
+            <a href="index.html" class="menu-header-logo">
+                <img src="{% static 'vendor/assets/images/logo.svg" alt="logo">
+            </a>
+            <a href="index.html" class="btn btn-sm menu-close-btn">
+                <i class="bi bi-x"></i>
+            </a>
+        </div>
+        <div class="menu-body">
+
+            <ul>
+                <li class="menu-divider"></li>
+                <li>
+                    <a class="active" href="#">
+                        <span class="nav-link-icon">
+                        <i class="bi bi-bar-chart"></i>
+                    </span>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <span class="nav-link-icon">
+                        <i class="bi bi-receipt"></i>
+                    </span>
+                        <span>Orders</span>
+                    </a>
+                    <ul>
+                        <li>
+                            <a href="#">View Orders</a>
+                        </li>
+                        <li>
+                            <a href="#">Order History</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">
+                        <span class="nav-link-icon">
+                        <i class="bi bi-truck"></i>
+                    </span>
+                        <span>Products</span>
+                    </a>
+                    <ul>
+                        <li>
+                            <a href="{% url 'view_product' %}">View Products
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'add_product' %}">AddProducts
+                            View</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">
+                        <span class="nav-link-icon">
+                        <i class="bi bi-receipt"></i>
+                    </span>
+                        <span>Customers</span>
+                    </a>
+                    <ul>
+                        <li>
+                            <a href="#">Manage Customers</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">
+                        <span class="nav-link-icon">
+                        <i class="bi bi-receipt"></i>
+                    </span>
+                        <span>Coupon Code</span>
+                    </a>
+                    <ul>
+                        <li>
+                            <a href="#">View Coupon Codes</a>
+                        </li>
+                        <li>
+                            <a href="#">Manage Coupon</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">
+                        <span class="nav-link-icon">
+                        <i class="bi bi-receipt"></i>
+                    </span>
+                        <span>Banners</span>
+                    </a>
+                    <ul>
+                        <li>
+                            <a href="#">Manage Banners</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">
+                        <span class="nav-link-icon">
+                        <i class="bi bi-receipt"></i>
+                    </span>
+                        <span>Offers</span>
+                    </a>
+                    <ul>
+                        <li>
+                            <a href="#">Manage Offers</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">
+                        <span class="nav-link-icon">
+                        <i class="bi bi-receipt"></i>
+                    </span>
+                        <span>Report</span>
+                    </a>
+                    <ul>
+                        <li>
+                            <a href="#">Sales Report</a>
+                        </li>
+                        <li>
+                            <a href="#">Customer Report</a>
+                        </li>
+                        <li>
+                            <a href="#">Vendor Report</a>
+                        </li>
+                    </ul>
+                </li>
+
+
+            </ul>
+        </div>
+    </div>
+    <!-- ./  menu -->
+
+    <!-- layout-wrapper -->
+    <div class="layout-wrapper">
+        <!-- header -->
+        <div class="header">
+            <div class="menu-toggle-btn">
+                <!-- Menu close button for mobile devices -->
+                <a href="#">
+                    <i class="bi bi-list"></i>
+                </a>
+            </div>
+            <!-- Logo -->
+            <a href="{% url 'vendor_home' %}" class="logo">
+                <img width="100" src="{% static 'vendor/assets/images/logo.svg" alt="logo">
+            </a>
+            <!-- ./ Logo -->
+            <div class="page-title">Dashboard</div>
+
+            <div class="header-bar ms-auto">
+                <ul class="navbar-nav justify-content-end">
+                    <div class="dropdown">
+                        <a href="#" class="d-flex align-items-center justify-content-between" data-bs-toggle="dropdown">
+                            <div class="p-3 my-3">
+                                <div class="fw-bold">{{user.first_name}}</div>
+                                <small class="text-muted">Vendor</small>
+                            </div>
+                            <div class="avatar me-3">
+                                <img src="{% static 'vendor/assets/images/user/man_avatar3.jpg' %}" class="rounded-circle" alt="image">
+                            </div>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end">
+                            <a href="{% url 'vendor_profile' %}" class="dropdown-item d-flex align-items-center">
+                                <i class="bi bi-person dropdown-item-icon"></i> Profile
+                            </a>
+                            <a href="{% url 'vendor_signout' %}" class="dropdown-item d-flex align-items-center text-danger">
+                                <i class="bi bi-box-arrow-right dropdown-item-icon"></i> Logout
+                            </a>
+                        </div>
+                    </div>
+                </ul>
+            </div>
+            <!-- Header mobile buttons -->
+            <div class="header-mobile-buttons">
+                <a href="#" class="actions-btn">
+                    <i class="bi bi-three-dots"></i>
+                </a>
+            </div>
+            <!-- ./ Header mobile buttons -->
+
+
+        </div>
+        <div class="content">
+
+            {% block content %} {% endblock %}
+
+
+
+        </div>
+
+    </div>
+    <!-- ./ layout-wrapper -->
+
+    <!-- Bundle scripts -->
+    <script src="{% static 'vendor/libs/bundle.js' %}"></script>
+
+    <!-- Apex chart -->
+    <script src="{% static 'vendor/libs/charts/apex/apexcharts.min.js' %}"></script>
+
+    <!-- Slick -->
+    <script src="{% static 'vendor/libs/slick/slick.min.js' %}"></script>
+
+    <!-- Examples -->
+    <script src="{% static 'vendor/dist/js/examples/dashboard.js' %}"></script>
+
+    <!-- Main Javascript file -->
+    <script src="{% static 'vendor/dist/js/app.min.js' %}"></script>
+
+    <script type="text/javascript" charset="utf8" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.0/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('table.datatable').DataTable();
+        });
+    </script>
+
+</body>
+
+</html>
