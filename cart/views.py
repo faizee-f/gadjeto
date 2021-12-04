@@ -149,6 +149,7 @@ def checkout(request,total=0,quantity=0,cart_items=None):
     discount=None
     if 'discount' in request.session:
         discount=request.session['discount']
+    coupen_code=None
     if 'coupen_code' in request.session:
         coupen_code=request.session['coupen_code']
 

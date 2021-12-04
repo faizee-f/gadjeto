@@ -10,6 +10,7 @@ from order.models import Order, OrderProduct, Payment
 from store.models import Variation, product
 import datetime
 import json
+from django.urls import reverse
 import razorpay
 from django.conf import settings
 from user.models import Address
@@ -59,7 +60,7 @@ def payments(request):
         orderproduct.quantity = item.quantity
         if item.varient.offer_price():
             off_price = Variation.offer_price(item.varient)
-            price= int(off_price['new_price'])
+            price = int(off_price['new_price'])
             orderproduct.price = price
         else:
             orderproduct.price = item.varient.price
@@ -83,39 +84,37 @@ def payments(request):
     }
     return JsonResponse(data)
 
-    
-def razorpay(request):
-    curr_user = request.user
-    body = json.loads(request.body)
-    print(body)
-    iorder = Order.objects.get(
-        user=curr_user, is_ordered=False, order_number=body['orderID'])
-    print(iorder)
-    print(iorder.id)
 
-    # save payment informations
-    payment = Payment(
-        user=curr_user,
-        payment_id=body['transID'],
-        payment_method=body['payment_method'],
-        amount_paid=iorder.order_total,
-        status=body['status'],
-    )
-    payment.save()
-    iorder.payment = payment
-    iorder.is_ordered = True
-    iorder.save()
+# def razorpay(request):
+#     curr_user = request.user
+#     body = json.loads(request.body)
+#     print(body)
+#     iorder = Order.objects.get(
+#         user=curr_user, is_ordered=False, order_number=body['orderID'])
+#     print(iorder)
+#     print(iorder.id)
 
-    
-    data = {
-        'order_number': iorder.order_number,
-        'trans_id': payment.payment_id,
+#     # save payment informations
+#     payment = Payment(
+#         user=curr_user,
+#         payment_id=body['transID'],
+#         payment_method=body['payment_method'],
+#         amount_paid=iorder.order_total,
+#         status=body['status'],
+#     )
+#     payment.save()
+#     iorder.payment = payment
+#     iorder.is_ordered = True
+#     iorder.save()
 
-    }
-    return redirect('order_complete'+"?order_number="+iorder.order_number+"&payment_id="+payment.payment_id)
+#     data = {
+#         'order_number': iorder.order_number,
+#         'trans_id': payment.payment_id,
+
+#     }
+#     return redirect('order_complete'+"?order_number="+iorder.order_number+"&payment_id="+payment.payment_id)
 
 
-    
 def place_order(request, total=0, quantity=0):
     current_user = request.user
     cart_items = CartItem.objects.filter(user=current_user)
@@ -136,14 +135,15 @@ def place_order(request, total=0, quantity=0):
     tax = (2*total)/100
     grand_total = total+tax
     if 'total_after_discount' in request.session:
-        grand_total=request.session['total_after_discount']
-    grand_total=int(grand_total)
-    discount=None
+        grand_total = request.session['total_after_discount']
+    grand_total = int(grand_total)
+    discount = None
     if 'discount' in request.session:
-        discount=request.session['discount']
+        discount = request.session['discount']
+    coupen_code=None
     if 'coupen_code' in request.session:
-        coupen_code=request.session['coupen_code']
-    request.session['total']=grand_total
+        coupen_code = request.session['coupen_code']
+    request.session['total'] = grand_total
     if request.method == 'POST':
         form = OrderForm(request.POST)
         if form.is_valid():
@@ -172,23 +172,31 @@ def place_order(request, total=0, quantity=0):
             d = datetime.date(yr, mt, dt)
             current_date = d.strftime("%Y%m%d")
 
-            order_number = current_date+str(data.id)
-            data.order_number = order_number
-            data.save()
+            payment_type = request.POST['payment']
+            
+            
 
             currency = 'INR'
             amount = grand_total*100
-            request.session['razorpay_amount']=amount
+            request.session['razorpay_amount'] = amount
             # Create a Razorpay Order
             razorpay_order = razorpay_client.order.create(dict(amount=amount,
                                                                currency=currency,
                                                                payment_capture='0'))
-
+            if payment_type=="razorpay":
+                order_number=razorpay_order['id']
+                data.order_number = razorpay_order['id']
+                data.save()
+            else:
+                order_number = current_date+str(data.id)
+                data.order_number =order_number
+                data.save()
+            
             # order id of newly created order.
             razorpay_order_id = razorpay_order['id']
             callback_url = 'paymenthandler/'
-            #saving the address
-            payment_type=request.POST['payment']
+            # saving the address
+            
 
             order = Order.objects.get(
                 user=current_user, is_ordered=False, order_number=order_number)
@@ -203,9 +211,9 @@ def place_order(request, total=0, quantity=0):
                 'razorpay_amount': amount,
                 'currency': currency,
                 'callback_url': callback_url,
-                'discount':discount,
-                'coupen_code':coupen_code,
-                'payment_type':payment_type
+                'discount': discount,
+                'coupen_code': coupen_code,
+                'payment_type': payment_type
             }
             return render(request, 'payment.html', context)
         else:
@@ -234,29 +242,89 @@ def paymenthandler(request):
             if result is None:
                 amount = request.session['razorpay_amount']
                 try:
-
-                    # capture the payemt
                     razorpay_client.payment.capture(payment_id, amount)
                     messages.success(request, "Payment Successfull")
+                    ################
+                    curr_user = request.user
+                    iorder = Order.objects.get(
+                        user=curr_user, is_ordered=False, order_number=razorpay_order_id)
+                    print(iorder)
+                    print(iorder.id)
+
+                    # save payment informations
+                    payment = Payment(
+                        user=curr_user,
+                        payment_id=payment_id,
+                        payment_method="RazorPay",
+                        amount_paid=iorder.order_total,
+                        status="Paid",
+                    )
+                    payment.save()
+                    iorder.payment = payment
+                    iorder.is_ordered = True
+                    iorder.save()
+
+                    # move cart items to order product table
+                    cart_items = CartItem.objects.filter(user=curr_user)
+
+                    for item in cart_items:
+                        orderproduct = OrderProduct()
+                        orderproduct.order_id = iorder.id
+                        orderproduct.payment = payment
+                        orderproduct.user_id = curr_user.id
+                        orderproduct.vendor = item.varient.product.vendor
+                        orderproduct.products_id = item.varient.product.id
+                        orderproduct.variation_id = item.varient.id
+                        orderproduct.quantity = item.quantity
+                        if item.varient.offer_price():
+                            off_price = Variation.offer_price(item.varient)
+                            price = int(off_price['new_price'])
+                            orderproduct.price = price
+                        else:
+                            orderproduct.price = item.varient.price
+                        orderproduct.ordered = True
+                        orderproduct.save()
+
+                    # reduce the stock
+
+                        varient = Variation.objects.get(id=item.varient_id)
+                        print(varient)
+                        print(varient.stock)
+                        varient.stock -= item.quantity
+
+                    # clear the cart
+                    CartItem.objects.filter(user=request.user).delete()
+                    # send transaction successfull
+                    data = {
+                        'order_number': iorder.order_number,
+                        'trans_id': payment.payment_id,
+
+                    }
+                    param="order_number=" + iorder.order_number + "&payment_id=" + payment.payment_id
+                    ################
+                    # capture the payemt
+                    messages.success(request, "Payment Success")
+                    print("hello")
+
+                    redirect_url = reverse('order_complete')
+                    return redirect(f'{redirect_url}?{param}')
                     # render success page on successful caputre of payment
-                    afterpayment(request)
-                    return redirect('home')
-                except:
-                    messages.success(request, "Payment Failed")
+                except Exception as e:
+                    print(e)
+                    messages.error(request, "Payment Failed")
                     # if there is an error while capturing payment.
-                    return redirect('home')
+                    return redirect('checkout')
             else:
-                return redirect('home')
+
+                return redirect('checkout')
                 # if signature verification fails.
 
         except:
-
+            return redirect('checkout')
             # if we don't find the required parameters in POST data
-            return HttpResponseBadRequest()
     else:
        # if other than POST request is made.
-        return HttpResponseBadRequest()
-
+        return redirect('checkout')
 
 def order_complete(request):
     order_number = request.GET.get('order_number')
