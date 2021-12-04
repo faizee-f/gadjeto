@@ -22,8 +22,14 @@ class CartItem(models.Model):
     quantity = models.IntegerField()
     is_active = models.BooleanField(default=True)
 
-    def sub_total(self):
-        return self.varient.price*self.quantity
-
+    def total(self):
+        if self.varient.offer_price():
+            discount_total=0
+            off_price=Variation.offer_price(self.varient)
+            discount_total  += (off_price['new_price'] * self.quantity)
+            return discount_total
+        else:
+            return self.varient.price*self.quantity
+            
     def __unicode__(self):
         return self.varient

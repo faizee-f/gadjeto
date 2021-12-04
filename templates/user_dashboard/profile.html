@@ -1,0 +1,128 @@
+{% extends 'base.html'%} {% load static %} {% block content %}
+<nav aria-label="breadcrumb" class="breadcrumb-nav mb-3">
+    <div class="container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">My Account</li>
+        </ol>
+    </div><!-- End .container -->
+</nav><!-- End .breadcrumb-nav -->
+
+<div class="page-content">
+    <div class="dashboard">
+        <div class="container">
+            <div class="row">
+                <aside class="col-md-4 col-lg-3">
+                    <ul class="nav nav-dashboard flex-column mb-3 mb-md-0" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link " href="{% url 'dashboard' %}" role="tab" aria-controls="tab-dashboard"
+                                aria-selected="true">Dashboard</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'user_order' %}" role="tab" aria-controls="tab-orders"
+                                aria-selected="false">Orders</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link " href="{% url 'user_address' %}" role="tab" aria-controls="tab-address"
+                                aria-selected="false">Adresses</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="{% url 'user_profile' %}" role="tab"
+                                aria-controls="tab-account" aria-selected="false">My Profile</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Sign Out</a>
+                        </li>
+                    </ul>
+                </aside><!-- End .col-lg-3 -->
+
+
+
+                <div class="col-md-8 col-lg-9">
+                    <div class="tab-content">
+                        <div class=" tab-pane fade show active" id="tab-account" role="tabpanel"
+                            aria-labelledby="tab-account-link">
+                            <div class="col-sm-12">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="card">
+                                            <div class="card-header p-5 ">
+                                                <form action="upload.php" method="post" enctype="multipart/form-data">
+                                                    <label for="fileToUpload">
+                                                        <div class="profile-pic"
+                                                            style="background-image: url('https://randomuser.me/api/portraits/med/men/65.jpg')">
+                                                            <span class="glyphicon glyphicon-camera"></span>
+                                                            <span>Change Image</span>
+                                                        </div>
+                                                    </label>
+                                                    <input type="File" name="fileToUpload" id="fileToUpload">
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion accordion-icon" id="accordion-3">
+                                <div class="card">
+                                    <div class="card-header" id="heading3-1">
+                                        <h2 class="card-title">
+                                            <a class="collapsed" role="button" data-toggle="collapse"
+                                                href="#collapse3-1" aria-expanded="false"
+                                                aria-controls="collapse3-1">
+                                                <i class="icon-add-o"></i>
+                                                <span>Edit Profile</span>
+                                            </a>
+                                        </h2>
+                                    </div><!-- End .card-header -->
+                                    <div id="collapse3-1" class="collapse {% if check %}
+                                    show
+                                    {% endif %}" aria-labelledby="heading3-1" data-parent="#accordion-3">
+                                        <div class="card-body">
+                                            <form action="" method="POST">
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <label>First Name *</label>
+                                                        {{form.first_name}}
+                                                    </div><!-- End .col-sm-6 -->
+                
+                                                    <div class="col-sm-6">
+                                                        <label>Last Name *</label>
+                                                        {{form.last_name}}
+                                                    </div><!-- End .col-sm-6 -->
+                                                </div><!-- End .row -->
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <label>Gender *</label>
+                                                        <input type="text" class="form-control" value="{{usr_profile.gender}}" disabled>
+                                                    </div>
+                                                </div>
+                                                <label>Email address *</label>
+                                                {{form.email}}
+                                                    
+                                                <label>Phone Number *</label>
+                                                {{form.phone}}
+                
+                                                <button type="submit" class="btn btn-outline-primary-2">
+                                                    <span>SAVE CHANGES</span>
+                                                    <i class="icon-long-arrow-right"></i>
+                                                </button>
+                                            </form>
+                                        </div><!-- End .card-body -->
+                                    </div><!-- End .collapse -->
+                                </div><!-- End .card -->
+
+
+                            </div><!-- End .accordion -->
+
+
+                            
+                        </div><!-- .End .tab-pane -->
+                    </div><!-- End .col-lg-9 -->
+                </div><!-- End .row -->
+            </div><!-- End .container -->
+        </div><!-- End .dashboard -->
+    </div><!-- End .page-content -->
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js" type="text/javascript"></script>
+
+    {% endblock %}

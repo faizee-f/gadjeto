@@ -57,10 +57,10 @@
     <!-- menu -->
     <div class="menu">
         <div class="menu-header">
-            <a href="index.html" class="menu-header-logo">
+            <a href="{% url 'vendor_home' %}" class="menu-header-logo">
                 <img src="{% static 'vendor/assets/images/logo.svg" alt="logo">
             </a>
-            <a href="index.html" class="btn btn-sm menu-close-btn">
+            <a href="{% url 'vendor_home' %}" class="btn btn-sm menu-close-btn">
                 <i class="bi bi-x"></i>
             </a>
         </div>
@@ -69,7 +69,7 @@
             <ul>
                 <li class="menu-divider"></li>
                 <li>
-                    <a class="active" href="#">
+                    <a class="active" href="{% url 'vendor_home' %}">
                         <span class="nav-link-icon">
                         <i class="bi bi-bar-chart"></i>
                     </span>
@@ -85,10 +85,10 @@
                     </a>
                     <ul>
                         <li>
-                            <a href="#">View Orders</a>
+                            <a href="{% url 'view_order' %}">View Orders</a>
                         </li>
                         <li>
-                            <a href="#">Order History</a>
+                            <a href="">Order History</a>
                         </li>
                     </ul>
                 </li>
@@ -101,12 +101,20 @@
                     </a>
                     <ul>
                         <li>
-                            <a href="{% url 'view_product' %}">View Products
+                            <a href="{% url 'view_product' %}">Manage Products
                             </a>
                         </li>
                         <li>
-                            <a href="{% url 'add_product' %}">AddProducts
-                            View</a>
+                            <a href="{% url 'add_product' %}">Add Products
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'varient_list' %}">View Varients
+                            </a>
+                        </li>
+                        <li>
+                            <a href="">Add Varients
+                            </a>
                         </li>
                     </ul>
                 </li>
@@ -161,7 +169,7 @@
                     </a>
                     <ul>
                         <li>
-                            <a href="#">Manage Offers</a>
+                            <a href="{% url 'view_offers' %}">Manage Offers</a>
                         </li>
                     </ul>
                 </li>

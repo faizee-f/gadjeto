@@ -1,0 +1,17 @@
+from os import name
+
+from django.conf.urls import url
+from myproject.settings import MEDIA_ROOT
+from . import views
+from django.urls import path
+from django.conf.urls.static import static
+from django.conf import settings
+
+
+urlpatterns = [
+    path('place_order',views.place_order,name='place_order'),
+    path('payments',views.payments,name='payments'),
+    path('order_complete/',views.order_complete,name="order_complete"),
+    path('paymenthandler/', views.paymenthandler, name='paymenthandler'),
+    
+]

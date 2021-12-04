@@ -17,6 +17,8 @@ from django.conf.urls import include
 from django.contrib import admin
 from django.urls import path
 
+from order.models import Order
+
 urlpatterns = [
     path('sadmin/', admin.site.urls),
     path('tadmin/',include('admin.urls')),
@@ -24,4 +26,5 @@ urlpatterns = [
     path('',include('user.urls')),
     path('shop/',include('store.urls')),
     path('cart/',include('cart.urls')),
+    path('orders/',include('order.urls')),
 ]

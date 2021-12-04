@@ -37,19 +37,6 @@ class sub_category(models.Model):
     def __str__(self):
         return self.sub_category_name
 
-class variants(models.Model):
-    category=models.ForeignKey(category,on_delete=models.CASCADE)
-    sub_category=models.ForeignKey(sub_category,related_name='prod',on_delete=models.CASCADE)
-    varient_name=models.CharField(max_length=100,unique=True)
-    slug=models.SlugField(max_length=100,unique=True)  
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    
-    class Meta:
-        verbose_name = 'varient'
-        verbose_name_plural = 'varients'
 
-    def __str__(self):
-        return self.varient_name
 
 

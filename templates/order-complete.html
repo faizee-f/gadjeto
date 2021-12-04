@@ -1,0 +1,126 @@
+{% extends 'base.html'%} {% load static %} {% block content %}
+<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+<script src='https://code.jquery.com/jquery-3.2.1.min.js'></script>
+<script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'></script>
+
+
+<div class="container" style="margin-top:5%;">
+
+    <div class="container">
+        <div class='content text-center'>
+            <i style="font-size: 5rem;" class="fas fa-check-circle text-success"></i>
+            <div class='title mb-2'>Payment Successfull</div>
+            <div class='text'></div>
+            <div class="mb-2">
+                <a class="btn btn-primary" href="{% url 'home' %}">Shop More</a>
+            </div>
+        </div>
+
+    </div>
+    <div class="container ">
+        <div class="row">
+            <div class="container">
+                <div class="card">
+
+                    <div class="card-body">
+
+                        <div class="row mb-4 mt-4">
+
+                            <div class="col-sm-6">
+                                <h3>Gadgeto.in</h3>
+                                <div>
+                                    <strong>Date : </strong>{{order.created_at}}
+                                </div>
+                                <div class="">
+                                    <strong>Payment Type : </strong>{{order.payment.payment_method}}
+                                </div>
+                                <div>
+                                    <strong>Payment ID : </strong>{{order.payment.payment_id}}
+                                </div>
+                                <div>
+                                    <strong>Order ID : </strong>{{order.order_number}}
+                                </div>
+
+                            </div>
+
+                            <div class="col-sm-6 ">
+                                <h5>To</h5>
+                                <div>
+                                    <strong>{{order.full_name}}</strong>
+                                </div>
+                                <div>{{order.full_address}}</div>
+                                <div>{{order.city}}, {{order.state}},{{order.country}}</div>
+                                <div>PIN : {{order.pincode}}</div>
+                                <div>Email: {{order.email}}</div>
+                                <div>Phone: {{order.phone}}</div>
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-8 col-sm-10">
+                <div class="table-responsive-sm">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th class="right">Item</th>
+                                <th class="right">Unit Cost</th>
+                                <th class="center">Qty</th>
+                                <th class="right">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for x in order_products %}
+                            <tr>
+                                <td class="left strong">{{x.products}} {{x.variation}}</td>
+                                <td class="right">₹ {{x.price}}</td>
+                                <td class="center">{{x.quantity}}</td>
+                                <td class="right">₹ {{x.sub_total}}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-sm-5 ml-auto">
+                <table class="table table-clear">
+                    <tbody>
+                        <tr>
+                            <td class="left">
+                                <strong>Subtotal</strong>
+                            </td>
+                            <td class="right">₹ {{sub_total}} </td>
+                        </tr>
+                        <tr>
+                            <td class="left">
+                                <strong>VAT (2%)</strong>
+                            </td>
+                            <td class="right">₹ {{order.tax}}</td>
+                        </tr>
+                        <tr>
+                            <td class="left">
+                                <strong>Total</strong>
+                            </td>
+                            <td class="right">
+                                <strong>₹ {{order.order_total}}</strong>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+    <h5 class="text-center mt-2">Thank you for shopping with us !</h5>
+
+</div>
+
+{% endblock %}

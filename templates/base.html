@@ -26,19 +26,33 @@
     <meta name=" msapplication-config " content=" images/icons/browserconfig.xml ">
     <meta name=" theme-color " content=" #ffffff ">
     <script src=" //cdn.jsdelivr.net/npm/sweetalert2@11 "></script>
+    <!-- Web Fonts  -->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,800" rel="stylesheet" type="text/css">
 
-    <link rel=" stylesheet " href=" {% static 'vendor/line-awesome/line-awesome/line-awesome/css/line-awesome.min.css' %} ">
+    <!-- Vendor CSS -->
+    <link rel="stylesheet" href="lib/bootstrap/bootstrap.min.css">
+
+    <link rel=" stylesheet "
+        href=" {% static 'vendor/line-awesome/line-awesome/line-awesome/css/line-awesome.min.css' %} ">
     <!-- Plugins CSS File -->
     <link rel=" stylesheet " href=" {% static 'css/bootstrap.min.css' %} ">
     <link rel=" stylesheet " href=" {% static 'css/plugins/owl-carousel/owl.carousel.css' %} ">
     <link rel=" stylesheet " href=" {% static 'css/plugins/magnific-popup/magnific-popup.css' %} ">
     <link rel=" stylesheet " href=" {% static 'css/plugins/jquery.countdown.css' %} ">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+        integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Main CSS File -->
     <link rel=" stylesheet " href=" {% static 'css/style.css' %} ">
     <link rel=" stylesheet " href=" {% static 'css/skins/skin-demo-3.css' %} ">
     <link rel=" stylesheet " href=" {% static 'css/demos/demo-3.css' %} ">
-    <script src=" https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js " integrity=" sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin=" anonymous " referrerpolicy=" no-referrer "></script>
-
+    <link rel=" stylesheet " href=" {% static 'css/rating.css' %}">
+    <link rel=" stylesheet " href=" {% static 'css/profile.css' %}">
+    <script src=" https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js "
+        integrity=" sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+        crossorigin=" anonymous " referrerpolicy=" no-referrer "></script>
+    <script
+        src="https://www.paypal.com/sdk/js?client-id=AVDdp0M7Q1o_ZSTJxPQRMio4EVGROp6a-b-W7A6sVq7Sl6GUFpH8AUEPa170cT1fbdYvVYaTuiQ0F3C6&currency=USD"></script>
 </head>
 
 <body>
@@ -74,10 +88,11 @@
                                     <li><a href=" {% url 'register' %} ">Sign up</a></li>
                                     {% else %}
                                     <li>
-                                        <span>Welcome  {{user.first_name}} </span>
+                                        <span>Welcome {{user.first_name}} </span>
                                     </li>
+                                    <li><a href=" {% url 'dashboard' %} "> Dashboard</a></li>
 
-                                    <li><a href=" {% url 'signout' %} ">  Logout</a></li>
+                                    <li><a href=" {% url 'signout' %} "> Logout</a></li>
                                     {% endif %}
                                 </ul>
                             </li>
@@ -111,8 +126,10 @@
                             <form action="{% url 'search' %}" method=" get ">
                                 <div class=" header-search-wrapper search-wrapper-wide ">
                                     <label for=" q " class=" sr-only ">Search</label>
-                                    <button class=" btn btn-primary " type=" submit "><i class=" icon-search "></i></button>
-                                    <input type=" search " class=" form-control " name="keyword" id=" q " placeholder=" Search product ... " required>
+                                    <button class=" btn btn-primary " type=" submit "><i
+                                            class=" icon-search "></i></button>
+                                    <input type=" search " class=" form-control " name="keyword" id=" q "
+                                        placeholder=" Search product ... " required>
                                 </div>
                                 <!-- End .header-search-wrapper -->
                             </form>
@@ -134,7 +151,9 @@
                         <!-- End .compare-dropdown -->
 
                         <div class=" dropdown cart-dropdown ">
-                            <a href="{% url 'cart' %}" class=" dropdown-toggle " role=" button " data-toggle=" dropdown " aria-haspopup=" true " aria-expanded=" false " data-display=" static ">
+                            <a href="{% url 'cart' %}" class=" dropdown-toggle " role=" button "
+                                data-toggle=" dropdown " aria-haspopup=" true " aria-expanded=" false "
+                                data-display=" static ">
                                 <div class=" icon ">
                                     <i class=" icon-shopping-cart "></i>
                                     <span class=" cart-count ">{{cart_count}}</span>
@@ -154,7 +173,9 @@
                 <div class=" container ">
                     <div class=" header-left ">
                         <div class=" dropdown category-dropdown ">
-                            <a href=" # " class=" dropdown-toggle " role=" button " data-toggle=" dropdown " aria-haspopup=" true " aria-expanded=" false " data-display=" static " title=" Browse Categories ">
+                            <a href=" # " class=" dropdown-toggle " role=" button " data-toggle=" dropdown "
+                                aria-haspopup=" true " aria-expanded=" false " data-display=" static "
+                                title=" Browse Categories ">
                                 Browse Categories <i class=" icon-angle-down "></i>
                             </a>
                             <div class=" dropdown-menu ">
@@ -196,7 +217,9 @@
                                                             <div class=" menu-title ">Smart Watch</div>
                                                             <!-- End .menu-title -->
                                                             <ul>
-                                                                <li><a href=" category.html "><span>Smart Watch<span class=" tip tip-hot ">Hot</span></span></a></li>
+                                                                <li><a href=" category.html "><span>Smart Watch<span
+                                                                                class=" tip tip-hot ">Hot</span></span></a>
+                                                                </li>
 
                                                             </ul>
                                                         </div>
@@ -229,7 +252,9 @@
                                                         <img src=" images/menu/banner-1.jpg " alt=" Banner ">
 
                                                         <div class=" banner-content banner-content-top ">
-                                                            <div class=" banner-title text-white ">Last <br>Chance<br><span><strong>Sale</strong></span></div>
+                                                            <div class=" banner-title text-white ">Last
+                                                                <br>Chance<br><span><strong>Sale</strong></span>
+                                                            </div>
                                                             <!-- End .banner-title -->
                                                         </div>
                                                         <!-- End .banner-content -->
@@ -255,12 +280,14 @@
                                                     <ul>
                                                         <li><a href=" product.html ">Default</a></li>
                                                         <li><a href=" product-centered.html ">Centered</a></li>
-                                                        <li><a href=" product-extended.html "><span>Extended Info<span class=" tip tip-new ">New</span></span></a></li>
+                                                        <li><a href=" product-extended.html "><span>Extended Info<span
+                                                                        class=" tip tip-new ">New</span></span></a></li>
                                                         <li><a href=" product-gallery.html ">Gallery</a></li>
                                                         <li><a href=" product-sticky.html ">Sticky Info</a></li>
                                                         <li><a href=" product-sidebar.html ">Boxed With Sidebar</a></li>
                                                         <li><a href=" product-fullwidth.html ">Full Width</a></li>
-                                                        <li><a href=" product-masonry.html ">Masonry Sticky Info</a></li>
+                                                        <li><a href=" product-masonry.html ">Masonry Sticky Info</a>
+                                                        </li>
                                                     </ul>
                                                 </div>
                                                 <!-- End .menu-col -->
@@ -273,7 +300,9 @@
                                                         <img src=" images/menu/banner-2.jpg " alt=" Banner ">
 
                                                         <div class=" banner-content banner-content-bottom ">
-                                                            <div class=" banner-title text-white ">New Trends<br><span><strong>spring 2019</strong></span></div>
+                                                            <div class=" banner-title text-white ">New
+                                                                Trends<br><span><strong>spring 2019</strong></span>
+                                                            </div>
                                                             <!-- End .banner-title -->
                                                         </div>
                                                         <!-- End .banner-content -->
@@ -349,7 +378,8 @@
                                             <ul>
                                                 <li><a href=" single.html ">Default with sidebar</a></li>
                                                 <li><a href=" single-fullwidth.html ">Fullwidth no sidebar</a></li>
-                                                <li><a href=" single-fullwidth-sidebar.html ">Fullwidth with sidebar</a></li>
+                                                <li><a href=" single-fullwidth-sidebar.html ">Fullwidth with sidebar</a>
+                                                </li>
                                             </ul>
                                         </li>
                                     </ul>
@@ -399,15 +429,22 @@
                     <div class=" row ">
                         <div class=" col-sm-6 col-lg-3 ">
                             <div class=" widget widget-about ">
-                                <img src=" assets/images/logo.png " class=" footer-logo " alt=" Footer Logo " width=" 105 " height=" 25 ">
-                                <p>Praesent dapibus, neque id cursus ucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. </p>
+                                <img src=" assets/images/logo.png " class=" footer-logo " alt=" Footer Logo "
+                                    width=" 105 " height=" 25 ">
+                                <p>Praesent dapibus, neque id cursus ucibus, tortor neque egestas augue, eu vulputate
+                                    magna eros eu erat. </p>
 
                                 <div class=" social-icons ">
-                                    <a href=" # " class=" social-icon " target=" _blank " title=" Facebook "><i class=" icon-facebook-f "></i></a>
-                                    <a href=" # " class=" social-icon " target=" _blank " title=" Twitter "><i class=" icon-twitter "></i></a>
-                                    <a href=" # " class=" social-icon " target=" _blank " title=" Instagram "><i class=" icon-instagram "></i></a>
-                                    <a href=" # " class=" social-icon " target=" _blank " title=" Youtube "><i class=" icon-youtube "></i></a>
-                                    <a href=" # " class=" social-icon " target=" _blank " title=" Pinterest "><i class=" icon-pinterest "></i></a>
+                                    <a href=" # " class=" social-icon " target=" _blank " title=" Facebook "><i
+                                            class=" icon-facebook-f "></i></a>
+                                    <a href=" # " class=" social-icon " target=" _blank " title=" Twitter "><i
+                                            class=" icon-twitter "></i></a>
+                                    <a href=" # " class=" social-icon " target=" _blank " title=" Instagram "><i
+                                            class=" icon-instagram "></i></a>
+                                    <a href=" # " class=" social-icon " target=" _blank " title=" Youtube "><i
+                                            class=" icon-youtube "></i></a>
+                                    <a href=" # " class=" social-icon " target=" _blank " title=" Pinterest "><i
+                                            class=" icon-pinterest "></i></a>
                                 </div>
                                 <!-- End .soial-icons -->
                             </div>
@@ -490,17 +527,21 @@
             <!-- End .footer-bottom -->
         </footer>
         <!-- Plugins JS File -->
-        <script src="{% static 'assets/js/jquery.min.js' %} "></script>
-        <script src="{% static 'assets/js/bootstrap.bundle.min.js' %} "></script>
-        <script src="{% static 'assets/js/jquery.hoverIntent.min.js' %} "></script>
-        <script src="{% static 'assets/js/jquery.waypoints.min.js' %} "></script>
-        <script src="{% static 'assets/js/superfish.min.js' %} "></script>
-        <script src="{% static 'assets/js/owl.carousel.min.js' %} "></script>
-        <script src="{% static 'assets/js/bootstrap-input-spinner.js' %} "></script>
-        <script src="{% static 'assets/js/jquery.elevateZoom.min.js' %} "></script>
-        <script src="{% static 'assets/js/bootstrap-input-spinner.js' %} "></script>
-        <script src="{% static 'assets/js/jquery.magnific-popup.min.js' %} "></script>
+
+        <script src="{% static 'js/bootstrap-input-spinner.js' %} "></script>
+        <script src="{% static 'js/jquery.elevateZoom.min.js' %} "></script>
+        <script src="{% static 'js/bootstrap-input-spinner.js' %} "></script>
+        <script src="{% static 'js/jquery.magnific-popup.min.js' %} "></script>
+        <script src="{% static 'js/jquery.min.js' %} "></script>
+        <script src="{% static 'js/bootstrap.bundle.min.js' %} "></script>
+        <script src="{% static 'js/jquery.hoverIntent.min.js' %} "></script>
+        <script src="{% static 'js/jquery.waypoints.min.js' %} "></script>
+        <script src="{% static 'js/superfish.min.js' %} "></script>
+        <script src="{% static 'js/owl.carousel.min.js' %} "></script>
+        <!-- <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+        <script src='https://code.jquery.com/jquery-3.2.1.min.js'></script>
+        <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'></script> -->
         <!-- Main JS File -->
-        <script src="{% static 'assets/js/main.js' %} "></script>
+        <script src="{% static 'js/main.js' %} "></script>
 
 </body>

@@ -1,13 +1,19 @@
 from django.core import paginator
+from django.contrib import messages
 from django.db.models import Q
 from django.http.response import HttpResponse
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, redirect, render
 from category.models import category
-from store.models import Variation, product
+from offer.models import VariationOffer
+from order.models import OrderProduct
+from store.forms import ReviewForm
+from store.models import ReviewRating, Variation, product
 from cart.models import CartItem
 from cart.views import _cart_id
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 # Create your views here.
+
+
 
 
 def shop(request, category_slug=None):
@@ -23,7 +29,7 @@ def shop(request, category_slug=None):
         paged_product = paginator.get_page(page)
         product_count = varients.count()
     else:
-        varients=Variation.objects.all().filter(is_available=True).order_by('id')
+        varients=Variation.objects.all().filter(is_available=True)
         paginator = Paginator(varients, 3)
         page = request.GET.get('page')
         paged_product = paginator.get_page(page)
@@ -49,10 +55,36 @@ def product_detail(request, category_slug, product_slug,varient_slug):
         print(in_cart)
     except Exception as e:
         raise e
+
+    try:
+        ordered=OrderProduct.objects.filter(user=request.user,variation=single_varient).exists()
+    except OrderProduct.DoesNotExist:
+        ordered=None
     print(single_varient)
+    print(ordered)
     varients=Variation.objects.filter(product=single_varient.product.id)
     print(varients)
-    context = {'single_varient': single_varient, 'in_cart': in_cart, 'varients':varients }
+    reviews=ReviewRating.objects.filter(varient=single_varient,status=True)
+    review_count=reviews.count()
+    avg_total=0
+    average=0
+    for i in reviews:
+        avg_total += i.rating
+
+    try:
+        average=(avg_total/review_count)*20
+    except:
+        pass
+    print(reviews)
+    context = {
+        'single_varient': single_varient, 
+        'in_cart': in_cart, 
+        'varients':varients,
+        'reviews':reviews,
+        'review_count':review_count,
+        'ordered':ordered,
+        'average':average,
+    }
     return render(request, 'product.html', context)
 
 
@@ -69,3 +101,29 @@ def search(request):
         'product_count':product_count,
     }
     return render(request, 'category.html', context)
+
+
+def submit_review(request,varient_id):
+    url=request.META.get('HTTP_REFERER')
+    varient=Variation.objects.get(id=varient_id)
+    if request.method=="POST":
+        try:
+            review=ReviewRating.objects.get(user__id=request.user.id,varient__id=varient_id)
+            form=ReviewForm(request.POST,instance=review)
+            form.save()
+            messages.success(request,"Thank You, Your review has been updated")
+            return redirect(url)
+        except ReviewRating.DoesNotExist:
+            form=ReviewForm(request.POST)
+            if form.is_valid():
+                reviews=ReviewRating()
+                reviews.subject=form.cleaned_data['subject']
+                reviews.rating=form.cleaned_data['rating']
+                reviews.review=form.cleaned_data['review']
+                reviews.user=request.user
+                reviews.varient_id=varient_id
+                reviews.ip=request.META.get('REMOTE_ADDR')
+                reviews.save()
+                messages.success(request,'Thank You, Your review has been submitted')
+                return redirect(url)
+    return redirect(url)

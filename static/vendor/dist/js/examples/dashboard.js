@@ -53,7 +53,7 @@ $(function () {
         if ($('#total-sales').length) {
             const options = {
                 series: [{
-                    data: [25, 66, 41, 89, 63, 30, 50]
+                    data: [25, 66, 41, 89, 63, 30, 50, 99, 98, 97]
                 }],
                 chart: {
                     type: 'line',
@@ -196,14 +196,13 @@ $(function () {
     function salesChart() {
         if ($('#sales-chart').length) {
             const options = {
-                series: [
-                    {
+                series: [{
                         name: "Sales",
-                        data: [65, 60, 62, 69, 71, 65, 68, 67, 60, 61, 59, 64]
+                        data: [65, 60, 62, 69, 71, 65]
                     },
                     {
                         name: 'Orders',
-                        data: [78, 75, 73, 78, 75, 73, 77, 74, 75, 77, 71, 75]
+                        data: [78, 75, 73, 78, 75, 73 ]
                     }
                 ],
                 theme: {
@@ -241,8 +240,7 @@ $(function () {
                     categories: ['01 May', '02 May', '03 May', '04 May', '05 May', '06 May', '07 May', '08 May', '09 May', '10 May', '11 May', '12 May'],
                 },
                 tooltip: {
-                    y: [
-                        {
+                    y: [{
                             title: {
                                 formatter: function (val) {
                                     return val

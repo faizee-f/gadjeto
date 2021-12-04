@@ -1,0 +1,273 @@
+{% extends 'base.html'%} {% load static %} {% block content %}
+<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+<script src='https://code.jquery.com/jquery-3.2.1.min.js'></script>
+<script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'></script>
+<div class="page-wrapper">
+
+    <main class="main">
+
+        <nav aria-label="breadcrumb" class="breadcrumb-nav">
+            <div class="container">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                    <li class="breadcrumb-item"><a href="#">Shop</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Order Information</li>
+                </ol>
+            </div>
+            <!-- End .container -->
+        </nav>
+        <!-- End .breadcrumb-nav -->
+
+        <div class="page-content">
+            <div class="cart">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-9">
+                            <h4>Review Order </h4>
+                            <div class="card">
+                                <div class="card-header m-3">
+                                    Billing Information
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-text">{{order.full_name}}</p>
+                                    <p class="card-text">{{order.full_address}}</p>
+                                    <p class="card-text">{{order.city}} , {{order.state}} , {{order.country}}</p>
+                                    <p class="card-text">Pin : {{order.pincode}}</p>
+                                    <p class="card-text">{{order.phone}}</p>
+                                    <p class="card-text">{{order.email}}</p>
+                                    {% if odred.order_note %}
+                                    <p class="card-text">Order Note : {{order.order_note}}</p>
+                                    {% endif %}
+
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header m-3">
+                                    Payment Method
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        {% if payment_type == 'razorpay' %}
+                              RazorPay
+                                {% elif payment_type == 'cod' %}
+                                Cash on delivery
+                                {% elif payment_type == 'paypal' %}
+                                PayPal
+                                {% endif %}
+
+                                    </h5>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header m-3">
+                                    Review Products
+                                </div>
+                                <div class="card-body">
+                                    <table class="table  table-summary">
+                                        <thead>
+                                            <tr>
+                                                <th>Product</th>
+                                                <th class="text-center">Quantity</th>
+                                                <th>Total</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+                                            {% for item in cart_items %}
+                                            <tr>
+                                                <td><a href="{{item.varient.get_url}}">{{item.varient.product}}
+                                                        {{item.varient}}</a></td>
+                                                <td class="text-center">{{item.quantity}}</td>
+                                                <td>${{item.total}}</td>
+                                            </tr>
+                                            {% endfor %}
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End .col-lg-9 -->
+                        <aside class="col-lg-3">
+                            <div class="summary summary-cart">
+                                <h3 class="summary-title">Cart Total</h3>
+                                <!-- End .summary-title -->
+
+                                <table class="table table-summary">
+                                    <tbody>
+                                        <tr class="summary-subtotal">
+                                            <td>Subtotal:</td>
+                                            <td>${{total}}</td>
+                                        </tr>
+                                        <!-- End .summary-subtotal -->
+                                        <tr class="summary-subtotal">
+                                            <td>Tax:</td>
+                                            <td>${{tax}}</td>
+                                        </tr>
+                                        <!-- End .summary-subtotal -->
+                                        <tr class="summary-shipping">
+                                            <td>Shipping:</td>
+                                            <td>$ 0.00</td>
+                                        </tr>
+
+                                        {% if discount %}
+                                        <tr class="summary-shipping">
+                                            <td>Discount:</td>
+                                            <td>- ${{discount|floatformat:0}}</td>
+                                        </tr>
+                                        {% endif %}
+
+                                        <tr class="summary-total">
+                                            <td>Total:</td>
+                                            <td>${{grand_total}}</td>
+                                        </tr>
+                                        <!-- End .summary-total -->
+                                    </tbody>
+                                </table>
+                                <!-- End .table table-summary -->
+                                {% if payment_type == 'razorpay' %}
+                                <div class="row mb-3">
+                                    <!-- Payment Button -->
+                                    <button class="btn btn-outline-primary-2 col-md-12" id="pay-btn">Razor Pay</button>
+                                </div>
+                                {% elif payment_type == 'cod' %}
+                                <div class="row mb-3">
+                                    <!-- Payment Button -->
+                                    <button class="btn btn-outline-primary-2 col-md-12">Cash on delivery</button>
+                                </div>
+                                {% elif payment_type == 'paypal' %}
+                                <div  id="paypal-button-container"></div>
+                                {% endif %}
+                            </div>
+                            <!-- End .summary -->
+
+                        </aside>
+                        <!-- End .col-lg-3 -->
+                    </div>
+                    <!-- End .row -->
+                </div>
+                <!-- End .container -->
+            </div>
+            <!-- End .cart -->
+        </div>
+        <!-- End .page-content -->
+    </main>
+    <script>
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        var csrftoken = getCookie('csrftoken');
+
+        var amount = "{{grand_total}}"
+        var url = "{% url 'payments' %}"
+        var orderID = "{{order.order_number}}"
+        var payment_method = "PayPal"
+        var redirect_url = "{% url 'order_complete' %}"
+        var home_url = "{% url 'home' %}"
+
+        // Render the PayPal button into #paypal-button-container
+        paypal.Buttons({
+
+            // Set up the transaction
+            createOrder: function (data, actions) {
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: amount
+                        }
+                    }]
+                });
+            },
+
+            // Finalize the transaction
+            onApprove: function (data, actions) {
+                return actions.order.capture().then(function (orderData) {
+                    // Successful capture! For demo purposes:
+                    console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+                    var transaction = orderData.purchase_units[0].payments.captures[0];
+                    Swal.fire(
+                        'Good job!',
+                        'Payment Successful !',
+                        'success'
+                    )
+                    sendData()
+                    function sendData() {
+                        fetch(url, {
+                            method: "POST",
+                            headers: {
+                                "Content-type": "application/json",
+                                "X-CSRFToken": csrftoken,
+                            },
+                            body: JSON.stringify({
+                                orderID: orderID,
+                                transID: orderData.id,
+                                payment_method: payment_method,
+                                status: orderData.status,
+
+                            }),
+                        })
+                            .then((response) => response.json())
+                            .then((data) => {
+                                console.log(data.order_number),
+                                    console.log(data.trans_id)
+                                window.location.href = redirect_url + "?order_number=" + data.order_number + "&payment_id=" + data.trans_id
+                                // window.location.href=redirect_url
+                            })
+                    }
+                    // Replace the above to show a success message within this page, e.g.
+                    // const element = document.getElementById('paypal-button-container');
+                    // element.innerHTML = '';
+                    // element.innerHTML = '<h3>Thank you for your payment!</h3>';
+                    // Or go to another URL:  actions.redirect('thank_you.html');
+                });
+            }
+
+
+        }).render('#paypal-button-container');
+    </script>
+
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script>
+        var options = {
+
+            // Enter  the Key ID generated from the Dashboard
+            key: "{{ rzp_test_w3ZPfouVbScZSn }}",
+
+            // Amount is in currency subunits.
+            // Default currency is INR. Hence,
+            // 50000 refers to 50000 paise
+            amount: "{{ razorpay_amount }}",
+            currency: "{{ currency }}",
+
+            // Your/store name.
+            name: "Gadgeto",
+
+            // Pass the `id` obtained in the response of Step 1
+            order_id: "{{ razorpay_order_id }}",
+            callback_url: "{{ callback_url }}",
+        };
+
+        // initialise razorpay with the options.
+        var rzp1 = new Razorpay(options);
+
+        // add event listener to the payment button.
+        document.getElementById("pay-btn").onclick = function (e) {
+            rzp1.open();
+            e.preventDefault();
+        };
+    </script>
+    <!-- End .mobile-menu-container -->
+    {% endblock %}

@@ -3,8 +3,13 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http.response import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from cart.models import Cart, CartItem
-
+from offer.models import Coupen, RedeemedCoupen
+from django.contrib import messages
+from datetime import date,datetime
 from store.models import Variation, VarientColor, product
+from user.models import Address
+from django.utils import timezone
+
 
 # Create your views here.
 
@@ -81,6 +86,11 @@ def delete_cart(request,product_id):
 
 
 def cart(request,total=0,quantity=0,cart_items=None):
+    if 'discount' in request.session:
+            del request.session['discount']
+    if 'total_after_discount' in request.session:
+            del request.session['total_after_discount']
+
     try:
         tax=0
         grand_total=0
@@ -90,7 +100,13 @@ def cart(request,total=0,quantity=0,cart_items=None):
             cart=Cart.objects.get(cart_id=_cart_id(request))
             cart_items=CartItem.objects.filter(cart=cart,is_active=True)
         for cart_item in cart_items:
-            total  += (cart_item.varient.price * cart_item.quantity)
+            
+            if cart_item.varient.offer_price():
+                off_price=Variation.offer_price(cart_item.varient)
+                total  += off_price['new_price'] * cart_item.quantity
+                print(total)
+            else:
+                total  += (cart_item.varient.price * cart_item.quantity)
             quantity += cart_item.quantity
         tax= (total*2)/100
         grand_total=total+tax
@@ -117,18 +133,69 @@ def checkout(request,total=0,quantity=0,cart_items=None):
             cart=Cart.objects.get(cart_id=_cart_id(request))
             cart_items=CartItem.objects.filter(cart=cart,is_active=True)
         for cart_item in cart_items:
-            total  += (cart_item.varient.price * cart_item.quantity)
+            if cart_item.varient.offer_price():
+                off_price=Variation.offer_price(cart_item.varient)
+                total  += (off_price['new_price'] * cart_item.quantity)
+                print(total)
+            else:
+                total  += (cart_item.varient.price * cart_item.quantity)
             quantity += cart_item.quantity
         tax= (total*2)/100
         grand_total=total+tax
     except ObjectDoesNotExist:
         pass  
+    if 'total_after_discount' in request.session:
+        grand_total=request.session['total_after_discount']
+    discount=None
+    if 'discount' in request.session:
+        discount=request.session['discount']
+    if 'coupen_code' in request.session:
+        coupen_code=request.session['coupen_code']
 
+    address=Address.objects.filter(user=request.user)
     context={ 
         'total':total,
         'quantity':quantity,
         'cart_items':cart_items,
         'tax':tax,
         'grand_total':grand_total,
+        'address':address,
+        'discount':discount,
+        'coupen_code':coupen_code
     }  
     return render(request,'checkout.html',context)
+
+def check_coupen(request,grand_total):
+
+    if request.method=="POST":
+        if 'discount' in request.session:
+            del request.session['discount']
+        if 'total_after_discount' in request.session:
+            del request.session['total_after_discount']
+
+        coupen_code=request.POST['coupen_code']
+        try:
+            offer=Coupen.objects.get(coupen_code=coupen_code,is_active=True)
+        except:
+            messages.info(request,"Invalid coupen code")
+            return redirect('checkout')
+        try:
+            if RedeemedCoupen.objects.filter(coupen=offer,user=request.user):
+                messages.info("Coupen already redeemed ")
+                return redirect('checkout')
+            raise
+        except :
+            today=timezone.now()
+            print(today)
+            if offer.valid_from <= today and offer.valid_to >= today:
+                discount=float(offer.discount)
+                total_after_discount=float(grand_total)-discount
+                request.session['discount']=offer.discount
+                request.session['total_after_discount']=total_after_discount
+                request.session['coupen_code']=coupen_code
+                messages.success(request,"Coupen is Valid")
+                return redirect('checkout')
+            else:
+                messages.info(request,"Invalid coupen ")
+                return redirect('checkout')
+

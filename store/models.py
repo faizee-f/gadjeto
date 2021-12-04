@@ -1,9 +1,7 @@
-from io import BytesIO
-from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
-from django.db.models.base import Model
 from django.db.models.deletion import CASCADE
-from category.models import category, sub_category, variants
+from account.models import Account
+from category.models import category
 from django.urls import reverse
 
 from vendors.models import Vendors
@@ -12,21 +10,17 @@ from vendors.models import Vendors
 class product(models.Model):
     category=models.ForeignKey(category,on_delete=models.CASCADE)
     vendor=models.ForeignKey(Vendors,on_delete=CASCADE)
-    product_name=models.CharField(max_length=100,unique=True)
-    slug=models.SlugField(max_length=100,unique=True)
+    product_name=models.CharField(max_length=100)
+    slug=models.SlugField(max_length=100)
     description=models.TextField(max_length=200,blank=True)
     image1 =models.ImageField(upload_to='photos/product',blank=True)
     image2 =models.ImageField(upload_to='photos/product',blank=True)
     image3 =models.ImageField(upload_to='photos/product',blank=True)
-    thumbnail=models.ImageField(upload_to='photos/product',blank=True,null=True)
     is_available=models.BooleanField(default=True)
-    created_date=models.DateTimeField(auto_now_add=True,blank=True)
-    modified_date=models.DateTimeField(auto_now=True,blank=True)
-
+    created_at=models.TimeField(auto_now_add=True)
+    updated_at=models.TimeField(auto_now=True)
     def __str__(self):
         return self.product_name
-
-
 
 class VarientColor(models.Model):
     color_name=models.CharField(max_length=50,unique=True)
@@ -61,21 +55,55 @@ MOBILE_STRG_CHOICE=(
 )
 
 class Variation(models.Model):
-    product=models.ForeignKey(product,on_delete=CASCADE,related_name='varion')
-    varient_name=models.CharField(max_length=100,blank=True)
-    slug=models.SlugField(max_length=100,unique=True)
-    ram=models.CharField(choices=MOBILE_RAM_CHOICE,max_length=20,blank=True)
-    storage=models.CharField(choices=MOBILE_STRG_CHOICE,max_length=50,blank=True)
-    color=models.ForeignKey(VarientColor,on_delete= CASCADE)
-    image=models.ImageField(upload_to='photos/product',blank=True)
-    price=models.IntegerField(blank=True)
-    stock=models.IntegerField(blank=True)
+    product=models.ForeignKey(product,on_delete=models.CASCADE,related_name='varion')
+    varient_name=models.CharField(max_length=100)
+    slug=models.SlugField(max_length=100)
+    ram=models.CharField(choices=MOBILE_RAM_CHOICE,max_length=20)
+    storage=models.CharField(choices=MOBILE_STRG_CHOICE,max_length=50)
+    color=models.ForeignKey(VarientColor,on_delete=models.CASCADE)
+    image=models.ImageField(upload_to='photos/product')
+    margin_price=models.IntegerField()
+    price=models.IntegerField()
+    stock=models.IntegerField()
     is_available=models.BooleanField(default=True)
-    created_date=models.DateTimeField(auto_now_add=True,blank=True)
-    modified_date=models.DateTimeField(auto_now=True,blank=True)
-
+    created_at=models.TimeField(auto_now_add=True)
+    updated_at=models.TimeField(auto_now=True)
 
     # objects= VariationManager()
+
+    def offer_price(self):
+        
+        try:
+            if self.variationoffer.is_valid:
+                discount=(self.price*self.variationoffer.offer)/100
+                new_price=self.price-discount
+                return {'new_price':new_price,'discount':self.variationoffer.offer,}
+        except:
+            try:
+                if self.product.productoffer.is_valid:
+                    discount=(self.price*self.product.productoffer.offer)/100
+                    new_price=self.price-discount
+                    return {'new_price':new_price,'discount':self.product.productoffer.offer,}
+                raise
+            except:
+                try:
+                    if self.product.vendor.productoffer.is_valid:
+                        discount=(self.price*self.product.vendor.productoffer.offer)/100
+                        new_price=self.price-discount
+                        return {'new_price':new_price,'discount':self.product.vendor.productoffer.offer,}
+                    raise
+                except:
+                    try:
+                        if self.product.category.productoffer.is_valid:
+                            discount=(self.price*self.product.category.productoffer.offer)/100
+                            new_price=self.price-discount
+                            return {'new_price':new_price,'discount':self.product.category.productoffer.offer,}
+                        raise
+                    except:
+                        return None
+                    
+
+
 
 
     def __str__ (self):
@@ -138,3 +166,27 @@ class Variation(models.Model):
 
 #     def __unicode__(self):
 #         return self.title
+
+
+class ReviewRating(models.Model):
+    varient=models.ForeignKey(Variation,on_delete=CASCADE)
+    user=models.ForeignKey(Account,on_delete=CASCADE)
+    subject=models.CharField(max_length=100,blank=True)
+    review=models.TextField(max_length=500,blank=True)
+    rating=models.FloatField()
+    ip=models.CharField(max_length=20,blank=True)
+    status=models.BooleanField(default=True)    
+    created_at=models.TimeField(auto_now_add=True)
+    updated_at=models.TimeField(auto_now=True)
+
+    def __str__(self):
+        return self.subject
+
+    def rating_percentage(self):
+        return self.rating*20
+
+
+
+class Banners(models.Model):
+    vendor=models.ForeignKey(Vendors,on_delete=models.CASCADE)
+    

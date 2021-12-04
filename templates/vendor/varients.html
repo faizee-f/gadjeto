@@ -1,0 +1,179 @@
+{% extends 'vendor/index.html'%} {% load static %}{% block content %}
+
+<!-- content -->
+<div class="content ">
+
+    <div class="mb-4">
+        <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="#">
+                        <i class="bi bi-globe2 small me-2"></i> Dashboard
+                    </a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">Varients</li>
+            </ol>
+        </nav>
+
+    </div>
+
+
+
+    <div class="row ">
+
+        <div class="row justify-content-between">
+            <div class="col-sm-4 ">
+                <div class="card">
+                    <a class="btn-lg btn-primary text-center " href="{% url 'add_varient' selected_product.id %}">Add
+                        Varient</a>
+                </div>
+                <hr>
+                <div class="card">
+                    <a class="btn-lg btn-primary text-center " href="">View all Varients</a>
+                </div>
+
+            </div>
+            <div class=" col-sm-4 d-flex flex-column justify-content-between">
+                <div class="card p-3 justify-content-around">
+                    <div class="row">
+                        <div class="col-sm-5">
+                            <img src="{{selected_product.image1.url}}" width="150px" alt="product_image">
+                        </div>
+                        <div class="col-sm-5  p-3">
+                            <h4>{{selected_product.product_name}}</h4>
+
+                            <p>{{selected_product.description}}</p>
+                            {% if selected_product.is_available %}
+                            <span class=" badge bg-success"> Available</span>
+                            {% else %}
+                            <span class=" badge bg-danger"> Not Available</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card col-sm-4">
+                <div class=" p-3">
+                    <h5>Best Selling </h5>
+                    <hr>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12 mt-5">
+        <h3 class="text-primary mb-3">Available Varients</h3>
+        <div class="table-responsive ">
+            <table class="table datatable table-custom table-lg mb-0" id="products">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Photo</th>
+                        <th>Product</th>
+                        <th>Varient</th>
+                        <th>Ram</th>
+                        <th>Storage</th>
+                        <th>Color</th>
+                        <th>Price</th>
+                        <th>Stock</th>
+                        <th>Status</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        {% for varient in varients %}
+                        <td>
+                            <a href="">{{varient.id}}</a>
+                        </td>
+                        <td>
+                            <a href="#">
+                                <img src="{{varient.image.url}}" class="rounded" width="40" alt="...">
+                            </a>
+                        </td>
+                        <td>{{varient.product}}</td>
+                        <td>{{varient.varient_name}}</td>
+                        <td>{{varient.ram}}</td>
+                        <td>{{varient.storage}}</td>
+                        <td>{{varient.color}}</td>
+                        <td>{{varient.price}}</td>
+                        <td>{{varient.stock}}</td>
+                        <td>{{varient.is_available}}</td>
+                        <td class="text-end">
+                            <a href="" class="btn-sm btn-success">Add Offer</a>
+                            <a href="{% url 'edit_varient' varient.id %}" onclick="confirmStatus(event)" name="edit"
+                                class="btn-sm btn-info">Edit</a>
+                            {% if varient.is_available %}
+                            <a href="{% url 'activate_varient' varient.id %}" onclick="confirmStatus(event)"
+                                name="disable" class="btn-sm btn-warning">Disable</a>
+                            {% else %}
+                            <a href="{% url 'activate_varient' varient.id %}" onclick="confirmStatus(event)"
+                                name="enable" class="btn-sm btn-warning">Enable</a>
+                            {% endif%}
+                            <a href="{% url 'delete_varient' varient.id %}" onclick="confirmStatus(event)" name="delete"
+                                class="btn-sm btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+<script>
+    $('#id_add_varient').submit(function (event) {
+        event.preventDefault();
+        alert("submited");
+        var serializedData = $(this).serialize();
+        $.ajax({
+            type: 'POST',
+            url: "{% url 'add_varient' selected_product.id %}",
+            data: serializedData,
+            success: function (response) {
+                window.location.reload()
+            },
+            error: function (response) {
+                alert("Error");
+            }
+        })
+    })
+</script>
+
+<script>
+
+    $("#id_varient_name").keyup(function () {
+        var Text = $(this).val();
+        Text = Text.toLowerCase();
+        Text = Text.replace(/[^a-zA-Z0-9]+/g, '-');
+        $("#id_slug").val(Text);
+    });
+</script>
+<script>
+    function confirmStatus(event) {
+        event.preventDefault();
+        var linkURL = event.currentTarget.href;
+        var uname = event.currentTarget.name;
+        console.log(linkURL);
+        Swal.fire({
+            title: "Do you want to " + uname + " this varient ? ",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, ' + uname + ' !'
+        })
+            .then((result) => {
+                if (result.isConfirmed) {
+                    window.location = linkURL;
+                } else {
+                    return false;
+                }
+            });
+    }
+</script>
+
+{% endblock %}

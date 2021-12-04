@@ -1,19 +1,109 @@
 
+from typing import ContextManager
 from django.db.models import indexes
 from django.db.models.indexes import Index
+from django.http.response import JsonResponse
 from django.shortcuts import redirect, render
 from account.forms import RegistrationForm
 from account.models import Account
 from cart.models import Cart, CartItem
 from category.models import category
+from order.models import Order, OrderProduct
 from store.models import Variation, product
 from django.contrib import messages, auth
 from django.contrib.auth.decorators import login_required
 from account.otp import sendOTP, varifyOTP
 from cart.views import _cart_id
+from user.models import Address, Profile
+
 import requests
+
+from user.forms import AddAdddressForm, UserProfileForm
 # Create your views here.
 
+
+@login_required(login_url='signin')
+def dashboard(request):
+
+    orders=OrderProduct.objects.filter(user=request.user).order_by('updated_at')
+    address=Address.objects.filter(user=request.user)
+    form=AddAdddressForm()
+    context={
+        'form':form,
+        'orders':orders,
+        'address':address,
+    }
+    return render(request,'user_dashboard/dashboard.html',context)
+
+
+@login_required(login_url='signin')
+def user_order(request):
+    orders=OrderProduct.objects.filter(user=request.user).order_by('-updated_at')
+    context={
+        'orders':orders,
+    }
+    return render(request,'user_dashboard/orderes.html',context)
+
+
+@login_required(login_url='signin')
+def user_address(request):
+    if request.method=="POST":
+        form=AddAdddressForm(request.POST)
+        if form.is_valid():
+            address=form.save(commit=False)
+            address.user=request.user
+            address.save()
+            
+            messages.success(request,"Address added Successfully")
+            return redirect('user_address')
+    address=Address.objects.filter(user=request.user)
+    form=AddAdddressForm()
+    context={
+        'form':form,
+        'address':address,
+    }
+    return render(request,'user_dashboard/address.html',context)
+
+
+def edit_address(request,id):
+    addr=Address.objects.get(id=id)
+    if request.method=="POST":
+        form=AddAdddressForm(request.POST)
+        if form.is_valid():
+            address=form.save(commit=False)
+            address.user=request.user
+            address.id=id
+            address.save()
+            messages.success(request,"Address updated Successfully")
+            return redirect('user_address')
+    check=True
+    form=AddAdddressForm(instance=addr)
+    context={
+        'form':form,
+        'check':check,
+    }
+    return render(request,'user_dashboard/address.html',context)
+
+
+def delete_address(request,id):
+    address=Address.objects.get(id=id)
+    address.delete()
+    messages.success(request,"Address deleted Successfully")
+    return redirect('user_address')
+
+
+@login_required(login_url='signin')
+def user_profile(request):
+    usr_profile=Profile.objects.get(user=request.user.id)
+    form=UserProfileForm(instance=usr_profile)
+    context={
+        'form':form,
+        'usr_profile':usr_profile,
+    }
+    return render(request,'user_dashboard/profile.html',context)
+
+
+    
 
 def home(request):
     products = Variation.objects.all().filter(is_available=True)
@@ -186,6 +276,7 @@ def register_otp(request):
         check_otp = request.POST['otpval']
         print(check_otp)
         mobile_number = request.session['mobile_number']
+    # try:
         check = varifyOTP(mobile_number, check_otp)
         if check:
             messages.success(request, "Registered Successfully ! ")
@@ -198,11 +289,23 @@ def register_otp(request):
             user = Account.objects.create_user(
                 first_name=first_name, last_name=last_name, email=email, mobile=mobile_number, password=password)
             user.gender = gender
+            profile=Profile()
+            profile.first_name=first_name
+            profile.last_name=last_name
+            profile.user=user
+            profile.gender=gender
+            profile.phone=mobile_number
+            profile.email=email
+            profile.profile_picture='user/profile/profile.png'
+            profile.save()
             user.save()
             return redirect("signin")
         else:
             messages.info(request, "Invalid OTP")
             return redirect('register_otp')
+    # except:
+    #     messages.info(request, "Registration Failed, Please Register Again")
+    #     return redirect('register')
     return render(request, 'otp_validation.html')
 
 
@@ -233,3 +336,14 @@ def signout(request):
 
 def forbidden_user(request):
     return render(request, 'forbidden.html')
+
+
+def cancel_order(request,id):
+    item=OrderProduct.objects.get(id=id)
+    item.status='Cancelled'
+    item.save()
+    return redirect('user_order')
+
+
+def change_password(request):
+    pass

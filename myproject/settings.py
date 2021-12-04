@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'category',
     'store',
     'cart',
+    'order',
+    'offer',
   
 ]
 
@@ -158,3 +160,5 @@ MEDIA_ROOT=os.path.join(BASE_DIR,'media')
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
+RAZOR_KEY_ID = 'rzp_test_w3ZPfouVbScZSn'
+RAZOR_KEY_SECRET = 'HziT1LdhNnA7A8T2xQr8J9yu'

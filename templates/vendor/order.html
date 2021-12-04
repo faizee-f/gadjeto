@@ -1,0 +1,142 @@
+{% extends 'vendor/index.html'%} {% load static %}{% block content %}
+
+
+<!-- preloader -->
+<div class="preloader">
+    <img src="../../assets/images/logo.svg" alt="logo">
+    <div class="preloader-icon"></div>
+</div>
+
+<div class="content ">
+
+    <d<div class="mb-4">
+        <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="#">
+                        <i class="bi bi-globe2 small me-2"></i> Dashboard
+                    </a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">Orders</li>
+            </ol>
+        </nav>
+</div>
+
+<div class="row">
+    <div class="col-md-10">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-md-flex gap-4 align-items-center">
+                    <div class="d-none d-md-flex">All Products</div>
+                    <div class="d-md-flex gap-4 align-items-center">
+                        <form class="mb-3 mb-md-0">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <select class="form-select">
+                                        <option>Sort by</option>
+                                        <option value="desc">Desc</option>
+                                        <option value="asc">Asc</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <select class="form-select">
+                                        <option value="10">10</option>
+                                        <option value="20">20</option>
+                                        <option value="30">30</option>
+                                        <option value="40">40</option>
+                                        <option value="50">50</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="dropdown ms-auto">
+                        <a href="#" data-bs-toggle="dropdown" class="btn btn-primary dropdown-toggle"
+                            aria-haspopup="true" aria-expanded="false">Actions</a>
+                        <div class="dropdown-menu dropdown-menu-end">
+                            <a href="#" class="dropdown-item">Action</a>
+                            <a href="#" class="dropdown-item">Another action</a>
+                            <a href="#" class="dropdown-item">Something else here</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-custom table-lg mb-0" id="products">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Image</th>
+                        <th>Name</th>
+                        <th>Date</th>
+                        <th>Total</th>
+                        <th>Status</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        {% for ordered_product in ordered_products %}
+                        <td>
+                            <a href="{% url 'view_order_detail' ordered_product.id %}">{{ordered_product.id}}</a>
+                        </td>
+                        <td>
+                            <a href="#">
+                                <img src="{{ordered_product.variation.image.url}}" class="rounded" width="60" alt="...">
+                            </a>
+                        </td>
+                        <td>{{ordered_product.order.first_name}} {{ordered_product.order.last_name}}</td>
+                        <td>{{ordered_product.order.created_at}}</td>
+                        <td>₹ {{ordered_product.price}}</td>
+                        <td>
+                            {% if ordered_product.status == 'New' %}
+                            <span class="badge bg-primary">{{ordered_product.status}}</span>
+                            {% elif ordered_product.status == 'Cancelled' %}
+                            <span class="badge bg-danger">{{ordered_product.status}}</span>
+                            {% elif ordered_product.status == 'Delivered' %}
+                            <span class="badge bg-success">{{ordered_product.status}}</span>
+                            {% elif ordered_product.status == 'Accepted' %}
+                            <span class="badge bg-warning">{{ordered_product.status}}</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-end">
+                            <div class="dropdown ms-auto">
+                                <a href="#" data-bs-toggle="dropdown" class="btn btn-primary dropdown-toggle"
+                                    aria-haspopup="true" aria-expanded="false">Actions</a>
+                                <div class="dropdown-menu dropdown-menu-end">
+                                    <a href="#" class="dropdown-item">Action</a>
+                                    <a href="#" class="dropdown-item">Another action</a>
+                                    <a href="#" class="dropdown-item">Something else here</a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <nav class="mt-4" aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+                <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+</div>
+
+</div>
+{% endblock %}

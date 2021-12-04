@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import category, sub_category,variants
+from .models import category, sub_category
 # Register your models here.
 
 
@@ -18,4 +18,3 @@ class varientsAdmin(admin.ModelAdmin):
 
 admin.site.register(category, categoryAdmin)
 admin.site.register(sub_category,sub_categoryAdmin)
-admin.site.register(variants,varientsAdmin)

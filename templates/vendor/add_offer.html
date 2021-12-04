@@ -1,0 +1,42 @@
+{% extends 'vendor/index.html'%} {% load static %}{% block content %}
+
+
+<!-- content -->
+<div class="content ">
+
+
+    <div class="row">
+        <h3>{{option}}</h3>
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    {% if form.errors %}
+                    {% for field in form %}
+                    {% for error in field.errors %}
+                    <div class="alert alert-danger">
+                        <strong>{{ error|escape }}</strong>
+                    </div>
+                    {% endfor %}
+                    {% endfor %}
+                    {% endif %}
+                    <div class="d-md-flex gap-4 align-items-center">
+                        <form class="p-5" action="" method="POST">
+                            {% csrf_token %}
+                            <div class="row">
+                                {{form}}
+                            </div>
+
+                            <input class="btn btn-primary mt-5" type="submit" {% if check %} value="Update" {% else %}
+                                value="Add Offer" {% endif %}>
+                            <!-- End .form-group -->
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}

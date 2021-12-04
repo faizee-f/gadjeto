@@ -16,15 +16,6 @@ urlpatterns = [
     path('edit_category/<cat_id>',views.edit_category,name='edit_category'),
     path('delete_category/<cat_id>',views.delete_category,name='delete_category'),
 
-    # path('varient_category_list',views.varient_category_list,name='varient_category_list'),
-    # path('edit_varient_category/<subcat_id>',views.edit_varient_category,name='edit_varient_category'),
-    # path('delete_varient_category/<subcat_id>',views.delete_varient_category,name='delete_varient_category'),
-
-    # path('varient_list',views.varient_list,name='varient_list'),
-    # path('edit_varient/<var_id>',views.edit_varient,name='edit_varient'),
-    # path('delete_varient/<var_id>',views.delete_varient,name='delete_varient'),
-
-
     path('customers',views.customers,name='customers'),
     path('vendor_approval',views.vendor_approval,name='vendor_approval'),
     path('approve_vendor/<vendor_id>',views.approve_vendor,name='approve_vendor'),

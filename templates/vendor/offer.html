@@ -1,0 +1,162 @@
+{% extends 'vendor/index.html'%} {% load static %} {% block content %}
+<div class="row">
+    <div class="col-sm-4">
+        <div class="col-sm-12">
+            <div class="card p-3 text-white text-center bg-warning">
+                <h1>Brand Offer <b><span>{{brand_offer.offer}}%</span></b></h1><a
+                    href="{% url 'edit_vendor_offers' request.user.id %}">Edit</a>
+            </div>
+        </div>
+        <div class="col-sm-12 mt-3 d-flex justify-content-around">
+            <div class="col-sm-5">
+                <div class="card text-white bg-info p-4 align-items-center">
+                    <h1><b>{{total_offers}}</b></h1>
+                    <span>Active Orders</span>
+                </div>
+            </div>
+            <div class="col-sm-5">
+                <div class="card text-white bg-secondary p-4 align-items-center">
+                    <h1><b>56</b></h1>
+                    <span>In-active Orders</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 p-3 d-flex flex-column justify-content-center">
+            <a class="p-3 mt-2  btn btn-outline-success" href=""> <b>Add Brand offer</b> </a>
+            <a class="p-3 mt-2  btn btn-outline-success" href="{% url 'add_product_offer' %}"> <b>Add Product offer</b> </a>
+            <a class="p-3 mt-2  btn btn-outline-success" href="{% url 'add_variation_offer' %}"> <b>Add varient offer</b></a>
+
+        </div>
+    </div>
+    <div class="col-sm-8">
+        <section id="product_offer">
+            <h3 class="text-primary">Product Offers</h3>
+            <div class=" table-responsive col-md-11">
+                <hr>
+                <table class="table datatable table-custom table-lg mb-0" id="products">
+
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Product</th>
+                            <th>Offer %</th>
+                            <th>Created At</th>
+                            <th class="text-end">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            {% for prod in product_offers %}
+                            <td>
+                                {{prod.id}}
+                            </td>
+                            <td>{{prod.product_name}}</td>
+                            <td>{{prod.offer}}</td>
+                            <td>{{prod.created_at}}</td>
+                            <td class="text-end">
+                                <a href="{% url 'edit_product_offers' prod.id %}" onclick="confirmStatus(event)"
+                                    name="edit" class="btn btn-info">Edit</a>
+                                {% if prod.is_valid %}
+                                <a href="{% url 'activate_product_offer' prod.id %}" onclick="confirmStatus(event)" name="disable"
+                                    class="btn btn-warning">
+                                    Disable</a>
+                                {% else %}
+                                <a href="{% url 'activate_product_offer' prod.id %}" onclick="confirmStatus(event)" name="enable"
+                                    class="btn btn-warning">
+                                    Enable </a>
+                                {% endif%}
+                                <a href="{% url 'delete_product_offer' prod.id %}" onclick="confirmStatus(event)"
+                                    class="btn btn-danger" name="delete">Delete</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <hr>
+            </div>
+        </section>
+
+        <section id="varient_offer" class="">
+            <h3 class="text-primary">Varient Offers</h3>
+            <div class=" table-responsive col-md-11">
+                <hr>
+                <table class="table datatable table-custom table-lg mb-0" id="products">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Product</th>
+                            <th>Varient</th>
+                            <th>Offer %</th>
+                            <th>Created At</th>
+                            <th class="text-end">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            {% for var in varient_offers %}
+                            <td>
+                                {{var.id}}
+                            </td>
+                            <td>
+                                {{var.variation_name.product}}
+                            </td>
+                            <td>{{var.variation_name}}</td>
+                            <td>{{var.offer}}</td>
+                            <td>{{var.created_at}}</td>
+                            <td class="text-end">
+                                <a href="{% url 'edit_varient_offers' var.id %}" onclick="confirmStatus(event)"
+                                    name="edit" class="btn btn-info">Edit</a>
+                                {% if var.is_valid %}
+                                <a href="{% url 'activate_variation_offer' var.id %}" onclick="confirmStatus(event)" name="disable"
+                                    class="btn btn-warning">
+                                    Disable</a>
+                                {% else %}
+                                <a href="{% url 'activate_variation_offer' var.id %}" onclick="confirmStatus(event)" name="enable"
+                                    class="btn btn-warning">
+                                    Enable </a>
+                                {% endif%}
+                                <a href="{% url 'delete_variation_offer' var.id %}" onclick="confirmStatus(event)"
+                                    class="btn btn-danger" name="delete">Delete</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <hr>
+            </div>
+        </section>
+    </div>
+</div>
+
+<script>
+    $("#id_category_name").keyup(function () {
+        var Text = $(this).val();
+        Text = Text.toLowerCase();
+        Text = Text.replace(/[^a-zA-Z0-9]+/g, '-');
+        $("#id_slug").val(Text);
+    });
+</script>
+<script>
+    function confirmStatus(event) {
+        event.preventDefault();
+        var linkURL = event.currentTarget.href;
+        var uname = event.currentTarget.name;
+        console.log(linkURL);
+        Swal.fire({
+            title: "Do you want to " + uname + " this offer ? ",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, ' + uname + ' !'
+        })
+            .then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax
+                    window.location = linkURL;
+                } else {
+                    return false;
+                }
+            });
+    }
+</script>{% endblock %}

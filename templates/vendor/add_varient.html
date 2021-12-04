@@ -1,0 +1,74 @@
+{% extends 'vendor/index.html'%} {% load static %}{% block content %}
+
+
+<!-- content -->
+<div class="content ">
+
+
+    <div class="row">
+        <h3>{% if check %}Update Varient{% else %}Add Varient{% endif %}</h3>
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-md-flex gap-4 align-items-center">
+                        <form class="p-5" action="" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <label for="">Enter the varient Name</label>
+                                    {{form.varient_name}}
+                                </div>
+                                <div class="col-sm-6">
+                                    <label for="">Slug Field</label>
+                                    {{form.slug}}
+                                </div>
+                                <div class="col-sm-4">
+                                    <label for="">RAM</label>
+                                    {{form.ram}}
+                                </div>
+                                <div class="col-sm-4">
+                                    <label for="">Storage</label>
+                                    {{form.storage}}
+                                </div>
+                                <div class="col-sm-4">
+                                    <label for="">Color</label>
+                                    {{form.color}}
+                                </div>
+                                <div class="col-sm-6">
+                                    <label for="">Stock Price</label>
+                                    {{form.margin_price}}
+                                </div>
+                                <div class="col-sm-6">
+                                    <label for="">Sale Price</label>
+                                    {{form.price}}
+                                </div>
+                                <div class="col-sm-6">
+                                    <label for="">Stock</label>
+                                    {{form.stock}}
+                                </div>
+                                <div class="col-sm-6">
+                                    <label for="">Varient Image</label>
+                                    {{form.image}}
+                                </div>
+                                <button type="submit" class="btn btn-primary" value="Edit Varient"> {% if check %}Update Varient{% else %}Add Varient{% endif %}</button>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<script>
+    $("#id_product_name ").keyup(function () {
+        var Text = $(this).val();
+        Text = Text.toLowerCase();
+        Text = Text.replace(/[^a-zA-Z0-9]+/g, '-');
+        $("#id_slug ").val(Text);
+    });
+</script>
+{% endblock %}

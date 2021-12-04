@@ -1,4 +1,4 @@
- {% extends 'base.html'%} {% load static %} {% block content %}
+{% extends 'base.html'%} {% load static %} {% block content %}
 
 <div class="page-wrapper">
 
@@ -24,7 +24,8 @@
                             {% if not cart_items %}
                             <div class=" text-center mt-5">
                                 <h2 class="text-primary">Cart is empty </h2>
-                                <a href="{% url 'home' %}" class="btn btn-outline-dark"><span>CONTINUE SHOPPING</span><i class="icon-refresh"></i></a>
+                                <a href="{% url 'home' %}" class="btn btn-outline-dark"><span>CONTINUE SHOPPING</span><i
+                                        class="icon-refresh"></i></a>
                             </div> {% else %}
                             <table class="table table-cart table-mobile">
                                 <thead>
@@ -49,23 +50,35 @@
                                                 </figure>
 
                                                 <h3 class="product-title">
-                                                    <a href="{{ cart_item.varient.get_url }}"><b>{{cart_item.varient.product.product_name}}</b> {{cart_item.varient}}</a>
+                                                    <a href="{{ cart_item.varient.get_url }}"><b>{{cart_item.varient.product.product_name}}</b>
+                                                        {{cart_item.varient}}</a>
                                                 </h3>
                                                 <!-- End .product-title -->
                                             </div>
                                             <!-- End .product -->
                                         </td>
+                                        {% if cart_item.varient.offer_price %}
+                                        <td class="price-col ">
+                                               <p style="font-size: 1.7rem;" >₹{{cart_item.varient.offer_price.new_price}}</p>
+                                               <p><del> ₹{{cart_item.varient.price}}</del></p>
+                                        </td>
+                                        {% else %}
                                         <td class="price-col">${{cart_item.varient.price}}</td>
+                                        {% endif %}
                                         <td class="quantity-col">
                                             <div class=" d-flex justify-content-left align-items-center">
-                                                <a href="{% url 'remove_cart' cart_item.varient.id %}"><button class="btn-remove" type="button">-</button></a>
-                                                <input type="text" style="width: 60px;" class="text-center" value="{{cart_item.quantity}}" disabled>
-                                                <a href="{% url 'add_cart' cart_item.varient.id %}"><button class="btn-remove" type="button">+</button></a>
+                                                <a href="{% url 'remove_cart' cart_item.varient.id %}"><button
+                                                        class="btn-remove" type="button">-</button></a>
+                                                <input type="text" style="width: 60px;" class="text-center"
+                                                    value="{{cart_item.quantity}}" disabled>
+                                                <a href="{% url 'add_cart' cart_item.varient.id %}"><button
+                                                        class="btn-remove" type="button">+</button></a>
                                             </div>
                                             <!-- End .cart-product-quantity -->
                                         </td>
-                                        <td class="total-col">${{cart_item.sub_total}}</td>
-                                        <td class="remove-col"><a href="{% url 'delete_cart' cart_item.varient.id %}" class="btn-remove"><i class="icon-close"></i></a></td>
+                                        <td class="total-col">${{cart_item.total}}</td>
+                                        <td class="remove-col"><a href="{% url 'delete_cart' cart_item.varient.id %}"
+                                                class="btn-remove"><i class="icon-close"></i></a></td>
                                     </tr>
                                     {% endfor %}
                                 </tbody>
@@ -78,7 +91,8 @@
                                         <div class="input-group">
                                             <input type="text" class="form-control" required placeholder="coupon code">
                                             <div class="input-group-append">
-                                                <button class="btn btn-outline-primary-2" type="submit"><i class="icon-long-arrow-right"></i></button>
+                                                <button class="btn btn-outline-primary-2" type="submit"><i
+                                                        class="icon-long-arrow-right"></i></button>
                                             </div>
                                             <!-- .End .input-group-append -->
                                         </div>
@@ -87,7 +101,8 @@
                                 </div>
                                 <!-- End .cart-discount -->
 
-                                <a href="#" class="btn btn-outline-dark-2"><span>UPDATE CART</span><i class="icon-refresh"></i></a>
+                                <a href="#" class="btn btn-outline-dark-2"><span>UPDATE CART</span><i
+                                        class="icon-refresh"></i></a>
                             </div>
                             <!-- End .cart-bottom -->
 
@@ -108,7 +123,7 @@
                                         <!-- End .summary-subtotal -->
                                         <tr class="summary-subtotal">
                                             <td>Tax:</td>
-                                            <td>${{tax}}</td>
+                                            <td>${{tax|floatformat:2}}</td>
                                         </tr>
                                         <!-- End .summary-subtotal -->
                                         <tr class="summary-shipping">
@@ -119,18 +134,20 @@
 
                                         <tr class="summary-total">
                                             <td>Total:</td>
-                                            <td>${{grand_total}}</td>
+                                            <td>${{grand_total|floatformat:2}}</td>
                                         </tr>
                                         <!-- End .summary-total -->
                                     </tbody>
                                 </table>
                                 <!-- End .table table-summary -->
 
-                                <a href="{% url 'checkout' %}" class="btn btn-outline-primary-2 btn-order btn-block">PROCEED TO CHECKOUT</a>
+                                <a href="{% url 'checkout' %}"
+                                    class="btn btn-outline-primary-2 btn-order btn-block">PROCEED TO CHECKOUT</a>
                             </div>
                             <!-- End .summary -->
 
-                            <a href="{% url 'home' %}" class="btn btn-outline-dark-2 btn-block mb-3"><span>CONTINUE SHOPPING</span><i class="icon-refresh"></i></a>
+                            <a href="{% url 'home' %}" class="btn btn-outline-dark-2 btn-block mb-3"><span>CONTINUE
+                                    SHOPPING</span><i class="icon-refresh"></i></a>
                         </aside>
                         <!-- End .col-lg-3 -->
                     </div>
@@ -158,7 +175,8 @@
 
                 <form action="#" method="get" class="mobile-search">
                     <label for="mobile-search" class="sr-only">Search</label>
-                    <input type="search" class="form-control" name="mobile-search" id="mobile-search" placeholder="Search in..." required>
+                    <input type="search" class="form-control" name="mobile-search" id="mobile-search"
+                        placeholder="Search in..." required>
                     <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
                 </form>
 
@@ -201,10 +219,12 @@
                                 <li><a href="category-2cols.html">Shop Grid 2 Columns</a></li>
                                 <li><a href="category.html">Shop Grid 3 Columns</a></li>
                                 <li><a href="category-4cols.html">Shop Grid 4 Columns</a></li>
-                                <li><a href="category-boxed.html"><span>Shop Boxed No Sidebar<span class="tip tip-hot">Hot</span></span></a></li>
+                                <li><a href="category-boxed.html"><span>Shop Boxed No Sidebar<span
+                                                class="tip tip-hot">Hot</span></span></a></li>
                                 <li><a href="category-fullwidth.html">Shop Fullwidth No Sidebar</a></li>
                                 <li><a href="product-category-boxed.html">Product Category Boxed</a></li>
-                                <li><a href="product-category-fullwidth.html"><span>Product Category Fullwidth<span class="tip tip-new">New</span></span></a></li>
+                                <li><a href="product-category-fullwidth.html"><span>Product Category Fullwidth<span
+                                                class="tip tip-new">New</span></span></a></li>
                                 <li><a href="cart.html">Cart</a></li>
                                 <li><a href="checkout.html">Checkout</a></li>
                                 <li><a href="wishlist.html">Wishlist</a></li>
@@ -216,7 +236,8 @@
                             <ul>
                                 <li><a href="product.html">Default</a></li>
                                 <li><a href="product-centered.html">Centered</a></li>
-                                <li><a href="product-extended.html"><span>Extended Info<span class="tip tip-new">New</span></span></a></li>
+                                <li><a href="product-extended.html"><span>Extended Info<span
+                                                class="tip tip-new">New</span></span></a></li>
                                 <li><a href="product-gallery.html">Gallery</a></li>
                                 <li><a href="product-sticky.html">Sticky Info</a></li>
                                 <li><a href="product-sidebar.html">Boxed With Sidebar</a></li>
