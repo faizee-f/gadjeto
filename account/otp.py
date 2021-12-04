@@ -1,6 +1,6 @@
 import os
 from twilio.rest import Client
-
+from django.conf import settings
 # account_sid = 'ACd126ff90ad474dce221c63911edfb281'
 # auth_token = '8fc6b15f67df19fc9c8213e9ef4449dd'
 # client = Client(account_sid, auth_token)
@@ -17,12 +17,12 @@ from twilio.rest import Client
 def sendOTP(mobile):
     number="+91"+str(mobile)
     print(number)
-    account_sid = 'ACd126ff90ad474dce221c63911edfb281'
-    auth_token = '8fc6b15f67df19fc9c8213e9ef4449dd'
+    account_sid = settings.ACCOUNT_SID
+    auth_token = settings.AUTH_TOKEN
     client = Client(account_sid, auth_token)
 
     verification = client.verify \
-        .services('VA8e84d57f593f9f38f9828552f3e601f1') \
+        .services(settings.SERVICES) \
         .verifications \
         .create(to=number, channel='sms')
 
@@ -33,12 +33,12 @@ def sendOTP(mobile):
 def varifyOTP(mobile,otp):
     number="+91"+str(mobile)
     print(number)
-    account_sid = 'ACd126ff90ad474dce221c63911edfb281'
-    auth_token = '8fc6b15f67df19fc9c8213e9ef4449dd'
+    account_sid = settings.ACCOUNT_SID
+    auth_token = settings.AUTH_TOKEN
     client = Client(account_sid, auth_token)
 
     verification_check = client.verify \
-        .services('VA8e84d57f593f9f38f9828552f3e601f1') \
+        .services(settings.SERVICES) \
         .verification_checks \
         .create(to=number, code=otp)
 

@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-%%ct^axwfi0vdu=22@#ss$-4rz*aee+=jdd^gr%wv_ue30*c05'
+SECRET_KEY =config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -162,3 +163,7 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 RAZOR_KEY_ID = 'rzp_test_w3ZPfouVbScZSn'
 RAZOR_KEY_SECRET = 'HziT1LdhNnA7A8T2xQr8J9yu'
+
+ACCOUNT_SID=config('account_sid')
+AUTH_TOKEN=config('auth_token')
+SERVICES=config('services')
