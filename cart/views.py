@@ -127,19 +127,35 @@ def checkout(request,total=0,quantity=0,cart_items=None):
     try:
         tax=0
         grand_total=0
-        if request.user.is_authenticated:
-            cart_items=CartItem.objects.filter(user=request.user,is_active=True)
-        else:
-            cart=Cart.objects.get(cart_id=_cart_id(request))
-            cart_items=CartItem.objects.filter(cart=cart,is_active=True)
-        for cart_item in cart_items:
-            if cart_item.varient.offer_price():
-                off_price=Variation.offer_price(cart_item.varient)
-                total  += (off_price['new_price'] * cart_item.quantity)
+        if 'quick_buy' in  request.session:
+            varient_id=request.session['quick_buy']
+            cart_items=Variation.objects.get(id=varient_id)
+            quick_check=True
+            if cart_items.offer_price():
+                off_price=Variation.offer_price(cart_items)
+                total  = (off_price['new_price'])
                 print(total)
             else:
-                total  += (cart_item.varient.price * cart_item.quantity)
-            quantity += cart_item.quantity
+                total  = (cart_items.price )
+            quantity = 1
+            
+        else:
+            if request.user.is_authenticated :
+                
+                cart_items=CartItem.objects.filter(user=request.user,is_active=True)
+            else:
+                cart=Cart.objects.get(cart_id=_cart_id(request))
+                cart_items=CartItem.objects.filter(cart=cart,is_active=True)
+                quick_check=False
+            for cart_item in cart_items:
+                if cart_item.varient.offer_price():
+                    off_price=Variation.offer_price(cart_item.varient)
+                    total  += (off_price['new_price'] * cart_item.quantity)
+                    print(total)
+                else:
+                    total  += (cart_item.varient.price * cart_item.quantity)
+                quantity += cart_item.quantity
+        
         tax= (total*2)/100
         grand_total=total+tax
     except ObjectDoesNotExist:
@@ -162,7 +178,8 @@ def checkout(request,total=0,quantity=0,cart_items=None):
         'grand_total':grand_total,
         'address':address,
         'discount':discount,
-        'coupen_code':coupen_code
+        'coupen_code':coupen_code,
+        'quick_check':quick_check
     }  
     return render(request,'checkout.html',context)
 
@@ -173,21 +190,18 @@ def check_coupen(request,grand_total):
             del request.session['discount']
         if 'total_after_discount' in request.session:
             del request.session['total_after_discount']
-
+        
         coupen_code=request.POST['coupen_code']
         try:
-            offer=Coupen.objects.get(coupen_code=coupen_code,is_active=True)
-        except:
-            messages.info(request,"Invalid coupen code")
-            return redirect('checkout')
-        try:
-            if RedeemedCoupen.objects.filter(coupen=offer,user=request.user):
-                messages.info("Coupen already redeemed ")
+            offer=Coupen.objects.get(coupen_code=coupen_code,is_active=True,coupen_count__gte=1)
+            print(offer)
+            if RedeemedCoupen.objects.filter(coupen_id=offer.id,user=request.user):
+                messages.info(request,"Coupen already redeemed ")
                 return redirect('checkout')
-            raise
-        except :
-            today=timezone.now()
-            print(today)
+            else:
+                today=date.today()
+                print(today)
+            
             if offer.valid_from <= today and offer.valid_to >= today:
                 discount=float(offer.discount)
                 total_after_discount=float(grand_total)-discount
@@ -199,4 +213,9 @@ def check_coupen(request,grand_total):
             else:
                 messages.info(request,"Invalid coupen ")
                 return redirect('checkout')
+        except Exception as e:
+            print(e)
+            messages.info(request,"Invalid coupen code")
+            return redirect('checkout')
+            
 

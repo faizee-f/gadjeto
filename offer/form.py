@@ -1,6 +1,6 @@
 from django import forms
 from django.db import models
-from django.forms import fields
+from django.forms import fields, widgets
 
 from offer.models import CategoryOffer, Coupen, ProductOffer, SubCategoryOffer, VariationOffer, VendorOffer
 from store.models import Variation, product
@@ -65,7 +65,20 @@ class VariationOfferForm(forms.ModelForm):
         for field in self.fields:
             self.fields[field].widget.attrs['class'] = 'form-control'
 
-class OfferForm(forms.ModelForm):
+class DateInput(forms.DateInput):
+    input_type='date'
+
+class CouponForm(forms.ModelForm):
+    
     class Meta:
-        models=Coupen
-        fields=(all)
+        model=Coupen
+        fields=('coupen_code','coupen_count','discount','valid_from','valid_to')
+        widgets={
+            'valid_from':DateInput(),
+            'valid_to':DateInput(),
+        }
+        
+    def __init__(self, *args, **kwargs):
+        super(CouponForm, self).__init__(*args, **kwargs)
+        for field in self.fields:
+            self.fields[field].widget.attrs['class'] = 'form-control'

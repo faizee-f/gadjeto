@@ -1,15 +1,11 @@
 
-from typing import ContextManager
-from django.db.models import indexes
-from django.db.models.indexes import Index
-from django.http.response import JsonResponse
 from django.shortcuts import redirect, render
 from account.forms import RegistrationForm
 from account.models import Account
 from cart.models import Cart, CartItem
 from category.models import category
-from order.models import Order, OrderProduct
-from store.models import Variation, product
+from order.models import  OrderProduct
+from store.models import Variation
 from django.contrib import messages, auth
 from django.contrib.auth.decorators import login_required
 from account.otp import sendOTP, varifyOTP
@@ -26,19 +22,18 @@ from user.forms import AddAdddressForm, UserProfileForm
 def dashboard(request):
 
     orders=OrderProduct.objects.filter(user=request.user).order_by('updated_at')
-    address=Address.objects.filter(user=request.user)
-    form=AddAdddressForm()
+    total_orders=orders.count()
+    usr_profile=Profile.objects.get(user=request.user.id)
     context={
-        'form':form,
-        'orders':orders,
-        'address':address,
+        'total_orders':total_orders,
+        'usr_profile':usr_profile
     }
     return render(request,'user_dashboard/dashboard.html',context)
 
 
 @login_required(login_url='signin')
 def user_order(request):
-    orders=OrderProduct.objects.filter(user=request.user).order_by('-updated_at')
+    orders=OrderProduct.objects.filter(user=request.user).order_by('-created_at')
     context={
         'orders':orders,
     }
@@ -64,7 +59,7 @@ def user_address(request):
     }
     return render(request,'user_dashboard/address.html',context)
 
-
+@login_required(login_url='signin')
 def edit_address(request,id):
     addr=Address.objects.get(id=id)
     if request.method=="POST":
@@ -84,7 +79,7 @@ def edit_address(request,id):
     }
     return render(request,'user_dashboard/address.html',context)
 
-
+@login_required(login_url='signin')
 def delete_address(request,id):
     address=Address.objects.get(id=id)
     address.delete()
@@ -96,6 +91,15 @@ def delete_address(request,id):
 def user_profile(request):
     usr_profile=Profile.objects.get(user=request.user.id)
     form=UserProfileForm(instance=usr_profile)
+    if request.method =="POST":
+        form=UserProfileForm(request.POST,request.FILES,instance=usr_profile)
+        if form.is_valid():
+            form.save()
+            messages.success(request,"Profile updated Successfully")
+            return redirect('user_profile')
+        else:
+            print(form.errors)
+   
     context={
         'form':form,
         'usr_profile':usr_profile,
@@ -113,6 +117,7 @@ def home(request):
     context = {
         'products': products,
         'categories': categories,
+        
     }
     return render(request, 'index.html', context)
 
@@ -203,7 +208,7 @@ def signin(request):
 
     return render(request, 'login.html')
 
-
+@login_required(login_url='signin')
 def forgot_password(request):
     messages.forgot(request, "Reset Password")
     messages.msg(request, "Enter your mobile Number !")
@@ -337,13 +342,35 @@ def signout(request):
 def forbidden_user(request):
     return render(request, 'forbidden.html')
 
-
+@login_required(login_url='signin')
 def cancel_order(request,id):
     item=OrderProduct.objects.get(id=id)
     item.status='Cancelled'
     item.save()
     return redirect('user_order')
 
-
+@login_required(login_url='signin')
 def change_password(request):
-    pass
+    if request.method=="POST":
+        current_password=request.POST['current_password']
+        new_password=request.POST['new_password']
+        confirm_password=request.POST['confirm_password']
+
+        user=Account.objects.get(email__exact=request.user.email)
+        
+        if new_password==confirm_password:
+            success=user.check_password(current_password)
+            if success:
+                user.set_password(new_password)
+                user.save()
+                messages.success(request,"Password changed Successfully")
+                return redirect('change_password')
+            else:
+                messages.error(request,"Wrong password, Try again")
+                return redirect('change_password')
+        else:
+            messages.error(request,"Password Doesn't match !")
+            return redirect('change_password')
+        
+        
+    return render(request,'user_dashboard/reset_password.html')

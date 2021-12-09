@@ -183,7 +183,7 @@ class ReviewRating(models.Model):
         return self.subject
 
     def rating_percentage(self):
-        return self.rating*20
+        return self.rating*20   
 
 
 

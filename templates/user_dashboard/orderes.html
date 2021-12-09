@@ -12,78 +12,133 @@
     <div class="dashboard">
         <div class="container">
             <div class="row">
-                <aside class="col-md-4 col-lg-3">
-                    <ul class="nav nav-dashboard flex-column mb-3 mb-md-0" role="tablist">
-                        <li class="nav-item">
-                            <a class="nav-link " href="{% url 'dashboard' %}" role="tab" aria-controls="tab-dashboard"
-                                aria-selected="true">Dashboard</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active" href="{% url 'user_order' %}" role="tab"
-                                aria-controls="tab-orders" aria-selected="false">Orders</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'user_address' %}" role="tab" aria-controls="tab-address"
-                                aria-selected="false">Adresses</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'user_profile' %}" role="tab" aria-controls="tab-account"
-                                aria-selected="false">My Profile</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Sign Out</a>
-                        </li>
-                    </ul>
-                </aside><!-- End .col-lg-3 -->
+                {% include 'user_dashboard/user_base.html' %}
 
-                <div class="col-md-8 col-lg-9">
-                    <div class="tab-content">
-                        <div class="tab-pane show active" id="tab-orders" role="tabpanel"
-                            aria-labelledby="tab-orders-link">
+                <div class="col-lg-10 col-md-10  mt-4 mt-lg-0">
+                    <div class="col-12">
+                        <div class="col-12" >
+                            <div class="accordion accordion-rounded accordion-plus" id="accordian-order">
 
-                            {% if orders %}
-                            {% for x in orders %}
-                            <div class="row mt-4 align-items-center" style="border-bottom: 1px solid black;">
-                                <div class="col-md-2">
-                                    <img src="{{x.variation.image.url}}" alt="image" width="70">
-                                </div>
-                                <div class="col-md-3 ">
-                                    <p><b>{{x.products}}</b>{{x.variation}}</p>
+                                {% if orders %}
+                                {% for x in orders %}
 
-                                    <span>Seller : {{x.vendor}}</span>
-
-                                </div>
-                                <div class="col-md-2">
-                                    <p>₹ {{x.grand_total}}</p>
-                                </div>
-                                <div class="col-md-4 d-flex">
-                                    <div>
-                                        {% if x.status == 'New' %}
-                                        <p>Ordered on {{x.created_at}}</p>
-                                        {% elif x.status == 'Cancelled' %}
-                                        <p>Order Cancelled on {{x.updated_at}} </p>
-                                        {% elif x.status == 'Delivered' %}
-                                        <p>Order Delivered on {{x.updated_at}} </p>
-                                        {% endif %}
+                                <div class="row col-md-12 mt-4 align-items-center" >
+                                    <div class="col-md-2">
+                                        
+                                            <img src="{{x.variation.image.url}}" alt="image" width="70">
                                     </div>
+                                    <div class="col-md-3 ">
+                                        <p><b>{{x.products}}</b>{{x.variation}}</p>
+
+                                        <span>Seller : {{x.vendor}}</span>
+
+                                    </div>
+                                    <div class="col-md-2">
+                                        <p>₹ {{x.grand_total}}</p>
+                                    </div>
+                                    <div class="col-md-3 d-flex">
+                                        <div >
+                                            {% if x.status == 'New' %}
+                                            <h6 >Ordered on {{x.created_at| date:'D,d M y'}}</h6>
+                                            {% elif x.status == 'Cancelled' %}
+                                            <h6>Cancelled on {{x.updated_at| date:'D,d M y'}} </h6>
+                                            {% elif x.status == 'Accepted' %}
+                                            <h6>Shipped on {{x.updated_at| date:'D,d M y'}} </h6>
+                                            {% elif x.status == 'Delivered' %}
+                                            <h6>Delivered on {{x.updated_at| date:'D,d M y'}} </h6>
+                                            {% endif %}
+                                        </div>
+
+                                    </div>
+                                    {% if x.status == 'New' or x.status == 'Accepted' %}
+
+                                    <div class="col-md-1 text-right">
+                                        <a id="{{x.id}}" href="{% url 'cancel_order' x.id %}"
+                                            onclick="cancelOrder(event)" class="btn btn-outline-danger">Cancel</a>
+                                    </div>
+                                    {% endif %}
 
                                 </div>
-                                {% if x.status == 'Cancelled' %}
+                                <div class="card card-box card-sm bg-white">
+                                    <div class="card-header" id="heading6-3">
+                                        <h2 class="card-title">
+                                            <a class="collapsed" role="button" data-toggle="collapse" href="#a{{x.id}}"
+                                                aria-expanded="false" aria-controls="a{{x.id}}">
+                                                Order Status
+                                            </a>
+                                        </h2>
+                                    </div><!-- End .card-header -->
+                                    <div id="a{{x.id}}" class="collapse" aria-labelledby="heading6-3"
+                                        data-parent="#accordian-order">
+                                        <div class="card-body">
+                                            <div class="row align-items-center">
+                                                <div class="col-md-12 col-sm-12 row">
+                                                    <div class="col-md-5 col-sm-12">
+                                                        <div class="card">
+                                                            <div class="card-body d-flex flex-column gap-3">
+                                                                <div class="d-flex justify-content-between">
+                                                                    <h5 class="mb-0">Delivery Address</h5>
+                                                                </div>
+                                                                <div>{{x.order.full_address}}</div>
+                                                                <div>{{x.order.city}}</div>
+                                                                <div>{{x.order.state}}</div>
+                                                                <div>
+                                                                    <i class="bi bi-telephone me-2"></i> {{x.order.phone}}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-5 col-sm-12">
+                                                        <div class="card">
+                                                            <div class="card-body d-flex flex-column gap-3">
+                                                                <div class="d-flex justify-content-between">
+                                                                    <h5 class="mb-0">Delivery Details</h5>
+                                                                </div>
+                                                                
+                                                                <div>Pin code: {{x.order.pincode}}</div>
+                                                                <div><span>Order note :</span>{% if x.order.order_note %}
+                                                                    <p>{{x.order.order_note }}</p>
+                                                                    {% else %}
+                                                                    <p >No notes </p>
+                                                                    {% endif %}
+                            
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12 col-sm-12 pt45 pb20">
+                                                   
+                                                    <div class="row justify-content-between">
+                                                        <div class="order-tracking  completed ">
+                                                            <span class="is-complete"></span>
+                                                            <p>Ordered<br><span>{{x.created_at| date:'D,d M y'}}</span></p>
+                                                        </div>
+                                                        
+                                                        <div class="order-tracking {% if x.status == 'Accepted' or x.status == 'Delivered' %} completed {% endif %} ">
+                                                            <span class="is-complete"></span>
+                                                            <p>Shipped<br><span>{% if x.status == 'Cancelled' %}{% else %}{{x.updated_at| date:'D,d M y'}}{% endif%}</span></p>
+                                                        </div>
+                                                        
+                                                        <div class="order-tracking {% if x.status == 'Delivered' %} completed {% endif %}">
+                                                            <span class="is-complete"></span>
+                                                            <p>{% if x.status == 'Cancelled' %} <span class="text-danger">Cancelled </span> {% else %} Delivered{% endif %}<br><span>{% if x.status == 'Cancelled' or x.status == 'Delivered' %}{{x.updated_at| date:'D,d M y'}}{% endif %}</span></p>
+                                                        </div>
 
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div><!-- End .card-body -->
+                                    </div><!-- End .collapse -->
+                                </div><!-- End .card -->
+                                {% endfor %}
                                 {% else %}
-                                <div class="col-md-1 text-right">
-                                    <a id="{{x.id}}" href="{% url 'cancel_order' x.id %}" onclick="cancelOrder(event)"
-                                        class="btn btn-primary">Cancel</a>
-                                </div>
+                                <p>No order has been made yet.</p>
+                                <a href="{% url 'home' %}" class="btn btn-outline-primary-2"><span>GO SHOP</span><i
+                                        class="icon-long-arrow-right"></i></a>
                                 {% endif %}
+                            </div><!-- End .accordion -->
 
-                            </div>
-                            {% endfor %}
-                            {% else %}
-                            <p>No order has been made yet.</p>
-                            <a href="{% url 'home' %}" class="btn btn-outline-primary-2"><span>GO SHOP</span><i
-                                    class="icon-long-arrow-right"></i></a>
-                            {% endif %}
                         </div><!-- .End .tab-pane -->
                     </div><!-- End .col-lg-9 -->
                 </div><!-- End .row -->

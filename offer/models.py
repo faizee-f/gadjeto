@@ -63,10 +63,10 @@ class VariationOffer(models.Model):
 
 
 class Coupen(models.Model):
-    coupen_code=models.CharField(max_length=100)
+    coupen_code=models.CharField(max_length=100,unique=True)
     coupen_count=models.IntegerField()
-    valid_from=models.DateTimeField()
-    valid_to=models.DateTimeField()
+    valid_from=models.DateField()
+    valid_to=models.DateField()
     discount=models.IntegerField()
     is_active=models.BooleanField(default=True)
     created_at=models.DateTimeField(auto_now_add=True)

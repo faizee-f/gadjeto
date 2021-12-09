@@ -1,9 +1,13 @@
+from django import forms
 from django.shortcuts import redirect, render
 from account.models import Account
 from django.contrib import messages, auth
 from category.forms import AddCategoryForm
 from category.models import category
 from django.contrib.auth.decorators import user_passes_test
+from offer.form import CouponForm
+
+from offer.models import Coupen, RedeemedCoupen
 
 
 # Create your views here.
@@ -136,6 +140,7 @@ def edit_category(request,cat_id):
 def delete_category(request,cat_id):
     cat=category.objects.get(id=cat_id)
     cat.delete()
+    messages.success(request,'Category deleted')
     return redirect ('category_list')
     
     
@@ -234,3 +239,63 @@ def delete_category(request,cat_id):
 #     var.delete()
 #     return redirect ('varient_category_list')
 
+def coupon_list(request):
+    if request.method=="POST":
+        form=CouponForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request,'Coupen created ')
+            return redirect('coupon_list')
+        else:
+            messages.error(request,"Failed to add the coupon ")
+            return redirect('coupon_list')
+
+    else:
+        all_coupons=Coupen.objects.all()
+        redeemed_coupen=RedeemedCoupen.objects.all()
+        redeemed_coupen_count=redeemed_coupen.count()
+        coupen_count=all_coupons.count()
+        
+        form=CouponForm()
+    context={
+        'all_coupons':all_coupons,
+        'form':form,
+        'coupen_count':coupen_count,
+        'redeemed_coupen_count':redeemed_coupen_count,
+    }
+    return render(request,'admin/coupen_list.html',context)
+
+def activate_coupen(request,id):
+    coupen=Coupen.objects.get(id=id)
+    if coupen.is_active==True:
+        coupen.is_active=False
+        coupen.save()
+        messages.success(request,'Coupen disabled')
+    else:
+        coupen.is_active=True
+        coupen.save()
+        messages.success(request,'Coupen enabled')
+    return redirect('coupon_list')
+
+
+def delete_coupen(request,id):
+    Coupen.objects.get(id=id).delete()
+    messages.success(request,'Coupen deleted successfully ')
+    return redirect('coupon_list')
+
+def edit_coupon(request,id):
+    edit=Coupen.objects.get(id=id)
+    if request.method=='POST':
+        form=CouponForm(request.POST,instance=edit)
+        if form.is_valid():
+            form.save()
+            return redirect('coupon_list')
+        else:
+            print(form.errors)
+    else:
+        edit=Coupen.objects.get(id=id)
+        form=CouponForm(instance=edit)
+    context={
+        'form':form,
+    }
+    return render(request,'admin/edit_coupon.html',context)

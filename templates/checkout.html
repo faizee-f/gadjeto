@@ -29,8 +29,9 @@
                             <form action="{% url 'check_coupen' grand_total %}" method="POST" class="d-flex">
                                 {% csrf_token %}
                                 <div class="col-md-8">
-                                    <input type="text" name="coupen_code" class="form-control" {% if discount %}placeholder="{{coupen_code}}" disabled { % else %}
-                                        placeholder="Do you have a coupen code ?" {% endif %} >
+                                    <input type="text" name="coupen_code" class="form-control" {% if discount is None %}
+                                        placeholder="Do you have a coupen code ?" {% else %}
+                                        placeholder="{{coupen_code}}" disabled {% endif %}>
 
                                 </div>
                                 <div class="col-md-1">
@@ -57,15 +58,33 @@
                                     data-parent="#accordion-3">
                                     <div class="card-body">
                                         <div class="col-lg-12">
-
                                             {% for x in address %}
+                                            <div class="col-sm-12 align-items-center">
 
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="flexRadioDefault"
-                                                    id="{{x.id}}">
+                                                <div class="col-md-">
+                                                    <input class="form-check-input" type="radio" name="radioaddress"
+                                                        id="{{x.id }}">
+                                                </div>
+                                                <div class="col-md-11">
+                                                    <label for="radioaddress" class="col=md-12">
 
-                                            </div>
+                                                        <b>{{x.first_name}}</b> <b> {{x.last_name}}</b>
+                                                        <b class="text-left">{{x.add_type}}</b><br>
+                                                        <span>{{x.address1}} ,</span>
+                                                        <span>{{x.address2}}</span>
+                                                        <span>{{x.city}}, {{x.state}},
+                                                            {{x.country}}</span><br><span>Pin : {{x.pincode}}</span>
+
+
+
+                                                        <p>{{x.phone}}</p>
+                                                    </label>
+                                                </div>
+                                            </div><!-- End .col-lg-6 -->
+
                                             {% endfor %}
+
+
                                         </div><!-- End .col-lg-6 -->
                                     </div><!-- End .card-body -->
                                 </div><!-- End .collapse -->
@@ -170,6 +189,14 @@
                                 </thead>
 
                                 <tbody>
+                                    {% if quick_check %}
+                                    <tr>
+                                        <td><a href="{{cart_items.get_url}}">{{cart_items.product}}
+                                                {{cart_items}}</a></td>
+                                        <td class="text-center">{{quantity}}</td>
+                                        <td>${{total|floatformat:0 }}</td>
+                                    </tr>
+                                    {% else %}
                                     {% for item in cart_items %}
                                     <tr>
                                         <td><a href="{{item.varient.get_url}}">{{item.varient.product}}
@@ -178,6 +205,7 @@
                                         <td>${{item.total|floatformat:0 }}</td>
                                     </tr>
                                     {% endfor %}
+                                    {% endif %}
                                     <tr class="summary-subtotal">
                                         <td>Subtotal:</td>
                                         <td></td>
@@ -207,7 +235,7 @@
                                         <td>${{grand_total|floatformat:0}}</td>
                                     </tr>
 
-                                    
+
                                     <!-- End .summary-total -->
                                 </tbody>
                             </table>
@@ -215,15 +243,17 @@
 
                             <div class="row mb-4">
                                 <div class="col-12 m-2">
-                                    <input type="radio" name="payment" id="paypal" placeholder="Paypal" value="paypal"> 
+                                    <input type="radio" name="payment" id="paypal" placeholder="Paypal" value="paypal">
                                     <label for="paypal">PayPal</label>
-                                    
+
                                 </div>
                                 <div class="col-12 m-2">
-                                    <input class="" type="radio" name="payment" id="razorpay" value="razorpay"> <label for="razorpay">Razorpay</label>
+                                    <input class="" type="radio" name="payment" id="razorpay" value="razorpay"> <label
+                                        for="razorpay">Razorpay</label>
                                 </div>
                                 <div class="col-12 m-2">
-                                    <input type="radio" name="payment" id="cod" value="cod"> <label for="cod">Cash on delivery</label>
+                                    <input type="radio" name="payment" id="cod" value="cod"> <label for="cod">Cash on
+                                        delivery</label>
                                 </div>
                             </div>
                             <!-- End .accordion -->
@@ -246,4 +276,12 @@
     </div>
     <!-- End .page-content -->
 </main>
+
+<script>
+    $(document).ready(function () {
+        $("input[name$='radioaddress']").click(function () {
+            console.log('hi');
+        });
+    });
+</script>
 <!-- End .main -->{% endblock %}

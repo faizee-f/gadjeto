@@ -29,6 +29,5 @@ urlpatterns = [
     path('edit_address/<id>', views.edit_address, name='edit_address'),
 
     path('change_password', views.change_password, name='change_password'),
-    
     path('user_profile', views.user_profile, name='user_profile'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -13,10 +13,13 @@
 
     <!-- Google fonts -->
     <link rel="preconnect" href="{% static 'vendor/../fonts.gstatic.com/index.html' %}">
-    <link href="{% static 'vendor/../fonts.googleapis.com/css26710.css?family=Poppins:wght@300;400;500;600&amp;display=swap' %}" rel="stylesheet">
+    <link
+        href="{% static 'vendor/../fonts.googleapis.com/css26710.css?family=Poppins:wght@300;400;500;600&amp;display=swap' %}"
+        rel="stylesheet">
 
     <!-- Bootstrap icons -->
-    <link rel="stylesheet" href="{% static 'vendor/dist/icons/bootstrap-icons-1.4.0/bootstrap-icons.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'vendor/dist/icons/bootstrap-icons-1.4.0/bootstrap-icons.min.css' %}"
+        type="text/css">
     <!-- Bootstrap Docs -->
     <link rel="stylesheet" href="{% static 'vendor/dist/css/bootstrap-docs.css' %}" type="text/css">
 
@@ -35,6 +38,19 @@
 </head>
 
 <body>
+    {% if messages %}
+    {% for message in messages %}
+    <script>
+        Swal.fire({
+            position: 'middle',
+            icon: '{{message.tags}}',
+            title: '{{message}}',
+            showConfirmButton: false,
+            timer: 2000
+        })
+    </script>
+    {% endfor %}
+    {% endif %}
     <!-- {% if messages %} {% for message in messages %}
     <script>
         const Toast = Swal.mixin({
@@ -79,16 +95,16 @@
                 <li>
                     <a class="active" href="{% url 'admin_dashboard' %}">
                         <span class="nav-link-icon">
-                        <i class="bi bi-bar-chart"></i>
-                    </span>
+                            <i class="bi bi-bar-chart"></i>
+                        </span>
                         <span>Dashboard</span>
                     </a>
                 </li>
                 <li>
                     <a href="#">
                         <span class="nav-link-icon">
-                        <i class="bi bi-receipt"></i>
-                    </span>
+                            <i class="bi bi-receipt"></i>
+                        </span>
                         <span>Categories</span>
                     </a>
                     <ul>
@@ -98,7 +114,7 @@
                         <li>
                             <a href="">Manage Varient-categories</a>
                         </li>
-                         <li>
+                        <li>
                             <a href="">Manage Varients</a>
                         </li>
                     </ul>
@@ -106,8 +122,8 @@
                 <li>
                     <a href="#">
                         <span class="nav-link-icon">
-                        <i class="bi bi-truck"></i>
-                    </span>
+                            <i class="bi bi-truck"></i>
+                        </span>
                         <span>Vendors</span>
                     </a>
                     <ul>
@@ -117,15 +133,15 @@
                         </li>
                         <li>
                             <a href="#">Manage Vendors
-                            View</a>
+                                View</a>
                         </li>
                     </ul>
                 </li>
                 <li>
                     <a href="#">
                         <span class="nav-link-icon">
-                        <i class="bi bi-receipt"></i>
-                    </span>
+                            <i class="bi bi-receipt"></i>
+                        </span>
                         <span>Users</span>
                     </a>
                     <ul>
@@ -137,8 +153,21 @@
                 <li>
                     <a href="#">
                         <span class="nav-link-icon">
-                        <i class="bi bi-receipt"></i>
-                    </span>
+                            <i class="bi bi-receipt"></i>
+                        </span>
+                        <span>Coupon</span>
+                    </a>
+                    <ul>
+                        <li>
+                            <a href="{% url 'coupon_list' %}">Manage Coupons</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">
+                        <span class="nav-link-icon">
+                            <i class="bi bi-receipt"></i>
+                        </span>
                         <span>Report</span>
                     </a>
                     <ul>
@@ -186,14 +215,16 @@
                                 <small class="text-muted">Super Admin</small>
                             </div>
                             <div class="avatar me-3">
-                                <img src="{% static 'vendor/assets/images/user/man_avatar3.jpg' %}" class="rounded-circle" alt="image">
+                                <img src="{% static 'vendor/assets/images/user/man_avatar3.jpg' %}"
+                                    class="rounded-circle" alt="image">
                             </div>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end">
                             <a href="#" class="dropdown-item d-flex align-items-center">
                                 <i class="bi bi-person dropdown-item-icon"></i> Profile
                             </a>
-                            <a href="{% url 'admin_signout' %}" class="dropdown-item d-flex align-items-center text-danger">
+                            <a href="{% url 'admin_signout' %}"
+                                class="dropdown-item d-flex align-items-center text-danger">
                                 <i class="bi bi-box-arrow-right dropdown-item-icon"></i> Logout
                             </a>
                         </div>
@@ -235,10 +266,12 @@
     <!-- Main Javascript file -->
     <script src="{% static 'vendor/dist/js/app.min.js' %}"></script>
 
-    <script type="text/javascript" charset="utf8" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.1.min.js"></script>
-    <script type="text/javascript" charset="utf8" src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.0/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" charset="utf8"
+        src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" charset="utf8"
+        src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.0/jquery.dataTables.min.js"></script>
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             $('table.datatable').DataTable();
         });
     </script>

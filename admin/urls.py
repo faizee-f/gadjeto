@@ -20,5 +20,11 @@ urlpatterns = [
     path('vendor_approval',views.vendor_approval,name='vendor_approval'),
     path('approve_vendor/<vendor_id>',views.approve_vendor,name='approve_vendor'),
     path('reject_vendor/<vendor_id>',views.reject_vendor,name='reject_vendor'),
-    path('user_block_unblock/<customer_id>',views.user_block_unblock,name='user_block_unblock'),    
+    path('user_block_unblock/<customer_id>',views.user_block_unblock,name='user_block_unblock'), 
+
+
+    path('coupon_list/',views.coupon_list,name='coupon_list'),   
+    path('edit_coupon/<int:id>',views.edit_coupon,name="edit_coupon"),
+    path('activate_coupen/<id>',views.activate_coupen,name="activate_coupen"),
+    path('delete_coupen/<id>',views.delete_coupen,name="delete_coupen"),
 ]+ static(settings.MEDIA_URL,document_root= settings.MEDIA_ROOT)

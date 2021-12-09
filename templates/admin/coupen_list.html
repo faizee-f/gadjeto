@@ -1,0 +1,148 @@
+{% extends 'admin/adbase.html'%} {% load static %} {% block content %}
+<div class="row justify-content-between">
+    <div class="col-9">
+        <div class="d-flex justify-content-evenly mb-3 ">
+            <div class="col-md-3 p-3 ">
+                <div class="card p-3 text-center bg-success text-white">
+                    <h1>{{coupen_count}}</h1>
+                    <h5>All Coupons</h5>
+                </div>
+            </div>
+            <div class="col-md-3 p-3">
+                <div class="card p-3 text-center bg-warning text-white">
+                    <h1>{{redeemed_coupen_count}}</h1>
+                    <h5>Coupons Redeemed</h5>
+                </div>
+            </div>
+            <div class="col-md-6 p-3">
+                <div class="card p-3"></div>
+            </div>
+
+
+        </div>
+        <div class="col-12">
+            <div class="table-responsive">
+                <table id="users" class="table table-custom table-lg ">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Coupon Code</th>
+                            <th>Coupon Count</th>
+                            <th>Discount</th>
+                            <th>Status</th>
+                            <th>Valid from</th>
+                            <th>Valid to</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for x in all_coupons %}
+                        <tr>
+                            <td>{{x.id}}</td>
+                            <td>{{x.coupen_code}}</td>
+                            <td>{{x.coupen_count}}</td>
+                            <td>{{x.discount}}</td>
+                            {% if x.is_active %}
+                            <td><span class="badge bg-success">Active</span></td>
+                            {% else %}
+                            <td><span class="badge bg-danger">Active</span></td>
+                            {% endif %}
+                            <td>{{x.valid_from}}</td>
+
+                            <td>{{x.valid_to}}</td>
+
+                            <td class="text-end">
+                                <a href="{% url 'edit_coupon' x.id %}" onclick="confirmStatus(event)" name="edit"
+                                    class="btn-sm btn-info">Edit</a>
+                                {% if x.is_active%}
+                                <a href="{% url 'activate_coupen' x.id %}" onclick="confirmStatus(event)" name="disable"
+                                    class="btn-sm btn-warning">Disable</a>
+                                {% else %}
+                                <a href="{% url 'activate_coupen' x.id %}" onclick="confirmStatus(event)" name="enable"
+                                    class="btn-sm btn-warning">Enable</a>
+                                {% endif%}
+                                <a href="{% url 'delete_coupen' x.id %}" onclick="confirmStatus(event)" name="delete"
+                                    class="btn-sm btn-danger">Delete</a>
+                            </td>
+
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-md-3">
+        <div class="accordion bg-white" id="accordionExample">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingOne">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        Add Coupon
+                    </button>
+                </h2>
+                <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne"
+                    data-bs-parent="#accordionExample">
+                    <div class="accordion-body  show bg-white">
+                        <div class="container">
+                            <form action="" method="POST">
+                                {% csrf_token %}
+                                {{form}}
+
+                                <input type="submit" class="btn btn-primary m-3" value="Add coupon">
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% if form.errors %}
+        {% for field in form %}
+        {% for error in field.errors %}
+        <div class="alert alert-danger">
+            <strong>{{ error|escape }}</strong>
+        </div>
+        {% endfor %}
+        {% endfor %}
+        {% endif %}
+    </div>
+
+
+</div>
+
+
+
+<script>
+    $("#id_category_name").keyup(function () {
+        var Text = $(this).val();
+        Text = Text.toLowerCase();
+        Text = Text.replace(/[^a-zA-Z0-9]+/g, '-');
+        $("#id_slug").val(Text);
+    });
+</script>
+<script>
+    function confirmStatus(event) {
+        event.preventDefault();
+        var linkURL = event.currentTarget.href;
+        var uname = event.currentTarget.name;
+        console.log(linkURL);
+        Swal.fire({
+            title: "Do you want to " + uname + " this coupon ? ",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, ' + uname + ' !'
+        })
+            .then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax
+                    window.location = linkURL;
+                } else {
+                    return false;
+                }
+            });
+    }
+</script>{% endblock %}

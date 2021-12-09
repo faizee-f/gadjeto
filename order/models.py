@@ -45,6 +45,7 @@ class Order(models.Model):
     order_note=models.CharField(max_length=200,blank=True)
     order_total=models.FloatField()
     tax=models.FloatField()
+    coupon_redeemed=models.IntegerField(blank=True,null=True)
     status=models.CharField(choices=STATUS,max_length=20,default='New')
     ip=models.CharField(blank=True,max_length=20)
     is_ordered=models.BooleanField(default=False)

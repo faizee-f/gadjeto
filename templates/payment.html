@@ -48,12 +48,12 @@
                                 <div class="card-body">
                                     <h5 class="card-title">
                                         {% if payment_type == 'razorpay' %}
-                              RazorPay
-                                {% elif payment_type == 'cod' %}
-                                Cash on delivery
-                                {% elif payment_type == 'paypal' %}
-                                PayPal
-                                {% endif %}
+                                        RazorPay
+                                        {% elif payment_type == 'cod' %}
+                                        Cash on delivery
+                                        {% elif payment_type == 'paypal' %}
+                                        PayPal
+                                        {% endif %}
 
                                     </h5>
                                 </div>
@@ -73,6 +73,14 @@
                                         </thead>
 
                                         <tbody>
+                                            {% if check %}
+                                            <tr>
+                                                <td><a href="{{cart_items.get_url}}">{{cart_items.product}}
+                                                        {{cart_items}}</a></td>
+                                                <td class="text-center">1</td>
+                                                <td>${{total|floatformat:0 }}</td>
+                                            </tr>
+                                            {% else %}
                                             {% for item in cart_items %}
                                             <tr>
                                                 <td><a href="{{item.varient.get_url}}">{{item.varient.product}}
@@ -81,7 +89,7 @@
                                                 <td>${{item.total}}</td>
                                             </tr>
                                             {% endfor %}
-
+                                            {% endif %}
                                         </tbody>
                                     </table>
                                 </div>
@@ -133,10 +141,11 @@
                                 {% elif payment_type == 'cod' %}
                                 <div class="row mb-3">
                                     <!-- Payment Button -->
-                                    <button class="btn btn-outline-primary-2 col-md-12">Cash on delivery</button>
+                                    <a href="{% url 'cash_on_delivery' %}"
+                                        class="btn btn-outline-primary-2 col-md-12">Cash on delivery</a>
                                 </div>
                                 {% elif payment_type == 'paypal' %}
-                                <div  id="paypal-button-container"></div>
+                                <div id="paypal-button-container"></div>
                                 {% endif %}
                             </div>
                             <!-- End .summary -->

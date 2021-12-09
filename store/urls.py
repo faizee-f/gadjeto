@@ -15,4 +15,5 @@ urlpatterns = [
     path('search/',views.search,name='search'),
     
     path('submit_review/<varient_id>',views.submit_review,name='submit_review'),
+    path('quick_buy/<id>',views.quick_buy,name='quick_buy'),
 ]

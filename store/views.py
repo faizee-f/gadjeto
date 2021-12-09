@@ -1,6 +1,7 @@
 from django.core import paginator
 from django.contrib import messages
 from django.db.models import Q
+from django.http import request
 from django.http.response import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from category.models import category
@@ -11,6 +12,8 @@ from store.models import ReviewRating, Variation, product
 from cart.models import CartItem
 from cart.views import _cart_id
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from django.contrib.auth.decorators import login_required
+
 # Create your views here.
 
 
@@ -93,8 +96,8 @@ def search(request):
     if 'keyword' in request.GET:
         keyword = request.GET['keyword']
         if keyword:
-            products = product.objects.order_by('-created_date').filter(
-                Q(description__icontains=keyword) | Q(product_name__icontains=keyword))
+            products = Variation.objects.order_by('-created_at').filter(
+                Q(product__description__icontains=keyword) | Q(product__product_name__icontains=keyword) | Q(varient_name__icontains=keyword) | Q(product__vendor__brand_name__icontains=keyword) )
             product_count=products.count()
     context = {
         'products': products,
@@ -127,3 +130,11 @@ def submit_review(request,varient_id):
                 messages.success(request,'Thank You, Your review has been submitted')
                 return redirect(url)
     return redirect(url)
+
+
+def quick_buy(request,id):
+    varient=Variation.objects.get(id=id)
+    if 'quick_buy' in request.session:
+        del request.session['quick_buy']
+    request.session['quick_buy']=varient.id
+    return redirect('checkout')

@@ -12,70 +12,40 @@
     <div class="dashboard">
         <div class="container">
             <div class="row">
-                <aside class="col-md-4 col-lg-3">
-                    
-                    <ul class="nav nav-dashboard flex-column mb-3 mb-md-0" role="tablist">
-                        <li class="nav-item">
-                            <a class="nav-link active" href="{% url 'dashboard' %}" role="tab"
-                                aria-controls="tab-dashboard" aria-selected="true">Dashboard</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'user_order' %}" role="tab" aria-controls="tab-orders"
-                                aria-selected="false">Orders</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'user_address' %}" role="tab" aria-controls="tab-address"
-                                aria-selected="false">Adresses</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'user_profile' %}" role="tab" aria-controls="tab-account"
-                                aria-selected="false">My Profile</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Sign Out</a>
-                        </li>
-                    </ul>
-                </aside><!-- End .col-lg-3 -->
+                {% include 'user_dashboard/user_base.html' %}
 
-                <div class="col-md-8 col-lg-9">
-                    <div class="tab-content">
-                        <div class="tab-pane fade show active" id="tab-dashboard" role="tabpanel"
-                            aria-labelledby="tab-dashboard-link">
-                            
-                        </div><!-- .End .tab-pane -->
-                    </div><!-- End .col-lg-9 -->
-                </div><!-- End .row -->
-            </div><!-- End .container -->
-        </div><!-- End .dashboard -->
-    </div><!-- End .page-content -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            console.log('helloo');
-            $('#profile_picture').click(function () {
-                const { value: file } = await Swal.fire({
-                    title: 'Select image',
-                    input: 'file',
-                    inputAttributes: {
-                        'accept': 'image/*',
-                        'aria-label': 'Upload your profile picture'
-                    }
-                })
+                <div class="col-lg-10 col-md-10  mt-4 mt-lg-0">
+                    <div class="row justify-content-around">
+                        <div class="col-md-4">
+                            <div class="card border">
+                                <div class="p-5 ">
+                                    <div class="col-md-12 text-center">
 
-                if (file) {
-                    const reader = new FileReader()
-                    reader.onload = (e) => {
-                        Swal.fire({
-                            title: 'Your uploaded picture',
-                            imageUrl: e.target.result,
-                            imageAlt: 'The uploaded picture'
-                        })
-                    }
-                    reader.readAsDataURL(file)
-                }
+                                        <h3 class="text-primary"><b>{{total_orders}}</b></h3>
 
-            });
-        });
-    </script>
+                                    </div>
+                                    <div class="col-sm-12 text-center">
+                                        <h5 class="text-primary"><b>Total Orders</b></h5>
+                                    </div>
 
-    {% endblock %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card border">
+                                <div class="p-5">
+                                    <div class="col-md-12 text-center">
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- End .col-lg-9 -->
+            </div><!-- End .row -->
+        </div><!-- End .container -->
+    </div><!-- End .dashboard -->
+</div><!-- End .page-content -->
+
+{% endblock %}
