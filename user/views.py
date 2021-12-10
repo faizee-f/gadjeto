@@ -15,6 +15,7 @@ from user.models import Address, Profile
 import requests
 
 from user.forms import AddAdddressForm, UserProfileForm
+from vendors.models import Vendors
 # Create your views here.
 
 
@@ -113,6 +114,8 @@ def home(request):
     products = Variation.objects.all().filter(is_available=True)
     print(products)
     categories = category.objects.all()
+    brands=Vendors.objects.filter(vendor_id__is_varified=True)
+    print(brands)
     print(category)
     context = {
         'products': products,
