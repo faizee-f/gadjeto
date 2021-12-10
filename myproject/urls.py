@@ -28,15 +28,3 @@ urlpatterns = [
     path('cart/',include('cart.urls')),
     path('orders/',include('order.urls')),
 ]
-
-
-[program:gunicorn]
-directory=/home/ubuntu/gadgeto
-command=/home/ubuntu/.local/bin/gunicorn  --workers 3 --bind unix:/home/ubuntu/gadgeto/app.sock myproject.wsgi:application
-autostart=true
-autorestart=true
-stderr_logfile=/var/log/gunicorn/gunicorn.err.log
-stdout_logfile=/var/log/gunicorn/gunicorn.out.log
-
-[group:guni]
-programs:gunicorn
