@@ -106,6 +106,7 @@ DATABASES = {
         'NAME': 'gadgeto',
         'USER': 'faizeekhan',
         'PASSWORD': 'faizeekhan007',
+        'HOST':'localhost',
     }
 
 }
