@@ -20,7 +20,7 @@ class Address(models.Model):
     country=models.CharField(max_length=50)
     state=models.CharField(max_length=100)
     city=models.CharField(max_length=100)
-    pincode=models.IntegerField(max_length=6)
+    pincode=models.IntegerField()
     add_type=models.CharField(max_length=50,choices=ADD_TYPE)
 
     def __str__(self):

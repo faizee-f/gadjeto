@@ -9,13 +9,11 @@ from vendors.models import Vendors
 
 class product(models.Model):
     category=models.ForeignKey(category,on_delete=models.CASCADE)
-    vendor=models.ForeignKey(Vendors,on_delete=CASCADE)
+    vendor=models.ForeignKey(Vendors,on_delete=models.CASCADE)
     product_name=models.CharField(max_length=100)
     slug=models.SlugField(max_length=100)
     description=models.TextField(max_length=200,blank=True)
-    image1 =models.ImageField(upload_to='photos/product',blank=True)
-    image2 =models.ImageField(upload_to='photos/product',blank=True)
-    image3 =models.ImageField(upload_to='photos/product',blank=True)
+    image=models.ImageField(upload_to='photos/product',blank=True)
     is_available=models.BooleanField(default=True)
     created_at=models.TimeField(auto_now_add=True)
     updated_at=models.TimeField(auto_now=True)
@@ -61,7 +59,10 @@ class Variation(models.Model):
     ram=models.CharField(choices=MOBILE_RAM_CHOICE,max_length=20)
     storage=models.CharField(choices=MOBILE_STRG_CHOICE,max_length=50)
     color=models.ForeignKey(VarientColor,on_delete=models.CASCADE)
-    image=models.ImageField(upload_to='photos/product')
+    image4=models.ImageField(upload_to='photos/product', blank=True)
+    image1=models.ImageField(upload_to='photos/product',blank=True)
+    image2=models.ImageField(upload_to='photos/product',blank=True)
+    image3=models.ImageField(upload_to='photos/product',blank=True)
     margin_price=models.IntegerField()
     price=models.IntegerField()
     stock=models.IntegerField()
@@ -169,8 +170,8 @@ class Variation(models.Model):
 
 
 class ReviewRating(models.Model):
-    varient=models.ForeignKey(Variation,on_delete=CASCADE)
-    user=models.ForeignKey(Account,on_delete=CASCADE)
+    varient=models.ForeignKey(Variation,on_delete=models.CASCADE)
+    user=models.ForeignKey(Account,on_delete=models.CASCADE)
     subject=models.CharField(max_length=100,blank=True)
     review=models.TextField(max_length=500,blank=True)
     rating=models.FloatField()
@@ -189,4 +190,5 @@ class ReviewRating(models.Model):
 
 class Banners(models.Model):
     vendor=models.ForeignKey(Vendors,on_delete=models.CASCADE)
+    name=models.CharField(max_length=100,null=True)
     

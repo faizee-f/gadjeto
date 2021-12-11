@@ -61,7 +61,7 @@ def product_detail(request, category_slug, product_slug,varient_slug):
 
     try:
         ordered=OrderProduct.objects.filter(user=request.user,variation=single_varient).exists()
-    except OrderProduct.DoesNotExist:
+    except:
         ordered=None
     print(single_varient)
     print(ordered)

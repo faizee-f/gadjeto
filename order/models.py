@@ -11,7 +11,7 @@ from vendors.models import Vendors
 
 class Payment(models.Model):
     
-    user=models.ForeignKey(Account,on_delete=CASCADE)
+    user=models.ForeignKey(Account,on_delete=models.CASCADE)
     payment_id=models.CharField(max_length=100)
     payment_method=models.CharField(max_length=100)
     amount_paid=models.CharField(max_length=100)
@@ -30,7 +30,7 @@ class Order(models.Model):
     )
 
     user=models.ForeignKey(Account,on_delete=models.CASCADE,null=True)
-    payment=models.ForeignKey(Payment,on_delete=CASCADE,blank=True,null=True)
+    payment=models.ForeignKey(Payment,on_delete=models.CASCADE,blank=True,null=True)
     order_number=models.CharField(max_length=100)
     first_name=models.CharField(max_length=100)
     last_name=models.CharField(max_length=100)
@@ -70,13 +70,13 @@ class OrderProduct(models.Model):
         ('Cancelled','Cancelled'),
     )
 
-    order=models.ForeignKey(Order,on_delete=CASCADE)
+    order=models.ForeignKey(Order,on_delete=models.CASCADE)
     payment=models.ForeignKey(Payment,on_delete=models.SET_NULL,blank=True,null=True)
-    user=models.ForeignKey(Account,on_delete=CASCADE)
-    vendor=models.ForeignKey(Vendors,on_delete=CASCADE)
+    user=models.ForeignKey(Account,on_delete=models.CASCADE)
+    vendor=models.ForeignKey(Vendors,on_delete=models.CASCADE)
     status=models.CharField(choices=STATUS,max_length=20,default='New')
-    products=models.ForeignKey(product,on_delete=CASCADE)
-    variation=models.ForeignKey(Variation,on_delete=CASCADE)
+    products=models.ForeignKey(product,on_delete=models.CASCADE)
+    variation=models.ForeignKey(Variation,on_delete=models.CASCADE)
     quantity=models.IntegerField()
     price=models.FloatField()
     test=models.CharField(max_length=100,blank=True)

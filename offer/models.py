@@ -10,7 +10,7 @@ from vendors.models import Vendors
 # Create your models here.
     
 class CategoryOffer(models.Model):
-    category_name=models.OneToOneField(category,on_delete=CASCADE)
+    category_name=models.OneToOneField(category,on_delete=models.CASCADE)
     offer=models.IntegerField()
     created_at=models.DateTimeField(auto_now_add=True)
     modified_at=models.DateTimeField(auto_now=True)
@@ -20,7 +20,7 @@ class CategoryOffer(models.Model):
         return self.category_name
 
 class SubCategoryOffer(models.Model):
-    subcategory_name=models.OneToOneField(sub_category,on_delete=CASCADE)
+    subcategory_name=models.OneToOneField(sub_category,on_delete=models.CASCADE)
     offer=models.IntegerField()
     created_at=models.DateTimeField(auto_now_add=True)
     modified_at=models.DateTimeField(auto_now=True)
@@ -30,7 +30,7 @@ class SubCategoryOffer(models.Model):
         return self.subcategory_name
 
 class VendorOffer(models.Model):
-    vendor_name=models.OneToOneField(Vendors,on_delete=CASCADE)
+    vendor_name=models.OneToOneField(Vendors,on_delete=models.CASCADE)
     offer=models.IntegerField()
     created_at=models.DateTimeField(auto_now_add=True)
     modified_at=models.DateTimeField(auto_now=True)
@@ -40,7 +40,7 @@ class VendorOffer(models.Model):
         return self.vendor_name
 
 class ProductOffer(models.Model):
-    product_name=models.OneToOneField(product,on_delete=CASCADE)
+    product_name=models.OneToOneField(product,on_delete=models.CASCADE)
     offer=models.IntegerField()
     created_at=models.DateTimeField(auto_now_add=True)
     modified_at=models.DateTimeField(auto_now=True)
@@ -50,7 +50,7 @@ class ProductOffer(models.Model):
         return self.product_name
 
 class VariationOffer(models.Model):
-    variation_name=models.OneToOneField(Variation,on_delete=CASCADE)
+    variation_name=models.OneToOneField(Variation,on_delete=models.CASCADE)
     offer=models.IntegerField()
     created_at=models.DateTimeField(auto_now_add=True)
     modified_at=models.DateTimeField(auto_now=True)

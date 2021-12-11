@@ -11,7 +11,7 @@ class AddProductForm(forms.ModelForm):
     class Meta:
         model = product
         fields = ("category", "product_name", "slug",
-                  "description", "image1", "image2", "image3")
+                  "description", "image",)
 
     def __init__(self, *args, **kwargs):
         super(AddProductForm, self).__init__(*args, **kwargs)
@@ -54,7 +54,7 @@ class AddProductForm(forms.ModelForm):
 class AddVariationForm(forms.ModelForm):
     class Meta:
         model=Variation
-        fields=('varient_name','slug','ram','storage','color','image','margin_price','price','stock')
+        fields=('varient_name','slug','ram','storage','color','image1','image2','image3','image4','margin_price','price','stock')
     def __init__(self, *args, **kwargs):
         super(AddVariationForm, self).__init__(*args, **kwargs)
         for field in self.fields:
