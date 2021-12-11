@@ -1,5 +1,9 @@
 {% extends 'base.html'%} {% load static %} {% block content %}
-
+<style>
+    .error {
+        color: red;
+    }
+</style>
 <main class="main">
     {% comment %}
     <nav aria-label="breadcrumb" class="breadcrumb-nav border-0 mb-0">
@@ -14,18 +18,20 @@
     </nav>
     <!-- End .breadcrumb-nav -->{% endcomment %}
 
-    <div class="login-page bg-image pt-8 pb-8 pt-md-12 pb-md-12 pt-lg-17 pb-lg-17" style="background-image: url('assets/images/backgrounds/login-bg.jpg')">
+    <div class="login-page bg-image pt-8 pb-8 pt-md-12 pb-md-12 pt-lg-17 pb-lg-17"
+        style="background-image: url('assets/images/backgrounds/login-bg.jpg')">
         <div class="container">
             <div class="form-box">
                 <div class="form-tab">
                     <ul class="nav nav-pills nav-fill" role="tablist">
                         <li class="nav-item">
-                            <a class="nav-link active" id="register-tab-2" data-toggle="tab" href="#register-2" role="tab" aria-controls="register-2" aria-selected="true">Register</a>
+                            <a class="nav-link active" id="register-tab-2" data-toggle="tab" href="#register-2"
+                                role="tab" aria-controls="register-2" aria-selected="true">Register</a>
                         </li>
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane fade show active" id="register-2" aria-labelledby="register-tab-2">
-                            <form action="{% url 'register' %}" method="POST">
+                            <form action="{% url 'register' %}" method="POST" id="register-form">
                                 {% csrf_token %}
                                 <div class="form-group">
                                     <label for="register-nname-2">First Name *</label> {{form.first_name}}
@@ -58,19 +64,22 @@
                                 <!-- End .form-group -->
 
                                 <div class="form-group">
-                                    <label for="register-password-2">Confirm Password *</label> {{form.confirm_password}}
+                                    <label for="register-password-2">Confirm Password *</label>
+                                    {{form.confirm_password}}
                                 </div>
                                 <!-- End .form-group -->
 
                                 <div class="form-footer">
                                     <button type="submit" class="btn btn-outline-primary-2">
-			                					<span>SIGN UP</span>
-			            						<i class="icon-long-arrow-right"></i>
-			                				</button>
+                                        <span>SIGN UP</span>
+                                        <i class="icon-long-arrow-right"></i>
+                                    </button>
 
                                     <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="register-policy-2" required>
-                                        <label class="custom-control-label" for="register-policy-2">I agree to the <a href="#">privacy policy</a> *</label>
+                                        <input type="checkbox" class="custom-control-input" id="register-policy-2"
+                                            required>
+                                        <label class="custom-control-label" for="register-policy-2">I agree to the <a
+                                                href="#">privacy policy</a> *</label>
                                     </div>
                                     <!-- End .custom-checkbox -->
                                 </div>
@@ -106,10 +115,59 @@
 <script src="{% static 'js/owl.carousel.min.js' %}"></script>
 <!-- Main JS File -->
 <script src="{% static 'js/main.js' %}"></script>
+<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.15.0/jquery.validate.min.js"></script>
+
+
+
+<script>
+    $(document).ready(function ($) {
+
+        $("#register-form").validate({
+            rules: {
+                first_name: "required",
+                last_name: "required",
+                password: {
+                    required: true,
+                    minlength: 6
+                },
+                email: "required",
+                gender: "required",
+
+                mobile: {
+                    required: true,
+                    phone_regex: true,
+                    maxlength: 10
+                },
+                confirm_password: {
+                    equalTo: '#password'
+                }
+
+            },
+            messages: {
+                first_name: "Please enter your first Name",
+                last_name: "Please enter your last Name",
+                password: {
+                    required: "Please provide a password",
+                    minlength: "Your password must be at least 6 characters long"
+                },
+                city: "Please enter your city",
+                gender: "This field is required"
+            },
+            errorPlacement: function (error, element) {
+                if (element.is(":radio")) {
+                    error.appendTo(element.parents('.form-group'));
+                }
+                else { // This is the default behavior 
+                    error.insertAfter(element);
+                }
+            },
+            submitHandler: function (form) {
+                form.submit();
+            }
+
+        });
+    });
+</script>
 {% endblock %}
-</body>
-
-
-<!-- molla/login.html  22 Nov 2019 10:04:03 GMT -->
-
-</html>
