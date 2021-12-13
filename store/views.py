@@ -25,9 +25,9 @@ def shop(request, category_slug=None):
 
     if category_slug != None:
         categories = get_object_or_404(category, slug=category_slug)
-        products = product.objects.all().filter(category=categories, is_available=True)
-        varients=Variation.objects.all().filter(product=products,is_available=True)
-        paginator = Paginator(products, 3)
+        varients=Variation.objects.all().filter(product__category=categories,is_available=True)
+        print(varients)
+        paginator = Paginator(varients, 3)
         page = request.GET.get('page')
         paged_product = paginator.get_page(page)
         product_count = varients.count()

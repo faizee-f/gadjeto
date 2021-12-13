@@ -131,7 +131,7 @@
                                                         <div class="d-flex justify-content-between">
                                                             <p class="mb-1 text-primary"><b>{{x.add_type}}</b></p>
 
-                                                        <p>{{x.phone}}</p>
+                                                            <p>{{x.phone}}</p>
                                                         </div>
                                                         <div class="btn-group">
                                                             <button type="button"
@@ -173,30 +173,32 @@
             </div><!-- End .container -->
         </div><!-- End .dashboard -->
     </div><!-- End .page-content -->
-    <script>
-        function confirmAddress(event) {
-            event.preventDefault();
-            var linkURL = event.currentTarget.href;
-            var action = event.currentTarget.title;
-            console.log(linkURL);
-            console.log(action)
-            Swal.fire({
-                title: "Do you want to " + action + " this address ? ",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: 'primary',
-                cancelButtonColor: 'success',
-                confirmButtonText: 'Yes, ' + action + ' !'
-            })
-                .then((result) => {
-                    if (result.isConfirmed) {
-                        window.location = linkURL;
-                    } else {
-                        return false;
-                    }
-                });
-        }
-    </script>
+</div>
+
+<script>
+    function confirmAddress(event) {
+        event.preventDefault();
+        var linkURL = event.currentTarget.href;
+        var action = event.currentTarget.title;
+        console.log(linkURL);
+        console.log(action)
+        Swal.fire({
+            title: "Do you want to " + action + " this address ? ",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: 'primary',
+            cancelButtonColor: 'success',
+            confirmButtonText: 'Yes, ' + action + ' !'
+        })
+            .then((result) => {
+                if (result.isConfirmed) {
+                    window.location = linkURL;
+                } else {
+                    return false;
+                }
+            });
+    }
+</script>
 
 
-    {% endblock %}
+{% endblock %}

@@ -17,6 +17,8 @@ from store.models import Variation, product
 from order.models import Order, OrderProduct
 from vendors.forms import RegisterVendor
 from vendors.models import Vendors
+import csv
+import datetime
 from django.http import HttpResponseRedirect
 from django.contrib.admin.views.decorators import staff_member_required
 from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
@@ -34,6 +36,22 @@ from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 # Create your views here.
 @staff_member_required(login_url='forbidden_user')
 def vendor_home(request):
+    # if 
+    # curr_user=request.user
+    
+    # vendor=Vendors.objects.get(vendor_id=curr_user.id)
+    # total_orders=OrderProduct.objects.filter(vendor=vendor)
+    # total_orders=total_orders.count()
+    # new_order=OrderProduct.objects.filter(vendor=vendor,status='New')
+    # new_order=new_order.count()
+    # delivered_orders=OrderProduct.objects.filter(vendor=vendor,status='Delivered')
+    # delivered_orders=delivered_orders.count()
+    
+    # context={
+    #     'total_orders':total_orders,
+    #     'new_order':new_order,
+    #     'delivered_orders':delivered_orders
+    # }
     return render(request, 'vendor/dashboard.html')
 
 
@@ -253,7 +271,10 @@ def add_varient(request, id=None):
             var = form.save(commit=False)
             var.product = selected_product
             if len(request.FILES) != 0:
-                var.image = request.FILES['image']
+                var.image1 = request.FILES['image1']
+                var.image2 = request.FILES['image2']
+                var.image3 = request.FILES['image3']
+                var.image4 = request.FILES['image4']
             var.save()
             messages.success(request, 'Variation saved Successfully')
             return redirect('varient_list')
@@ -490,6 +511,9 @@ def add_product_offer(request):
     }
     return render(request,'vendor/add_offer.html',context)
 
+
+
+
 def add_variation_offer(request):
     vendor=request.user
     form=VariationOfferForm(vendor_id=vendor.id)
@@ -506,3 +530,190 @@ def add_variation_offer(request):
         'form':form
     }
     return render(request,'vendor/add_offer.html',context)
+
+def sales_report(request):
+    try:
+        vendor = Vendors.objects.get(vendor_id=request.user.id)
+        print(vendor)
+    except ObjectDoesNotExist:
+        messages.warning(request, "Update your profile First")
+        return redirect(vendor_home)
+    ordered_products = OrderProduct.objects.filter(vendor=vendor,status='Delivered')
+    print(ordered_products)
+    context = {
+        'ordered_products': ordered_products
+    }
+
+    return render(request,'vendor/report.html',context)
+
+def product_report(request):
+    try:
+        vendor = Vendors.objects.get(vendor_id=request.user.id)
+        print(vendor)
+    except ObjectDoesNotExist:
+        messages.warning(request, "Update your profile First")
+        return redirect(vendor_home)
+    products = Variation.objects.filter(product__vendor=vendor)
+    sales = OrderProduct.objects.filter(ordered = True,status = 'Delivered',vendor=vendor)
+    orders = OrderProduct.objects.filter(ordered=True,vendor=vendor).order_by('-created_at')
+
+    if request.GET.get('from'):
+        date_from = datetime.datetime.strptime(request.GET.get('from'), "%Y-%m-%d")
+        date_to = datetime.datetime.strptime(request.GET.get('to'), "%Y-%m-%d")
+        date_to += datetime.timedelta(days=1)
+        orders = OrderProduct.objects.filter(created_at__range=[date_from, date_to])
+
+
+    if request.GET.get('from'):
+        date_from = datetime.datetime.strptime(request.GET.get('from'), "%Y-%m-%d")
+        date_to = datetime.datetime.strptime(request.GET.get('to'), "%Y-%m-%d")
+        date_to += datetime.timedelta(days=1)
+        sales = OrderProduct.objects.filter(created_at__range=[date_from, date_to])
+
+    context = {
+
+        'products':products,
+        'orders':orders,
+        'sales':sales,
+       
+
+    }
+    return render(request,'vendor/report.html',context)
+
+
+def product_export_csv(request):
+    vendor = Vendors.objects.get(vendor_id=request.user.id)
+    response = HttpResponse(content_type = 'text/csv')
+    response['Content-Disposition'] = 'attachement; filename=Product_Report.csv'
+
+    writer = csv.writer(response)
+    writer.writerow(['Product Name','Brand Name','Category Name','Rating','Price','Stock'])
+
+    products = Variation.objects.filter(product__vendor=vendor).order_by('id')
+
+    for product in products:
+        writer.writerow([product.product,product.varient_name,product.category,product.averageReview(),product.price,product.stock])
+
+    return response
+
+
+def product_export_pdf(request):
+    vendor = Vendors.objects.get(vendor_id=request.user.id)
+    response = HttpResponse(content_type = 'application/pdf')
+    response['Content-Disposition'] = 'inline; attachement; filename=Product_Report.pdf'
+
+    response['Content-Transfer-Encoding'] = 'binary'
+
+    products = Product.objects.all().order_by('id')
+
+    html_string = render_to_string('admin/product_pdf_output.html', {
+                                    'products': products, 'total': 0})
+
+    html = HTML(string=html_string)
+
+    result = html.write_pdf()
+
+    with tempfile.NamedTemporaryFile(delete=True) as output:
+        output.write(result)
+        output.flush()
+        output = open(output.name, 'rb')
+        response.write(output.read())
+
+    return response
+
+
+def orders_export_csv(request):
+    vendor = Vendors.objects.get(vendor_id=request.user.id)
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename=orders.csv'
+
+    writer = csv.writer(response)
+    orders = OrderProduct.objects.filter(ordered=True).order_by('-created_at')
+
+    writer.writerow(
+        ['Order Number', 'Customer', 'Product', 'Amount', 'Payment', 'Qty', 'Status', 'Date',])
+
+    for order in orders:
+        writer.writerow([order.order.order_number, order.user.full_name(), order.product,
+                         order.product_price, order.payment.payment_method, order.quantity,
+                         order.status,order.updated_at,])
+    return response
+
+
+
+def orders_export_pdf(request):
+    vendor = Vendors.objects.get(vendor_id=request.user.id)
+    response = HttpResponse(content_type = 'application/pdf')
+    response['Content-Disposition'] = 'inline; attachement; filename=orders_Report.pdf'
+
+    response['Content-Transfer-Encoding'] = 'binary'
+
+    orders = OrderProduct.objects.filter(ordered=True).order_by('-created_at')
+
+    html_string = render_to_string('admin/orders_pdf_output.html', {
+                                    'orders': orders, 'total': 0})
+
+    html = HTML(string=html_string)
+
+    result = html.write_pdf()
+
+    with tempfile.NamedTemporaryFile(delete=True) as output:
+        output.write(result)
+        output.flush()
+        output = open(output.name, 'rb')
+        response.write(output.read())
+
+    return response
+
+
+
+def sales_export_csv(request):
+    vendor = Vendors.objects.get(vendor_id=request.user.id)
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename=sales.csv'
+
+    writer = csv.writer(response)
+    sales = OrderProduct.objects.filter(ordered = True,status = 'Delivered')
+    for sale in sales:
+        offer_price = Product.Offer_Price(sale.product)
+        if sale.product.Offer_Price: 
+            discount = int(offer_price['discount'])
+            for i in sale.variations.all():
+                print(i.color_name)
+
+
+    writer.writerow(
+        ['Product Name', 'Color', 'Product Price', 'Offer Price', 'Discount', 'Qty', 'Last Updation'])
+
+
+    writer.writerow([sale.product.product_name, i.color_name, sale.product.price,
+                    sale.product_price, discount, sale.quantity,
+                        sale.updated_at])
+    return response
+
+
+
+
+def sales_export_pdf(request):
+    vendor = Vendors.objects.get(vendor_id=request.user.id)
+    response = HttpResponse(content_type = 'application/pdf')
+    response['Content-Disposition'] = 'inline; attachement; filename=sales_Report.pdf'
+
+    response['Content-Transfer-Encoding'] = 'binary'
+
+    sales = OrderProduct.objects.filter(ordered = True,status = 'Delivered')
+
+    html_string = render_to_string('admin/sales_pdf_output.html', {
+                                    'sales': sales, 'total': 0})
+
+    html = HTML(string=html_string)
+
+    result = html.write_pdf()
+
+    with tempfile.NamedTemporaryFile(delete=True) as output:
+        output.write(result)
+        output.flush()
+        output = open(output.name, 'rb')
+        response.write(output.read())
+
+    return response

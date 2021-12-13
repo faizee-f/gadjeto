@@ -120,6 +120,7 @@ def home(request):
     context = {
         'products': products,
         'categories': categories,
+        'brands':brands,
         
     }
     return render(request, 'index.html', context)

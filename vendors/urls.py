@@ -51,4 +51,14 @@ urlpatterns = [
     path('add_product_offer',views.add_product_offer,name="add_product_offer"),
     path('add_variation_offer',views.add_variation_offer,name="add_variation_offer"),
 
+    #report generation
+
+    path('product_report',views.product_report,name="product_report"),
+    path('product_export_csv',views.product_export_csv,name="product_export_csv"),
+    path('product_export_pdf',views.product_export_pdf,name="product_export_pdf"),
+    path('orders_export_csv',views.orders_export_csv,name="orders_export_csv"),
+    path('orders_export_pdf',views.orders_export_pdf,name="orders_export_pdf"),
+    path('sales_export_csv',views.sales_export_csv,name="sales_export_csv"),
+    path('sales_export_pdf',views.sales_export_pdf,name="sales_export_pdf"),
+    
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

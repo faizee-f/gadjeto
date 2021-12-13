@@ -16,16 +16,16 @@
 
                 <div class="col-lg-10 col-md-10  mt-4 mt-lg-0">
                     <div class="col-12">
-                        <div class="col-12" >
+                        <div class="col-12">
                             <div class="accordion accordion-rounded accordion-plus" id="accordian-order">
 
                                 {% if orders %}
                                 {% for x in orders %}
 
-                                <div class="row col-md-12 mt-4 align-items-center" >
+                                <div class="row col-md-12 mt-4 align-items-center">
                                     <div class="col-md-2">
-                                        
-                                            <img src="{{x.variation.image.url}}" alt="image" width="70">
+
+                                        <img src="{{x.variation.image.url}}" alt="image" width="70">
                                     </div>
                                     <div class="col-md-3 ">
                                         <p><b>{{x.products}}</b>{{x.variation}}</p>
@@ -37,9 +37,9 @@
                                         <p>₹ {{x.grand_total}}</p>
                                     </div>
                                     <div class="col-md-3 d-flex">
-                                        <div >
+                                        <div>
                                             {% if x.status == 'New' %}
-                                            <h6 >Ordered on {{x.created_at| date:'D,d M y'}}</h6>
+                                            <h6>Ordered on {{x.created_at| date:'D,d M y'}}</h6>
                                             {% elif x.status == 'Cancelled' %}
                                             <h6>Cancelled on {{x.updated_at| date:'D,d M y'}} </h6>
                                             {% elif x.status == 'Accepted' %}
@@ -83,7 +83,8 @@
                                                                 <div>{{x.order.city}}</div>
                                                                 <div>{{x.order.state}}</div>
                                                                 <div>
-                                                                    <i class="bi bi-telephone me-2"></i> {{x.order.phone}}
+                                                                    <i class="bi bi-telephone me-2"></i>
+                                                                    {{x.order.phone}}
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -94,35 +95,42 @@
                                                                 <div class="d-flex justify-content-between">
                                                                     <h5 class="mb-0">Delivery Details</h5>
                                                                 </div>
-                                                                
+
                                                                 <div>Pin code: {{x.order.pincode}}</div>
                                                                 <div><span>Order note :</span>{% if x.order.order_note %}
                                                                     <p>{{x.order.order_note }}</p>
                                                                     {% else %}
-                                                                    <p >No notes </p>
+                                                                    <p>No notes </p>
                                                                     {% endif %}
-                            
+
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12 col-sm-12 pt45 pb20">
-                                                   
+
                                                     <div class="row justify-content-between">
                                                         <div class="order-tracking  completed ">
                                                             <span class="is-complete"></span>
-                                                            <p>Ordered<br><span>{{x.created_at| date:'D,d M y'}}</span></p>
+                                                            <p>Ordered<br><span>{{x.created_at| date:'D,d M y'}}</span>
+                                                            </p>
                                                         </div>
-                                                        
-                                                        <div class="order-tracking {% if x.status == 'Accepted' or x.status == 'Delivered' %} completed {% endif %} ">
+
+                                                        <div
+                                                            class="order-tracking {% if x.status == 'Accepted' or x.status == 'Delivered' %} completed {% endif %} ">
                                                             <span class="is-complete"></span>
-                                                            <p>Shipped<br><span>{% if x.status == 'Cancelled' %}{% else %}{{x.updated_at| date:'D,d M y'}}{% endif%}</span></p>
+                                                            <p>Shipped<br><span>{% if x.status == 'Cancelled' %}{% else %}{{x.updated_at| date:'D,d M y'}}{% endif%}</span>
+                                                            </p>
                                                         </div>
-                                                        
-                                                        <div class="order-tracking {% if x.status == 'Delivered' %} completed {% endif %}">
+
+                                                        <div
+                                                            class="order-tracking {% if x.status == 'Delivered' %} completed {% endif %}">
                                                             <span class="is-complete"></span>
-                                                            <p>{% if x.status == 'Cancelled' %} <span class="text-danger">Cancelled </span> {% else %} Delivered{% endif %}<br><span>{% if x.status == 'Cancelled' or x.status == 'Delivered' %}{{x.updated_at| date:'D,d M y'}}{% endif %}</span></p>
+                                                            <p>{% if x.status == 'Cancelled' %} <span
+                                                                    class="text-danger">Cancelled </span> {% else %}
+                                                                Delivered{% endif %}<br><span>{% if x.status == 'Cancelled' or x.status == 'Delivered'%}{{x.updated_at| date:'D,d M y'}}{% endif %}</span>
+                                                            </p>
                                                         </div>
 
                                                     </div>
@@ -145,29 +153,30 @@
             </div><!-- End .container -->
         </div><!-- End .dashboard -->
     </div><!-- End .page-content -->
-    <script>
-        function cancelOrder(event) {
-            event.preventDefault();
-            var linkURL = event.currentTarget.href;
-            var action = event.currentTarget.title;
-            console.log(linkURL);
-            console.log(action)
-            Swal.fire({
-                title: "Do you want to cancel this Order ? ",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: 'primary',
-                cancelButtonColor: 'success',
-                confirmButtonText: 'Yes, Cancel !'
-            })
-                .then((result) => {
-                    if (result.isConfirmed) {
-                        window.location = linkURL;
-                    } else {
-                        return false;
-                    }
-                });
-        }
-    </script>
+</div>
+<script>
+    function cancelOrder(event) {
+        event.preventDefault();
+        var linkURL = event.currentTarget.href;
+        var action = event.currentTarget.title;
+        console.log(linkURL);
+        console.log(action)
+        Swal.fire({
+            title: "Do you want to cancel this Order ? ",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: 'primary',
+            cancelButtonColor: 'success',
+            confirmButtonText: 'Yes, Cancel !'
+        })
+            .then((result) => {
+                if (result.isConfirmed) {
+                    window.location = linkURL;
+                } else {
+                    return false;
+                }
+            });
+    }
+</script>
 
-    {% endblock %}
+{% endblock %}
