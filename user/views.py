@@ -112,7 +112,7 @@ def user_profile(request):
 
 def home(request):
     try:
-        products = Variation.objects.all().filter(is_available=True)
+        products = Variation.objects.filter(is_available=True)
         print(products)
         categories = category.objects.all()
         brands=Vendors.objects.filter(vendor_id__is_varified=True)
