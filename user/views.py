@@ -111,20 +111,18 @@ def user_profile(request):
     
 
 def home(request):
-    try:
-        products = Variation.objects.filter(is_available=True)
-        categories = category.objects.all()
-        brands=Vendors.objects.filter(vendor_id__is_varified=True)
-        context = {
-        'products': products,
-        'categories': categories,
-        'brands':brands,
-        
-        }
-        return render(request, 'index.html', context)
+    
+    products = Variation.objects.filter(is_available=True)
+    categories = category.objects.all()
+    brands=Vendors.objects.filter(vendor_id__is_varified=True)
+    context = {
+    'products': products,
+    'categories': categories,
+    'brands':brands,
+    
+    }
+    return render(request, 'index.html', context)
 
-    except:
-        return render(request, 'index.html')
     
 
 
