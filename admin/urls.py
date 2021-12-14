@@ -1,6 +1,5 @@
 from os import name
 
-from django.conf.urls import url
 from myproject.settings import MEDIA_ROOT
 from . import views
 from django.urls import path
