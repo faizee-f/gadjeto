@@ -108,6 +108,7 @@ DATABASES = {
         'USER': 'faizee',
         'PASSWORD': 'nopassword',
         'HOST':'localhost',
+        
     }
 
 }
