@@ -8,6 +8,7 @@ from order.models import  OrderProduct
 from store.models import Variation
 from django.contrib import messages, auth
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 from account.otp import sendOTP, varifyOTP
 from cart.views import _cart_id
 from user.models import Address, Profile
@@ -125,7 +126,7 @@ def home(request):
 
     
 
-
+@csrf_exempt
 def signin(request):
     if request.user.is_authenticated:
         return redirect('home')
@@ -218,7 +219,7 @@ def forgot_password(request):
     messages.msg(request, "Enter your mobile Number !")
     return redirect(signin_otp)
 
-
+@csrf_exempt
 def signin_otp(request):
     if 'password' in request.session:
         del request.session['password']
@@ -240,14 +241,14 @@ def signin_otp(request):
             return redirect('signin_otp')
     return render(request, 'otplogin.html')
 
-
+@csrf_exempt
 def resend_otp(request):
     otpnumber = request.session['otpnumber']
     sendOTP(otpnumber)
     messages.info(request, 'OTP has send')
     return redirect('otp_validation')
 
-
+@csrf_exempt
 def register(request):
     global mobile_number
     if request.user.is_authenticated:
@@ -277,7 +278,7 @@ def register(request):
     context = {'form': form, }
     return render(request, 'register.html', context)
 
-
+@csrf_exempt
 def register_otp(request):
     if request.user.is_authenticated:
         return redirect('home')
@@ -317,7 +318,7 @@ def register_otp(request):
     #     return redirect('register')
     return render(request, 'otp_validation.html')
 
-
+@csrf_exempt
 def otp_validation(request):
     if request.user.is_authenticated:
         return redirect('home')
@@ -346,6 +347,7 @@ def signout(request):
 def forbidden_user(request):
     return render(request, 'forbidden.html')
 
+
 @login_required(login_url='signin')
 def cancel_order(request,id):
     item=OrderProduct.objects.get(id=id)
@@ -353,6 +355,7 @@ def cancel_order(request,id):
     item.save()
     return redirect('user_order')
 
+@csrf_exempt
 @login_required(login_url='signin')
 def change_password(request):
     if request.method=="POST":

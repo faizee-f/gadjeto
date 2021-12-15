@@ -115,8 +115,6 @@
 <script src="{% static 'js/owl.carousel.min.js' %}"></script>
 <!-- Main JS File -->
 <script src="{% static 'js/main.js' %}"></script>
-<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.15.0/jquery.validate.min.js"></script>
 
 
@@ -126,42 +124,20 @@
 
         $("#register-form").validate({
             rules: {
-                first_name: "required",
-                last_name: "required",
+                email: {
+                    required: true,
+                    email: true
+                },
                 password: {
                     required: true,
                     minlength: 6
                 },
-                email: "required",
-                gender: "required",
-
-                mobile: {
-                    required: true,
-                    phone_regex: true,
-                    maxlength: 10
-                },
-                confirm_password: {
-                    equalTo: '#password'
-                }
-
             },
             messages: {
-                first_name: "Please enter your first Name",
-                last_name: "Please enter your last Name",
+                email: "Please enter your email",
                 password: {
                     required: "Please provide a password",
-                    minlength: "Your password must be at least 6 characters long"
                 },
-                city: "Please enter your city",
-                gender: "This field is required"
-            },
-            errorPlacement: function (error, element) {
-                if (element.is(":radio")) {
-                    error.appendTo(element.parents('.form-group'));
-                }
-                else { // This is the default behavior 
-                    error.insertAfter(element);
-                }
             },
             submitHandler: function (form) {
                 form.submit();
