@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
-    'storages',
     'crispy_forms',
     'user',
     'account',
@@ -50,6 +49,7 @@ INSTALLED_APPS = [
     'cart',
     'order',
     'offer',
+    'storages',
   
 ]
 
