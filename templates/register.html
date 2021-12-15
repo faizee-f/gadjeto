@@ -31,8 +31,11 @@
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane fade show active" id="register-2" aria-labelledby="register-tab-2">
-                            <form action="{% url 'register' %}" method="POST" id="register-form">
+                            <form action="{% url 'register' %}" method="POST" id="register-form" novalidate="novalidate">
                                 {% csrf_token %}
+                                <div class="form-group text-center text-danger">
+                                    {{ form.email.errors }} {{ form.non_field_errors }}
+                                </div>
                                 <div class="form-group">
                                     <label for="register-nname-2">First Name *</label> {{form.first_name}}
                                 </div>
@@ -70,22 +73,13 @@
                                 <!-- End .form-group -->
 
                                 <div class="form-footer">
-                                    <button type="submit" class="btn btn-outline-primary-2">
-                                        <span>SIGN UP</span>
-                                        <i class="icon-long-arrow-right"></i>
-                                    </button>
-
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="register-policy-2"
-                                            required>
-                                        <label class="custom-control-label" for="register-policy-2">I agree to the <a
-                                                href="#">privacy policy</a> *</label>
-                                    </div>
+                                    <input type="submit" class="btn btn-outline-primary-2" value="SIGN UP">
+                                        
                                     <!-- End .custom-checkbox -->
                                 </div>
                                 <!-- End .form-footer -->
 
-                                {{ form.email.errors }} {{ form.non_field_errors }}
+                                
                             </form>
 
                         </div>
@@ -115,8 +109,7 @@
 <script src="{% static 'js/owl.carousel.min.js' %}"></script>
 <!-- Main JS File -->
 <script src="{% static 'js/main.js' %}"></script>
-<script src="https://cdn.jsdelivr.net/jquery.validation/1.15.0/jquery.validate.min.js"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js" integrity="sha512-37T7leoNS06R80c8Ulq7cdCDU5MNQBwlYoy1TX/WUsLFC2eYNqtKlV0QjH7r8JpG/S0GUMZwebnVFLPd6SU5yg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 
 <script>
@@ -124,6 +117,12 @@
 
         $("#register-form").validate({
             rules: {
+                first_name:{
+                    required: true
+                },
+                last_name:{
+                    required: true
+                },
                 email: {
                     required: true,
                     email: true
