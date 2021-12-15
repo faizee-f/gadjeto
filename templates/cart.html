@@ -20,13 +20,14 @@
             <div class="cart">
                 <div class="container">
                     <div class="row">
+                        {% if not cart_items %}
+                        <div class=" text-center mt-5 col-lg-12">
+                            <h2 class="text-primary">Cart is empty </h2>
+                            <a href="{% url 'home' %}" class="btn btn-outline-dark"><span>CONTINUE SHOPPING</span><i
+                                    class="icon-refresh"></i></a>
+                        </div> {% else %}
                         <div class="col-lg-9">
-                            {% if not cart_items %}
-                            <div class=" text-center mt-5">
-                                <h2 class="text-primary">Cart is empty </h2>
-                                <a href="{% url 'home' %}" class="btn btn-outline-dark"><span>CONTINUE SHOPPING</span><i
-                                        class="icon-refresh"></i></a>
-                            </div> {% else %}
+                           
                             <table class="table table-cart table-mobile">
                                 <thead>
                                     <tr>
@@ -45,7 +46,7 @@
                                             <div class="product">
                                                 <figure class="product-media">
                                                     <a href="#">
-                                                        <img src="{{cart_item.varient.image.url}}" alt="Product image">
+                                                        <img src="{{cart_item.varient.image1.url}}" alt="Product image">
                                                     </a>
                                                 </figure>
 
@@ -85,12 +86,12 @@
                             </table>
                             <!-- End .table table-wishlist -->
 
-                            <
+                            
 
-                            {% endif %}
                         </div>
                         <!-- End .col-lg-9 -->
                         <aside class="col-lg-3">
+                        
                             <div class="summary summary-cart">
                                 <h3 class="summary-title">Cart Total</h3>
                                 <!-- End .summary-title -->
@@ -130,8 +131,10 @@
                             <a href="{% url 'home' %}" class="btn btn-outline-dark-2 btn-block mb-3"><span>CONTINUE
                                     SHOPPING</span><i class="icon-refresh"></i></a>
                         </aside>
+                        
                         <!-- End .col-lg-3 -->
                     </div>
+                    {% endif %}
                     <!-- End .row -->
                 </div>
                 <!-- End .container -->
@@ -142,7 +145,7 @@
     </main>
     <!-- End .main -->
 
-    < </div>
+    </div>
         <!-- End .page-wrapper -->
         <button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
 

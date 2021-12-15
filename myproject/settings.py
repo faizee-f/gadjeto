@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
+    'storages',
     'crispy_forms',
     'user',
     'account',
@@ -147,26 +148,57 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_URL = '/static/'
 
 
-WHITENOISE_USE_FINDERS = True
+
+
+...
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/1.11/howto/static-files/
+
+AWS_ACCESS_KEY_ID =config('AWS_ACCESS_KEY_ID') 
+AWS_SECRET_ACCESS_KEY =config('AWS_SECRET_ACCESS_KEY') 
+AWS_STORAGE_BUCKET_NAME =config('AWS_STORAGE_BUCKET_NAME')
+AWS_S3_ENDPOINT_URL = 'https://nyc3.digitaloceanspaces.com'
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
+AWS_LOCATION = 'gadgeto'
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+
+
+STATIC_URL = 'https://%s/%s/' % (AWS_S3_ENDPOINT_URL, AWS_LOCATION)
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+
+MEDIA_URL='/media/'
+MEDIA_ROOT=os.path.join(BASE_DIR,'media')
+
+
+
+# STATIC_URL = '/static/'
+
+
+# WHITENOISE_USE_FINDERS = True
 #STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
 
-STATICFILES_DIRS=[
-    os.path.join(BASE_DIR,'static')
-]
-STATIC_ROOT = os.path.join(BASE_DIR,'asset')
+# STATICFILES_DIRS=[
+#     os.path.join(BASE_DIR,'static')
+# ]
+# STATIC_ROOT = os.path.join(BASE_DIR,'asset')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-MEDIA_URL='/media/'
-MEDIA_ROOT=os.path.join(BASE_DIR,'media')
+
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
