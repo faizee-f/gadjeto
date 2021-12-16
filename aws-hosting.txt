@@ -18,6 +18,11 @@ ALTER ROLE faizeekhan SET timezone TO 'UTC';
 GRANT ALL PRIVILEGES ON DATABASE gadgeto TO faizeekhan;
 
 
+#certificate
+
+sudo certbot --nginx -d gadgeto.store -d www.gadgeto.store
+
+
 psql gadgeto -c "GRANT ALL ON ALL TABLES IN SCHEMA public to faizeekhan;"
 psql gadgeto -c "GRANT ALL ON ALL SEQUENCES IN SCHEMA public to faizeekhan;"
 psql gadgeto -c "GRANT ALL ON ALL FUNCTIONS IN SCHEMA public to faizeekhan;"

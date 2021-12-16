@@ -107,7 +107,8 @@ DATABASES = {
         'NAME': 'gadgeto',
         'USER': 'faizee',
         'PASSWORD': 'nopassword',
-        'HOST':'localhost',
+        'HOST':'68.183.93.69',
+        'PORT':'5432'
         
     }
 
