@@ -20,11 +20,11 @@ class product(models.Model):
     def __str__(self):
         return self.product_name
 
-class VarientColor(models.Model):
-    color_name=models.CharField(max_length=50,unique=True)
+# class VarientColor(models.Model):
+#     color_name=models.CharField(max_length=50,unique=True)
 
-    def __str__ (self):
-        return self.color_name
+#     def __str__ (self):
+#         return self.color_name
 
 
 # class VariationManager(models.Manager):
