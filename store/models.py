@@ -20,11 +20,11 @@ class product(models.Model):
     def __str__(self):
         return self.product_name
 
-# class VarientColor(models.Model):
-#     color_name=models.CharField(max_length=50,unique=True)
+class VarientColor(models.Model):
+    color_name=models.CharField(max_length=50,unique=True)
 
-#     def __str__ (self):
-#         return self.color_name
+    def __str__ (self):
+        return self.color_name
 
 
 # class VariationManager(models.Manager):
@@ -58,6 +58,7 @@ class Variation(models.Model):
     slug=models.SlugField(max_length=100)
     ram=models.CharField(choices=MOBILE_RAM_CHOICE,max_length=20)
     storage=models.CharField(choices=MOBILE_STRG_CHOICE,max_length=50)
+    color=models.ForeignKey(VarientColor,on_delete=models.CASCADE,null=True,blank=True)
     image4=models.ImageField(upload_to='photos/product', blank=True)
     image1=models.ImageField(upload_to='photos/product',blank=True)
     image2=models.ImageField(upload_to='photos/product',blank=True)
