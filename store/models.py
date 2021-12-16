@@ -58,7 +58,6 @@ class Variation(models.Model):
     slug=models.SlugField(max_length=100)
     ram=models.CharField(choices=MOBILE_RAM_CHOICE,max_length=20)
     storage=models.CharField(choices=MOBILE_STRG_CHOICE,max_length=50)
-    color=models.ForeignKey(VarientColor,on_delete=models.CASCADE)
     image4=models.ImageField(upload_to='photos/product', blank=True)
     image1=models.ImageField(upload_to='photos/product',blank=True)
     image2=models.ImageField(upload_to='photos/product',blank=True)

@@ -87,7 +87,7 @@
             if (minutes < 0) return;
             else if (seconds < 0 && minutes != 0) {
                 minutes -= 1;
-                seconds = 59;
+                seconds = 20;
             } else if (seconds < 10 && length.seconds != 2) seconds = '0' + seconds;
 
             $('.js-timeout').html(minutes + ':' + seconds);
