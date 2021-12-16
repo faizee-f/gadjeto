@@ -107,8 +107,8 @@ DATABASES = {
         'NAME': 'gadgeto',
         'USER': 'faizee',
         'PASSWORD': 'nopassword',
-        'HOST':'68.183.93.69',
-        'PORT':'5432'
+        'HOST':config('HOST'),
+        'PORT':config('PORT'),
         
     }
 
