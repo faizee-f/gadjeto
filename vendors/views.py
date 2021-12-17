@@ -255,7 +255,14 @@ def view_varient(request, id):
 
 @staff_member_required(login_url='forbidden_user')
 def varient_list(request):
-    varients = Variation.objects.all().order_by('created_at')
+    curr_user = request.user
+    print(curr_user)
+    try:
+        vendor = Vendors.objects.get(vendor_id=curr_user.id)
+    except ObjectDoesNotExist:
+        messages.warning(request, "Update your profile First")
+        return redirect(vendor_home)
+    varients = Variation.objects.filter(product__vendor=vendor).order_by('created_at')
     context = {
         'varients': varients,
     }
