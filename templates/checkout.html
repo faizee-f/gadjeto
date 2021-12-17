@@ -26,17 +26,17 @@
                 <div class="row">
                     <div class="col-lg-9">
                         <div class="col-md-8">
-                            <form action="{% url 'check_coupen' grand_total %}" method="POST" class="d-flex">
+                            <form action="{% url 'check_coupen' grand_total %}" method="POST" class="d-flex row" >
                                 {% csrf_token %}
-                                <div class="col-md-8">
-                                    <input type="text" name="coupen_code" class="form-control" {% if discount is None %}
+                                <div class="">
+                                    <input type="text" name="coupen_code" required class="form-control" {% if discount is None %}
                                         placeholder="Do you have a coupen code ?" {% else %}
                                         placeholder="{{coupen_code}}" disabled {% endif %}>
 
                                 </div>
-                                <div class="col-md-1">
-                                    <input type="submit" {% if discount %} disabled{% endif %} class="form-control "
-                                        value=">">
+                                <div class="  align-items-center">
+                                    <input type="submit" {% if discount %} disabled{% endif %} class="form-control bg-primary text-white"
+                                        value="Check">
 
                                 </div>
                             </form>
@@ -62,11 +62,12 @@
                                             <div class="col-sm-12 align-items-center">
 
                                                 <div class="col-md-">
-                                                    <input class="form-check-input" type="radio" name="radioaddress"
-                                                        id="{{x.id }}">
+                                                    
+                                                        <input type="radio" onchange="a('{{x.first_name}}','{{x.last_name}}','{{x.address1}}','{{x.address2}}','{{x.city}}','{{x.state}}','{{x.country}}','{{x.pincode}}','{{x.phone}}','{{x.email}}')"
+                                id="{{address.id}}" name="address" value="{{address.id}}">
                                                 </div>
                                                 <div class="col-md-11">
-                                                    <label for="radioaddress" class="col=md-12">
+                                                    <label for="address" class="col=md-12">
 
                                                         <b>{{x.first_name}}</b> <b> {{x.last_name}}</b>
                                                         <b class="text-left">{{x.add_type}}</b><br>
@@ -74,9 +75,7 @@
                                                         <span>{{x.address2}}</span>
                                                         <span>{{x.city}}, {{x.state}},
                                                             {{x.country}}</span><br><span>Pin : {{x.pincode}}</span>
-
-
-
+                                                        <p>{{x.email}}</p>
                                                         <p>{{x.phone}}</p>
                                                     </label>
                                                 </div>
@@ -103,42 +102,42 @@
                                     data-parent="#accordion-3">
                                     <div class="card-body">
                                         <!-- End .checkout-title -->
-                                        <form action="{% url 'place_order' %}" method="post">
+                                        <form action="{% url 'place_order' %}" method="post" id="address-form">
                                             {% csrf_token %}
                                             <div class="row">
                                                 <div class="col-sm-6">
                                                     <label>First Name *</label>
-                                                    <input type="text" name="first_name" class="form-control" required>
+                                                    <input type="text" name="first_name" id="first_name" class="form-control" required  >
                                                 </div>
                                                 <!-- End .col-sm-6 -->
 
                                                 <div class="col-sm-6">
                                                     <label>Last Name *</label>
-                                                    <input type="text" name="last_name" class="form-control" required>
+                                                    <input type="text" name="last_name" id="last_name" class="form-control" required  >
                                                 </div>
                                                 <!-- End .col-sm-6 -->
                                             </div>
                                             <!-- End .row -->
                                             <label>Country *</label>
-                                            <input type="text" name="country" class="form-control" required>
+                                            <input type="text" name="country" id="country" class="form-control" required  >
 
                                             <label>Address 1 *</label>
-                                            <input type="text" name="address1" class="form-control"
-                                                placeholder="Enter primary Address " required>
+                                            <input type="text" name="address1" id="address1" class="form-control" required 
+                                                placeholder="Enter primary Address " >
                                             <label>Address 2 *</label>
-                                            <input type="text" name="address2" class="form-control"
+                                            <input type="text" name="address2" id="address2" class="form-control"  
                                                 placeholder="address">
 
                                             <div class="row">
                                                 <div class="col-sm-6">
                                                     <label>Town / City *</label>
-                                                    <input type="text" name="city" class="form-control" required>
+                                                    <input type="text" name="city" id="city" class="form-control" required  >
                                                 </div>
                                                 <!-- End .col-sm-6 -->
 
                                                 <div class="col-sm-6">
                                                     <label>State *</label>
-                                                    <input type="text" name="state" class="form-control" required>
+                                                    <input type="text" name="state" id="state" class="form-control" required  >
                                                 </div>
                                                 <!-- End .col-sm-6 -->
                                             </div>
@@ -147,23 +146,23 @@
                                             <div class="row">
                                                 <div class="col-sm-6">
                                                     <label>Postcode / ZIP *</label>
-                                                    <input type="text" name="pincode" class="form-control" required>
+                                                    <input type="text" name="pincode" id="pincode" class="form-control" required  >
                                                 </div>
                                                 <!-- End .col-sm-6 -->
 
                                                 <div class="col-sm-6">
                                                     <label>Phone *</label>
-                                                    <input type="tel" name="phone" class="form-control" required>
+                                                    <input type="tel" name="phone" id="phone" class="form-control" required  >
                                                 </div>
                                                 <!-- End .col-sm-6 -->
                                             </div>
                                             <!-- End .row -->
 
                                             <label>Email address *</label>
-                                            <input type="email" name="email" class="form-control" required>
+                                            <input type="email" name="email" id="email" class="form-control" required  >
 
                                             <label>Order notes (optional)</label>
-                                            <textarea class="form-control" cols="30" rows="4"
+                                            <textarea class="form-control"   cols="30" rows="4"
                                                 placeholder="Notes about your order, e.g. special notes for delivery"></textarea>
                                     </div><!-- End .card-body -->
                                 </div><!-- End .collapse -->
@@ -202,14 +201,14 @@
                                         <td><a href="{{item.varient.get_url}}">{{item.varient.product}}
                                                 {{item.varient}}</a></td>
                                         <td class="text-center">{{item.quantity}}</td>
-                                        <td>${{item.total|floatformat:0 }}</td>
+                                        <td>₹{{item.total|floatformat:0 }}</td>
                                     </tr>
                                     {% endfor %}
                                     {% endif %}
                                     <tr class="summary-subtotal">
                                         <td>Subtotal:</td>
                                         <td></td>
-                                        <td>${{total|floatformat:0 }}</td>
+                                        <td>₹{{total|floatformat:0 }}</td>
                                     </tr>
                                     <!-- End .summary-subtotal -->
                                     <tr>
@@ -220,19 +219,19 @@
                                     <tr>
                                         <td>Tax:</td>
                                         <td></td>
-                                        <td>${{tax|floatformat:0}}</td>
+                                        <td>₹{{tax|floatformat:0}}</td>
                                     </tr>
                                     {% if discount %}
                                     <tr>
                                         <td>Discount:</td>
                                         <td></td>
-                                        <td>- ${{discount|floatformat:0}}</td>
+                                        <td>- ₹{{discount|floatformat:0}}</td>
                                     </tr>
                                     {% endif %}
                                     <tr class="summary-total">
                                         <td>Total:</td>
                                         <td></td>
-                                        <td>${{grand_total|floatformat:0}}</td>
+                                        <td>₹{{grand_total|floatformat:0}}</td>
                                     </tr>
 
 
@@ -261,7 +260,7 @@
                             <button type="submit" class="btn btn-outline-primary-2 btn-order btn-block">
                                 <span class="btn-text">Place Order</span>
                                 <span class="btn-hover-text">Place Order</span>
-                            </button>
+                        </button>
                         </div>
                         <!-- End .summary -->
                     </aside>
@@ -276,11 +275,63 @@
     </div>
     <!-- End .page-content -->
 </main>
+<!-- Plugins JS File -->
+
+<!-- Plugins JS File -->
+
+<!-- Plugins JS File -->
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js" integrity="sha512-37T7leoNS06R80c8Ulq7cdCDU5MNQBwlYoy1TX/WUsLFC2eYNqtKlV0QjH7r8JpG/S0GUMZwebnVFLPd6SU5yg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+<!-- Main JS File -->
+<script src="{% static 'js/main.js' %}"></script>
+<script>
+    function a(first_name, last_name, address_line_1, address_line_2, city, state, country, pincode, phone_number, email) {
+        document.getElementById('first_name').value = first_name
+        document.getElementById('last_name').value = last_name
+        document.getElementById('address1').value = address_line_1
+        document.getElementById('address2').value = address_line_2
+        document.getElementById('city').value = city
+        document.getElementById('state').value = state
+        document.getElementById('country').value = country
+        document.getElementById('pincode').value = pincode
+        document.getElementById('phone').value = phone_number
+        document.getElementById('email').value = email
+
+    }
+</script>
 
 <script>
-    $(document).ready(function () {
-        $("input[name$='radioaddress']").click(function () {
-            console.log('hi');
+    $(document).ready(function ($) {
+        console.log("hai");
+        $("#register-form").validate({
+            rules: {
+                first_name:{
+                    required: true
+                },
+                last_name:{
+                    required: true
+                },
+                email: {
+                    required: true,
+                    email: true
+                },
+                password: {
+                    required: true,
+                    minlength: 6
+                },
+            },
+            messages: {
+                email: "Please enter your email",
+                password: {
+                    required: "Please provide a password",
+                },
+            },
+            submitHandler: function (form) {
+                form.submit();
+            }
+
         });
     });
 </script>

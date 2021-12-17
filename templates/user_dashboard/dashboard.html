@@ -16,7 +16,7 @@
 
                 <div class="col-lg-10 col-md-10  mt-4 mt-lg-0">
                     <div class="row justify-content-around">
-                        <div class="col-md-4">
+                        <div class="col-md-4 col-sm-6">
                             <div class="card border">
                                 <div class="p-5 ">
                                     <div class="col-md-12 text-center">
@@ -31,14 +31,20 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="card border">
-                                <div class="p-5">
-                                    <div class="col-md-12 text-center">
-
+                        <div class="col-md-6 col-sm-6">
+                            <div class=" p-5">
+                                    <div class="col-md-12 row">
+                                        <div class="col-md-6 text-primary">
+                                            <h4>{{usr_profile.first_name}} {{usr_profile.last_name}}</h4>
+                                            <h5>{{usr_profile.email}}</h5>
+                                        </div>
+                                            <div class="col-md-4 p-3 text-right ">
+                                                <img src="{{usr_profile.profile_picture.url}}" alt="profile_picture" width="50vh" height="50vh" style="border-radius: 10px;">
+                                            
+                                            </div>
+                                            
                                     </div>
 
-                                </div>
                             </div>
                         </div>
                     </div>

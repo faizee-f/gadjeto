@@ -206,22 +206,14 @@
                                             <div class=" col-md-8 ">
                                                 <div class=" menu-col ">
                                                     <div class=" row ">
-                                                        <div class=" col-md-6 ">
-                                                            <div class=" menu-title ">By Brands</div>
-                                                            <!-- End .menu-title -->
-                                                            <ul>
-                                                                {% for b in brands %}
-                                                                <li><a href="">{{b.brand_name}}</a></li>
-                                                                {% endfor %}
-                                                            </ul>
-                                                        </div>
+                                                        
                                                         <!-- End .col-md-6 -->
 
                                                         <div class=" col-md-6 ">
                                                             <div class=" menu-title ">By Category</div>
                                                             <!-- End .menu-title -->
                                                             <ul>
-                                                                {% for cat in categories %}
+                                                                {% for cat in links %}
                                                                 <li><a href="{{cat.get_url}}">{{cat.category_name}}</a></li>
                                                                 {% endfor %}
                                                             </ul>
@@ -288,8 +280,11 @@
                     aria-labelledby="mobile-menu-link">
                     <nav class="mobile-nav">
                         <ul class="mobile-menu">
+                            <li>
+                                <a href="{% url 'home' %}">Home</a>
+                            </li>
                             <li class="active">
-                                <a >Home</a>
+                                <a href="{% url 'shop' %}">Shop</a>
 
                                 <ul>
                                     {% for category in links %}
@@ -406,5 +401,7 @@
     <!-- Main JS File -->
     <script src="{% static 'js/main.js' %}"></script>
     <script src="{% static 'js/demos/demo-3.js' %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js" integrity="sha512-37T7leoNS06R80c8Ulq7cdCDU5MNQBwlYoy1TX/WUsLFC2eYNqtKlV0QjH7r8JpG/S0GUMZwebnVFLPd6SU5yg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 
 </body>
