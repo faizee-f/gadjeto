@@ -143,7 +143,7 @@ def vendor_profile(request):
 
     return render(request, 'vendor/profile.html', context)
 
-
+@staff_member_required(login_url='forbidden_user')
 def add_product(request):
     curr_user = request.user
     print(curr_user)
@@ -169,7 +169,7 @@ def add_product(request):
     }
     return render(request, 'vendor/add_product.html', context)
 
-
+@staff_member_required(login_url='forbidden_user')
 def view_product(request):
     curr_user = request.user
     print(curr_user)
@@ -186,7 +186,7 @@ def view_product(request):
     }
     return render(request, 'vendor/product.html', context)
 
-
+@staff_member_required(login_url='forbidden_user')
 def edit_product(request, id):
     curr_user = request.user
     try:
@@ -213,13 +213,13 @@ def edit_product(request, id):
     }
     return render(request, 'vendor/add_product.html', context)
 
-
+@staff_member_required(login_url='forbidden_user')
 def delete_product(request, id):
     product.objects.get(id=id).delete()
     messages.success(request, "Product has been deleted ")
     return redirect('view_product')
 
-
+@staff_member_required(login_url='forbidden_user')
 def activate_product(request, id):
     selected_product = product.objects.get(pk=id)
     if selected_product.is_available:
@@ -232,7 +232,7 @@ def activate_product(request, id):
 
     return redirect('view_product')
 
-
+@staff_member_required(login_url='forbidden_user')
 def view_varient(request, id):
     curr_user = request.user
     selected_product = product.objects.get(id=id)
@@ -253,7 +253,7 @@ def view_varient(request, id):
     }
     return render(request, 'vendor/varients.html', context)
 
-
+@staff_member_required(login_url='forbidden_user')
 def varient_list(request):
     varients = Variation.objects.all().order_by('created_at')
     context = {
@@ -261,7 +261,7 @@ def varient_list(request):
     }
     return render(request, 'vendor/varient-list.html', context)
 
-
+@staff_member_required(login_url='forbidden_user')
 def add_varient(request, id=None):
     selected_product = product.objects.get(id=id)
     if request.method == "POST":
@@ -288,7 +288,7 @@ def add_varient(request, id=None):
     }
     return render(request, 'vendor/add_varient.html', context)
 
-
+@staff_member_required(login_url='forbidden_user')
 def edit_varient(request, id=None):
     curr_user = request.user
     try:
@@ -315,7 +315,7 @@ def edit_varient(request, id=None):
     }
     return render(request, 'vendor/add_varient.html', context)
 
-
+@staff_member_required(login_url='forbidden_user')
 def activate_varient(request, id):
     selected_varient = Variation.objects.get(pk=id)
     if selected_varient.is_available:
@@ -328,13 +328,13 @@ def activate_varient(request, id):
 
     return redirect('varient_list')
 
-
+@staff_member_required(login_url='forbidden_user')
 def delete_varient(request, id):
     Variation.objects.get(id=id).delete()
     messages.success(request, "Variation has been deleted ")
     return redirect('varient_list')
 
-
+@staff_member_required(login_url='forbidden_user')
 def view_order(request):
     try:
         vendor = Vendors.objects.get(vendor_id=request.user.id)
@@ -349,7 +349,7 @@ def view_order(request):
     }
     return render(request, 'vendor/order.html', context)
 
-
+@staff_member_required(login_url='forbidden_user')
 def view_order_detail(request, order_id):
 
     ordered_product = OrderProduct.objects.get(id=order_id)
@@ -360,7 +360,7 @@ def view_order_detail(request, order_id):
 
     return render(request, 'vendor/order-detail.html', context)
 
-
+@staff_member_required(login_url='forbidden_user')
 def view_offers(request):
     vendor = Vendors.objects.get(vendor_id=request.user.id)
     try:
@@ -382,7 +382,7 @@ def view_offers(request):
     }
     return render(request, 'vendor/offer.html', context)
 
-
+@staff_member_required(login_url='forbidden_user')
 def edit_varient_offers(request, id):
 
     selected_offer = VariationOffer.objects.get(id=id)
@@ -406,7 +406,7 @@ def edit_varient_offers(request, id):
     }
     return render(request,'vendor/add_offer.html', context)
 
-
+@staff_member_required(login_url='forbidden_user')
 def edit_product_offers(request, id=None):
     selected_offer = ProductOffer.objects.get(id=id)
     form = ProductOfferForm(instance=selected_offer)
@@ -430,7 +430,7 @@ def edit_product_offers(request, id=None):
     }
     return render(request,'vendor/add_offer.html', context)
 
-
+@staff_member_required(login_url='forbidden_user')
 def edit_vendor_offers(request, id=None):
     #Exception when there is no offer available
     try:
@@ -459,17 +459,19 @@ def edit_vendor_offers(request, id=None):
     }
     return render(request,'vendor/add_offer.html', context)
 
+@staff_member_required(login_url='forbidden_user')
 def delete_product_offer(request, id):
     ProductOffer.objects.get(id=id).delete()
     messages.success(request,'Product offer deleted Successfully ')
     return redirect('view_offers')
 
-
+@staff_member_required(login_url='forbidden_user')
 def delete_variation_offer(request, id):
     VariationOffer.objects.get(id=id).delete()
     messages.success(request,'Varient offer deleted Successfully ')
     return redirect('view_offers')
 
+@staff_member_required(login_url='forbidden_user')
 def activate_variation_offer(request, id):
     selected_varient = VariationOffer.objects.get(pk=id)
     if selected_varient.is_valid:
@@ -482,6 +484,7 @@ def activate_variation_offer(request, id):
 
     return redirect('view_offers')
 
+@staff_member_required(login_url='forbidden_user')
 def activate_product_offer(request, id):
     selected_product = ProductOffer.objects.get(pk=id)
     if selected_product.is_valid:
@@ -494,6 +497,7 @@ def activate_product_offer(request, id):
 
     return redirect('view_offers')
 
+@staff_member_required(login_url='forbidden_user')
 def add_product_offer(request):
     vendor=request.user
     form=ProductOfferForm(vendor_id=vendor.id)
@@ -511,9 +515,7 @@ def add_product_offer(request):
     }
     return render(request,'vendor/add_offer.html',context)
 
-
-
-
+@staff_member_required(login_url='forbidden_user')
 def add_variation_offer(request):
     vendor=request.user
     form=VariationOfferForm(vendor_id=vendor.id)
@@ -531,6 +533,11 @@ def add_variation_offer(request):
     }
     return render(request,'vendor/add_offer.html',context)
 
+
+#---------------------reports---------------------
+
+
+@staff_member_required(login_url='forbidden_user')
 def sales_report(request):
     try:
         vendor = Vendors.objects.get(vendor_id=request.user.id)
@@ -546,6 +553,7 @@ def sales_report(request):
 
     return render(request,'vendor/report.html',context)
 
+@staff_member_required(login_url='forbidden_user')
 def product_report(request):
     try:
         vendor = Vendors.objects.get(vendor_id=request.user.id)
@@ -580,7 +588,7 @@ def product_report(request):
     }
     return render(request,'vendor/report.html',context)
 
-
+@staff_member_required(login_url='forbidden_user')
 def product_export_csv(request):
     vendor = Vendors.objects.get(vendor_id=request.user.id)
     response = HttpResponse(content_type = 'text/csv')
@@ -596,7 +604,7 @@ def product_export_csv(request):
 
     return response
 
-
+@staff_member_required(login_url='forbidden_user')
 def product_export_pdf(request):
     vendor = Vendors.objects.get(vendor_id=request.user.id)
     response = HttpResponse(content_type = 'application/pdf')
@@ -621,7 +629,7 @@ def product_export_pdf(request):
 
     return response
 
-
+@staff_member_required(login_url='forbidden_user')
 def orders_export_csv(request):
     vendor = Vendors.objects.get(vendor_id=request.user.id)
     response = HttpResponse(content_type='text/csv')
@@ -639,8 +647,7 @@ def orders_export_csv(request):
                          order.status,order.updated_at,])
     return response
 
-
-
+@staff_member_required(login_url='forbidden_user')
 def orders_export_pdf(request):
     vendor = Vendors.objects.get(vendor_id=request.user.id)
     response = HttpResponse(content_type = 'application/pdf')
@@ -665,8 +672,7 @@ def orders_export_pdf(request):
 
     return response
 
-
-
+@staff_member_required(login_url='forbidden_user')
 def sales_export_csv(request):
     vendor = Vendors.objects.get(vendor_id=request.user.id)
     response = HttpResponse(content_type='text/csv')
@@ -691,10 +697,9 @@ def sales_export_csv(request):
                         sale.updated_at])
     return response
 
-
-
-
+@staff_member_required(login_url='forbidden_user')
 def sales_export_pdf(request):
+
     vendor = Vendors.objects.get(vendor_id=request.user.id)
     response = HttpResponse(content_type = 'application/pdf')
     response['Content-Disposition'] = 'inline; attachement; filename=sales_Report.pdf'
@@ -717,3 +722,38 @@ def sales_export_pdf(request):
         response.write(output.read())
 
     return response
+
+
+
+#--------------------order_management----------
+def order_shipped(request,id):
+    order=OrderProduct.objects.get(id=id)
+    order.status='Accepted'
+    order.save()
+    return redirect('view_order')
+
+def order_delivered(request,id):
+    order=OrderProduct.objects.get(id=id)
+    order.status='Delivered'
+    order.save()
+    return redirect('view_order')
+
+def order_cancelled(request,id):
+    order=OrderProduct.objects.get(id=id)
+    order.status='Cancelled'
+    order.save()
+    return redirect('view_order')
+
+def order_history(request):
+    try:
+        vendor = Vendors.objects.get(vendor_id=request.user.id)
+        print(vendor)
+    except ObjectDoesNotExist:
+        messages.warning(request, "Update your profile First")
+        return redirect(vendor_home)
+    ordered_products = OrderProduct.objects.filter(vendor=vendor,status='Delivered') | OrderProduct.objects.filter(vendor=vendor,status='Cancelled')
+    print(ordered_products)
+    context = {
+        'ordered_products': ordered_products
+    }
+    return render(request, 'vendor/order_history.html', context)

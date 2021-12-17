@@ -33,7 +33,6 @@
                         <th>Date</th>
                         <th>Total</th>
                         <th>Status</th>
-                        <th class="text-end">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -61,35 +60,7 @@
                             <span class="badge bg-warning">Shipped</span>
                             {% endif %}
                         </td>
-                        <td class="text-end">
-                            <div class="dropdown ms-auto">
-                                <a href="#" data-bs-toggle="dropdown" class="btn btn-primary dropdown-toggle"
-                                    aria-haspopup="true" aria-expanded="false">Actions</a>
-                                <div class="dropdown-menu dropdown-menu-end">
-                                    {% if ordered_product.status == 'New' %}
-                                    <a href="{% url 'order_shipped' ordered_product.id %}"
-                                        class="dropdown-item">Shipped</a>
-                                    <a href="{% url 'order_delivered' ordered_product.id %}"
-                                        class="dropdown-item">Delivered</a>
-                                    <a href="{% url 'order_cancelled' ordered_product.id %}"
-                                        class="dropdown-item">Cancel</a>
-
-                                    {% elif ordered_product.status == 'Cancelled' %}
-                                    
-
-                                    {% elif ordered_product.status == 'Delivered' %}
-                                    
-                                    {% elif ordered_product.status == 'Accepted' %}
-                                    
-                                    <a href="{% url 'order_delivered' ordered_product.id %}"
-                                        class="dropdown-item">Delivered</a>
-                                    <a href="{% url 'order_cancelled' ordered_product.id %}"
-                                        class="dropdown-item">Cancel</a>
-                                    {% endif %}
-                                    
-                                </div>
-                            </div>
-                        </td>
+                        
                     </tr>
 
                     {% endfor %}

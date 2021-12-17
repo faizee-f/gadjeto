@@ -61,4 +61,10 @@ urlpatterns = [
     path('sales_export_csv',views.sales_export_csv,name="sales_export_csv"),
     path('sales_export_pdf',views.sales_export_pdf,name="sales_export_pdf"),
     
+    
+    path('order_shipped/<id>',views.order_shipped,name="order_shipped"),
+    path('order_delivered/<id>',views.order_delivered,name="order_delivered"),
+    path('order_cancelled/<id>',views.order_cancelled,name="order_cancelled"),
+    path('order_history',views.order_history,name='order_history'),
+    
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
