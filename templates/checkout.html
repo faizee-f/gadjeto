@@ -146,13 +146,13 @@
                                             <div class="row">
                                                 <div class="col-sm-6">
                                                     <label>Postcode / ZIP *</label>
-                                                    <input type="text" name="pincode" id="pincode" class="form-control" required  >
+                                                    <input type="number" name="pincode" id="pincode" class="form-control" required  >
                                                 </div>
                                                 <!-- End .col-sm-6 -->
 
                                                 <div class="col-sm-6">
                                                     <label>Phone *</label>
-                                                    <input type="tel" name="phone" id="phone" class="form-control" required  >
+                                                    <input type="number" name="phone" id="phone" class="form-control" required  >
                                                 </div>
                                                 <!-- End .col-sm-6 -->
                                             </div>
@@ -301,11 +301,15 @@
 
     }
 </script>
-
+<style>
+    .error{
+        color: red;
+    }
+</style>
 <script>
     $(document).ready(function ($) {
         console.log("hai");
-        $("#register-form").validate({
+        $("#address-form").validate({
             rules: {
                 first_name:{
                     required: true
@@ -317,16 +321,41 @@
                     required: true,
                     email: true
                 },
-                password: {
-                    required: true,
-                    minlength: 6
+                address1:{
+                    required:true
+                },
+                city:{
+                    required:true
+                },
+                state:{
+                    required:true
+                },
+                pincode:{
+                    required:true,
+                    minlength:6,
+                    maxlength:6
+                },
+                phone:{
+                    required:true,
+                    minlength:10,
+                    maxlength:10
                 },
             },
             messages: {
-                email: "Please enter your email",
-                password: {
-                    required: "Please provide a password",
+                email:{
+                    required: "Please enter your email",
                 },
+                phone:{
+                    required:"Please enter a phone number",
+                    minlength:"Please provide a valid number",
+                    maxlength:"Please provide a valid number"
+                },
+                pincode:{
+                    required:"Pincode is required ",
+                    minlength:"Please provide a valid pincode",
+                    maxlength:"Please provide a valid pincode"
+                },
+                
             },
             submitHandler: function (form) {
                 form.submit();

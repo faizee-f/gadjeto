@@ -130,12 +130,30 @@
                     required: true,
                     minlength: 6
                 },
+                confirm_password : {
+                    minlength: 6,
+                    equalTo : '[name="password"]'
+                },
+                mobile: {
+                    required: true,
+                    minlength:10,
+                    maxlength:10
+                },
+                
             },
             messages: {
                 email: "Please enter your email",
                 password: {
                     required: "Please provide a password",
                 },
+                mobile: {
+                    required: "Please provide a mobile number",
+                    minlength:"Please enter a valid mobile number",
+                    maxlength:"Please enter a valid mobile number"
+                },
+                confirm_password:{
+                    equalTo : "Password doesn't match"
+                }
             },
             submitHandler: function (form) {
                 form.submit();
