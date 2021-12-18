@@ -134,7 +134,7 @@
                                             {% for i in varients %}
                                             {% if single_varient.ram == i.ram and single_varient.ram == i.ram %}
                                             <a href="{% url 'product_detail' i.product.category.slug i.product.slug i.slug %}"
-                                                class="btn btn-outline-dark m-1">{{i.ram}} + {{i.storage}}></a>
+                                                class="btn btn-outline-dark m-1">{{i.ram}} + {{i.storage}}</a>
                                             {% else %}
                                             <a href="{% url 'product_detail' i.product.category.slug i.product.slug i.slug %}"
                                                 class="btn btn-outline-dark m-1">{{i.ram}} + {{i.storage}}</a>

@@ -206,10 +206,7 @@
                                 <img src="{{product.image1.url}}" alt="Product image" class="product-image">
                             </a>
 
-                            <div class="product-action-vertical">
-                                <a href="#" class="btn-product-icon btn-wishlist btn-expandable"><span>add to
-                                        wishlist</span></a>
-                            </div>
+                            
                             <!-- End .product-action -->
 
                             <div class="product-action product-action-dark">
@@ -231,7 +228,7 @@
 
                     <div class="product-body">
                         <div class="product-cat">
-                            <a href="#">{{product.product.vendor}}</a>
+                            <a href="">{{product.product.vendor}}</a>
                         </div>
                         <!-- End .product-cat -->
                         <h3 class="product-title"><a href="{{product.get_url}}">{{product.product}}
@@ -312,9 +309,10 @@
                             }
                         }'>
                         {% for x in brands %}
-            <a href="#" class="brand">
-                <img src="" alt="{{x.brand_name}}">
-            </a>
+                        <div >
+                                <img src="{{x.logo.url}}"   height="100%" alt="{{x.brand_name}}">
+                        </div>
+           
             {% endfor %}
         </div>
         <!-- End .owl-carousel -->
@@ -407,7 +405,7 @@
                                             class="product-action justify-content-center text-center">
                                             <h6 class="text-danger">Out of stock
                                                 <h6>
-                                    </div {% else %} {% if in_cart %} <a href="{% url 'cart' %}" class="btn-product btn-cart"
+                                                </div> {% else %} {% if in_cart %} <a href="{% url 'cart' %}" class="btn-product btn-cart"
                                         title="Add to cart"><span>Go to Cart</span></a>
                                     {% else %}
                                     <a href="{% url 'add_cart' product.id %}" class="btn-product btn-cart"
@@ -449,7 +447,7 @@
                 <!-- End .owl-carousel -->
             </div>
             <!-- .End .tab-pane -->
-            {% for x in brands %}
+            {% for x in brands.product_set %}
             <div class="tab-pane p-0 fade" id="{{x.brand_name}}" role="tabpanel" aria-labelledby="{{x.brand_name}}a">
                 <div class="owl-carousel owl-full carousel-equal-height carousel-with-shadow" data-toggle="owl"
                     data-owl-options='{
@@ -475,13 +473,11 @@
                                     }
                                 }
                             }'>
-                            {% for product in products %}
-                            {% if product.product__vendor__brand_name == x.brand_name %}
+                            {% for product in x.variation_set %}
                             <div class="product product-2">
                                 {% if product.offer_price %}
                                 <span class="product-label label-top bg-primary">{{product.offer_price.discount}}% off</span>
                                 {% endif %}
-        
                                 <figure class="product-media">
                                     <a href="{{product.get_url}}"> 
                                         <img src="{{product.image1.url}}" alt="Product image" class="product-image">
@@ -542,7 +538,6 @@
                             </div>
                             <!-- End .product-body -->
                         </div>
-                        {% endif %}
                         {% endfor %}
                     <!-- End .product -->
                 </div>
@@ -571,7 +566,7 @@
                         <div class="icon-box-content">
                             <h3 class="icon-box-title">Free Shipping</h3>
                             <!-- End .icon-box-title -->
-                            <p>Orders $25,000 or more</p>
+                            <p>Orders ₹25,000 or more</p>
                         </div>
                         <!-- End .icon-box-content -->
                     </div>
