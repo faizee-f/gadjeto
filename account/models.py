@@ -75,7 +75,7 @@ class Account(AbstractBaseUser):
     is_superuser = models.BooleanField(default=False)
     gender = models.CharField(max_length=10,blank=False, choices=[
                               ('MALE', 'MALE'), ('FEMALE', 'FEMALE')])
-    mobile = models.CharField(max_length=10, blank=False)
+    mobile = models.CharField(max_length=10, blank=False, unique=True)
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['mobile', 'first_name', 'last_name']
 

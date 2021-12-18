@@ -447,7 +447,7 @@
                 <!-- End .owl-carousel -->
             </div>
             <!-- .End .tab-pane -->
-            {% for x in brands.product_set %}
+            {% for x in brands %}
             <div class="tab-pane p-0 fade" id="{{x.brand_name}}" role="tabpanel" aria-labelledby="{{x.brand_name}}a">
                 <div class="owl-carousel owl-full carousel-equal-height carousel-with-shadow" data-toggle="owl"
                     data-owl-options='{
@@ -473,7 +473,8 @@
                                     }
                                 }
                             }'>
-                            {% for product in x.variation_set %}
+                            {% for item in x.product_set.all %}
+                            {% for product in item.variation_set.all %}
                             <div class="product product-2">
                                 {% if product.offer_price %}
                                 <span class="product-label label-top bg-primary">{{product.offer_price.discount}}% off</span>
@@ -538,6 +539,7 @@
                             </div>
                             <!-- End .product-body -->
                         </div>
+                        {% endfor %}
                         {% endfor %}
                     <!-- End .product -->
                 </div>
