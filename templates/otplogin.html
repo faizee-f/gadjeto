@@ -24,11 +24,11 @@
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane fade show active" id="signin-2" role="tabpanel" aria-labelledby="signin-tab-2">
-                            <form action="{% url 'signin_otp' %}" method="post">
+                            <form action="{% url 'signin_otp' %}" method="post" id="otpform">
                                 {% csrf_token %}
                                 <div class="form-group">
                                     <label for="singin-email-2">Phone Number*</label>
-                                    <input type="number" maxlength="10" class="form-control" id="singin-email-2" name="phone" required>
+                                    <input type="number" class="form-control" id="numberotp" name="phone" required>
                                 </div>
                                 <div class="form-footer">
                                     <button type="submit" class="btn btn-outline-primary-2">
@@ -74,4 +74,42 @@
 <script src="{% static 'js/owl.carousel.min.js' %}"></script>
 <!-- Main JS File -->
 <script src="{% static 'js/main.js' %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js" integrity="sha512-37T7leoNS06R80c8Ulq7cdCDU5MNQBwlYoy1TX/WUsLFC2eYNqtKlV0QjH7r8JpG/S0GUMZwebnVFLPd6SU5yg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<style>
+    .error{
+        color: red;
+    }
+</style>
+<script>
+    $(document).ready(function ($) {
+        $("#otpform").validate({
+            rules: {
+                phone:{
+                    required: true,
+                    minlength:10,
+                    maxlength:10
+                },
+            },
+            messages: {
+                phone: {
+                    required: "Please provide a mobile number",
+                    minlength:"Please enter a valid mobile number",
+                    maxlength:"Invalid number : more 10 numbers",
+                },
+                
+            },
+            submitHandler: function (form) {
+                form.submit();
+            }
+
+        });
+    });
+    jQuery('#numberotp').keypress(function(event){
+	if(event.which !=8 && isNaN(String.fromCharCode(event.which))){
+		event.preventDefault();
+	}
+		console.log(event.which);
+
+});
+</script>
 {% endblock %}

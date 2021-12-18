@@ -38,7 +38,7 @@
                                         show
                                         {% endif %}" aria-labelledby="heading3-1" data-parent="#accordion-3">
                                             <div class="card-body">
-                                                <form action="" method="POST">
+                                                <form action="" method="POST" id="address-form">
                                                     {% csrf_token %}
                                                     <div class="row">
                                                         <div class="col-sm-6">
@@ -198,6 +198,70 @@
                 }
             });
     }
+</script>
+<style>
+    .error{
+        color: red;
+    }
+</style>
+<script>
+    $(document).ready(function ($) {
+        console.log("hai");
+        $("#address-form").validate({
+            rules: {
+                first_name:{
+                    required: true
+                },
+                last_name:{
+                    required: true
+                },
+                email: {
+                    required: true,
+                    email: true
+                },
+                address1:{
+                    required:true
+                },
+                city:{
+                    required:true
+                },
+                state:{
+                    required:true
+                },
+                pincode:{
+                    required:true,
+                    minlength:6,
+                    maxlength:6
+                },
+                phone:{
+                    required:true,
+                    minlength:10,
+                    maxlength:10
+                },
+            },
+            messages: {
+                email:{
+                    required: "Please enter your email",
+                },
+                phone:{
+                    required:"Please enter a phone number",
+                    minlength:"Please provide a valid number",
+                    maxlength:"Please provide a valid number"
+                },
+                pincode:{
+                    required:"Pincode is required ",
+                    minlength:"Please provide a valid pincode",
+                    maxlength:"Please provide a valid pincode"
+                },
+                
+            },
+            submitHandler: function (form) {
+                form.submit();
+            }
+
+        });
+    });
+    
 </script>
 
 

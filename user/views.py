@@ -323,6 +323,7 @@ def otp_validation(request):
     if request.user.is_authenticated:
         return redirect('home')
     if request.method == "POST":
+        mobile_number = request.session['otpnumber']
         check_otp = request.POST['otpval']
         check = varifyOTP(mobile_number, check_otp)
         if check:
