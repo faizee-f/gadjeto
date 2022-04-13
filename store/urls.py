@@ -9,11 +9,20 @@ from django.conf import settings
 
 
 urlpatterns = [
-    path('',views.shop,name='shop'),
-    path('category/<slug:category_slug>/',views.shop,name='product_by_category'),
-    path('category/<slug:category_slug>/<slug:product_slug>/<slug:varient_slug>',views.product_detail,name='product_detail'),
-    path('search/',views.search,name='search'),
-    
-    path('submit_review/<varient_id>',views.submit_review,name='submit_review'),
-    path('quick_buy/<id>',views.quick_buy,name='quick_buy'),
+    path("", views.shop, name="shop"),
+    path(
+        "category/<slug:category_slug>/",
+        views.shop,
+        name="product_by_category",
+    ),
+    path(
+        "category/<slug:category_slug>/<slug:product_slug>/<slug:varient_slug>",
+        views.product_detail,
+        name="product_detail",
+    ),
+    path("search/", views.search, name="search"),
+    path(
+        "submit_review/<varient_id>", views.submit_review, name="submit_review"
+    ),
+    path("quick_buy/<id>", views.quick_buy, name="quick_buy"),
 ]

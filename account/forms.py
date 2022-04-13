@@ -16,16 +16,15 @@ class RegistrationForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(RegistrationForm, self).__init__(*args, **kwargs)
         for field in self.fields:
-            self.fields[field].widget.attrs['class'] = 'form-control'
+            self.fields[field].widget.attrs["class"] = "form-control"
 
     def clean(self):
         cleaned_data = super(RegistrationForm, self).clean()
-        password = cleaned_data.get('password')
-        confirm_password = cleaned_data.get('confirm_password')
+        password = cleaned_data.get("password")
+        confirm_password = cleaned_data.get("confirm_password")
         if password != confirm_password:
-            raise forms.ValidationError(
-                "Password doesnt match"
-            )
+            raise forms.ValidationError("Password doesnt match")
+
 
 class VendorRegistrationForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput)
@@ -38,13 +37,11 @@ class VendorRegistrationForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(VendorRegistrationForm, self).__init__(*args, **kwargs)
         for field in self.fields:
-            self.fields[field].widget.attrs['class'] = 'form-control'
+            self.fields[field].widget.attrs["class"] = "form-control"
 
     def clean(self):
         cleaned_data = super(VendorRegistrationForm, self).clean()
-        password = cleaned_data.get('password')
-        confirm_password = cleaned_data.get('confirm_password')
+        password = cleaned_data.get("password")
+        confirm_password = cleaned_data.get("confirm_password")
         if password != confirm_password:
-            raise forms.ValidationError(
-                "Password doesnt match"
-            )
+            raise forms.ValidationError("Password doesnt match")
