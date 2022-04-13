@@ -20,11 +20,11 @@ from django.urls import path
 from order.models import Order
 
 urlpatterns = [
-    path('sadmin/', admin.site.urls),
-    path('tadmin/',include('admin.urls')),
-    path('vendor/',include('vendors.urls')),
-    path('',include('user.urls')),
-    path('shop/',include('store.urls')),
-    path('cart/',include('cart.urls')),
-    path('orders/',include('order.urls')),
+    path("sadmin/", admin.site.urls),
+    path("tadmin/", include("admin.urls")),
+    path("vendor/", include("vendors.urls")),
+    path("", include("user.urls")),
+    path("shop/", include("store.urls")),
+    path("cart/", include("cart.urls")),
+    path("orders/", include("order.urls")),
 ]

@@ -1,6 +1,14 @@
 from django.contrib import admin
 
-from offer.models import CategoryOffer, Coupen, ProductOffer, RedeemedCoupen, SubCategoryOffer, VariationOffer, VendorOffer
+from offer.models import (
+    CategoryOffer,
+    Coupen,
+    ProductOffer,
+    RedeemedCoupen,
+    SubCategoryOffer,
+    VariationOffer,
+    VendorOffer,
+)
 
 # Register your models here.
 

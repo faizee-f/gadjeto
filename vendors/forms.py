@@ -12,4 +12,4 @@ class RegisterVendor(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(RegisterVendor, self).__init__(*args, **kwargs)
         for field in self.fields:
-            self.fields[field].widget.attrs['class'] = 'form-control'
+            self.fields[field].widget.attrs["class"] = "form-control"

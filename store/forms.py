@@ -10,13 +10,19 @@ from category.models import category
 class AddProductForm(forms.ModelForm):
     class Meta:
         model = product
-        fields = ("category", "product_name", "slug",
-                  "description", "image",)
+        fields = (
+            "category",
+            "product_name",
+            "slug",
+            "description",
+            "image",
+        )
 
     def __init__(self, *args, **kwargs):
         super(AddProductForm, self).__init__(*args, **kwargs)
         for field in self.fields:
-            self.fields[field].widget.attrs['class'] = 'form-control'
+            self.fields[field].widget.attrs["class"] = "form-control"
+
 
 # class AddVarientCategoryForm(forms.ModelForm):
 
@@ -51,18 +57,32 @@ class AddProductForm(forms.ModelForm):
 #         for field in self.fields:
 #             self.fields[field].widget.attrs['class'] = 'form-control'
 
+
 class AddVariationForm(forms.ModelForm):
     class Meta:
-        model=Variation
-        fields=('varient_name','slug','ram','storage','color','image1','image2','image3','image4','margin_price','price','stock')
+        model = Variation
+        fields = (
+            "varient_name",
+            "slug",
+            "ram",
+            "storage",
+            "color",
+            "image1",
+            "image2",
+            "image3",
+            "image4",
+            "margin_price",
+            "price",
+            "stock",
+        )
+
     def __init__(self, *args, **kwargs):
         super(AddVariationForm, self).__init__(*args, **kwargs)
         for field in self.fields:
-            self.fields[field].widget.attrs['class'] = 'my-2 form-control'
+            self.fields[field].widget.attrs["class"] = "my-2 form-control"
 
 
 class ReviewForm(forms.ModelForm):
-
     class Meta:
         model = ReviewRating
-        fields = ('subject', 'review', 'rating')
+        fields = ("subject", "review", "rating")
