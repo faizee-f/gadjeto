@@ -148,3 +148,6 @@ aws-hosting.txt
 __pychache__
 /media/
 /static/
+
+ProcFile
+*.sql
